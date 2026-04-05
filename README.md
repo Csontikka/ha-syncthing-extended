@@ -5,7 +5,9 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/Csontikka/ha-syncthing?style=plastic)
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg?style=plastic)](https://github.com/hacs/integration)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=plastic)](LICENSE)
-![HA Quality](https://img.shields.io/badge/HA%20Quality-Silver-silver?style=plastic)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Csontikka_ha-syncthing&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Csontikka_ha-syncthing)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Csontikka_ha-syncthing&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Csontikka_ha-syncthing)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Csontikka_ha-syncthing&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Csontikka_ha-syncthing)
 
 Full-featured Home Assistant integration for [Syncthing](https://syncthing.net). Monitor folder sync status, device connectivity and traffic, trigger rescans, and pause/resume folders and devices — all from your HA dashboard. Supports multiple Syncthing instances simultaneously.
 

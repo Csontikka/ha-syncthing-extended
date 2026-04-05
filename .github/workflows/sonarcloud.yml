@@ -1,0 +1,37 @@
+name: SonarCloud
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarqube:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test dependencies
+        run: |
+          pip install --upgrade pip
+          pip install \
+            pytest \
+            pytest-asyncio \
+            pytest-cov \
+            pytest-homeassistant-custom-component
+      - name: Run tests with coverage
+        run: |
+          pytest tests/ \
+            --cov=custom_components/syncthing_extended \
+            --cov-report=xml:coverage.xml \
+            -q
+      - name: SonarQube Scan
+        uses: SonarSource/sonarqube-scan-action@v6
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
