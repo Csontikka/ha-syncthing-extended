@@ -413,3 +413,19 @@ def test_ssl_error_raises_syncthing_ssl_error():
         assert False, "Expected SyncthingSslError"
     except SyncthingSslError:
         pass
+
+
+def test_check_health_ssl_error_propagates():
+    async def _run():
+        session = MagicMock()
+        session.request = MagicMock(
+            side_effect=aiohttp.ClientSSLError(MagicMock(), MagicMock())
+        )
+        api = make_api(session)
+        return await api.check_health()
+
+    try:
+        asyncio.run(_run())
+        assert False, "Expected SyncthingSslError"
+    except SyncthingSslError:
+        pass

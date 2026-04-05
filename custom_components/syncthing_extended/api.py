@@ -123,6 +123,8 @@ class SyncthingApi:
         try:
             result = await self._request("GET", API_HEALTH, authenticated=False)
             return isinstance(result, dict) and result.get("status") == "OK"
+        except SyncthingSslError:
+            raise
         except SyncthingApiError:
             return False
 
