@@ -78,8 +78,18 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
                         await self.async_set_unique_id(unique_id)
                         self._abort_if_unique_id_configured()
 
+                        # Try to get a friendly device name
+                        title = f"Syncthing ({user_input[CONF_HOST]}:{user_input[CONF_PORT]})"
+                        try:
+                            devices = await api.get_config_devices()
+                            own = next((d for d in devices if d.get("deviceID") == unique_id), None)
+                            if own and own.get("name"):
+                                title = f"Syncthing @ {own['name']}"
+                        except Exception:
+                            pass
+
                         return self.async_create_entry(
-                            title=f"Syncthing ({user_input[CONF_HOST]}:{user_input[CONF_PORT]})",
+                            title=title,
                             data=user_input,
                         )
             except SyncthingAuthError:

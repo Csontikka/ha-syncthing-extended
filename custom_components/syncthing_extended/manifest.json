@@ -1,6 +1,6 @@
 {
   "domain": "syncthing_extended",
-  "name": "Syncthing Extended",
+  "name": "Syncthing",
   "version": "0.1.0",
   "config_flow": true,
   "codeowners": ["@csontikka"],
