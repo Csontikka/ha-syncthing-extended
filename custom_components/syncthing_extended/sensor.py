@@ -74,7 +74,6 @@ SYSTEM_SENSORS: tuple[SyncthingSensorEntityDescription, ...] = (
         translation_key="my_id",
         icon="mdi:identifier",
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
         value_fn=lambda data: data.system_status.get("myID", "")[:7] + "...",
         attr_fn=lambda data: {
             "full_id": data.system_status.get("myID"),
@@ -176,7 +175,7 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfInformation.BYTES,
         suggested_unit_of_measurement=UnitOfInformation.MEGABYTES,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
+
         value_fn=lambda data, fid: _folder_status(data, fid).get("globalBytes"),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -185,7 +184,7 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         icon="mdi:file-multiple",
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
+
         value_fn=lambda data, fid: _folder_status(data, fid).get("globalFiles"),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -197,7 +196,7 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfInformation.BYTES,
         suggested_unit_of_measurement=UnitOfInformation.MEGABYTES,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
+
         value_fn=lambda data, fid: _folder_status(data, fid).get("inSyncBytes"),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -206,7 +205,7 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         icon="mdi:file-check",
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
+
         value_fn=lambda data, fid: _folder_status(data, fid).get("inSyncFiles"),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -218,7 +217,7 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfInformation.BYTES,
         suggested_unit_of_measurement=UnitOfInformation.MEGABYTES,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
+
         value_fn=lambda data, fid: _folder_status(data, fid).get("localBytes"),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -227,7 +226,7 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         icon="mdi:file-multiple-outline",
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
+
         value_fn=lambda data, fid: _folder_status(data, fid).get("localFiles"),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -278,7 +277,7 @@ DEVICE_SENSORS: tuple[SyncthingDeviceSensorEntityDescription, ...] = (
         translation_key="device_connection_type",
         icon="mdi:network-outline",
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
+
         value_fn=lambda data, did: _device_connection(data, did).get("type"),
     ),
     SyncthingDeviceSensorEntityDescription(
@@ -286,7 +285,7 @@ DEVICE_SENSORS: tuple[SyncthingDeviceSensorEntityDescription, ...] = (
         translation_key="device_address",
         icon="mdi:ip-network",
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
+
         value_fn=lambda data, did: _device_connection(data, did).get("address"),
     ),
     SyncthingDeviceSensorEntityDescription(
@@ -294,7 +293,7 @@ DEVICE_SENSORS: tuple[SyncthingDeviceSensorEntityDescription, ...] = (
         translation_key="device_client_version",
         icon="mdi:tag",
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
+
         value_fn=lambda data, did: _device_connection(data, did).get("clientVersion"),
     ),
     SyncthingDeviceSensorEntityDescription(
