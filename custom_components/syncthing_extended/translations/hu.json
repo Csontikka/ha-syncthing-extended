@@ -8,6 +8,7 @@
           "host": "Hoszt",
           "port": "Port",
           "api_key": "API kulcs",
+          "use_ssl": "HTTPS (SSL) használata",
           "verify_ssl": "SSL tanúsítvány ellenőrzése",
           "scan_interval": "Frissítési időköz (másodperc)"
         },

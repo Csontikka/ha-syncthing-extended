@@ -18,9 +18,11 @@ from .const import (
     CONF_HOST,
     CONF_PORT,
     CONF_SCAN_INTERVAL,
+    CONF_USE_SSL,
     CONF_VERIFY_SSL,
     DEFAULT_PORT,
     DEFAULT_SCAN_INTERVAL,
+    DEFAULT_USE_SSL,
     DEFAULT_VERIFY_SSL,
     DOMAIN,
 )
@@ -32,6 +34,7 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
         vol.Required(CONF_HOST): str,
         vol.Required(CONF_PORT, default=DEFAULT_PORT): int,
         vol.Required(CONF_API_KEY): str,
+        vol.Optional(CONF_USE_SSL, default=DEFAULT_USE_SSL): bool,
         vol.Optional(CONF_VERIFY_SSL, default=DEFAULT_VERIFY_SSL): bool,
         vol.Optional(CONF_SCAN_INTERVAL, default=DEFAULT_SCAN_INTERVAL): vol.All(
             int, vol.Range(min=10, max=300)
@@ -52,14 +55,15 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
 
         if user_input is not None:
-            session = async_get_clientsession(
-                self.hass, verify_ssl=user_input[CONF_VERIFY_SSL]
-            )
+            use_ssl = user_input.get(CONF_USE_SSL, DEFAULT_USE_SSL)
+            verify_ssl = user_input.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL)
+            session = async_get_clientsession(self.hass, verify_ssl=verify_ssl)
             api = SyncthingApi(
                 host=user_input[CONF_HOST],
                 port=user_input[CONF_PORT],
                 api_key=user_input[CONF_API_KEY],
-                verify_ssl=user_input[CONF_VERIFY_SSL],
+                use_ssl=use_ssl,
+                verify_ssl=verify_ssl,
                 session=session,
             )
 

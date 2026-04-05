@@ -2,6 +2,7 @@
 
 DOMAIN = "syncthing_extended"
 DEFAULT_PORT = 8384
+DEFAULT_USE_SSL = True
 DEFAULT_VERIFY_SSL = False
 DEFAULT_SCAN_INTERVAL = 30  # seconds
 
@@ -9,6 +10,7 @@ DEFAULT_SCAN_INTERVAL = 30  # seconds
 CONF_HOST = "host"
 CONF_PORT = "port"
 CONF_API_KEY = "api_key"
+CONF_USE_SSL = "use_ssl"
 CONF_VERIFY_SSL = "verify_ssl"
 CONF_SCAN_INTERVAL = "scan_interval"
 

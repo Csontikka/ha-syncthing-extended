@@ -16,8 +16,10 @@ from .const import (
     CONF_HOST,
     CONF_PORT,
     CONF_SCAN_INTERVAL,
+    CONF_USE_SSL,
     CONF_VERIFY_SSL,
     DEFAULT_SCAN_INTERVAL,
+    DEFAULT_USE_SSL,
     DEFAULT_VERIFY_SSL,
     DOMAIN,
     PLATFORMS,
@@ -37,6 +39,7 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: SyncthingConfigEntry) -> bool:
     """Set up Syncthing Extended from a config entry."""
+    use_ssl = entry.data.get(CONF_USE_SSL, DEFAULT_USE_SSL)
     verify_ssl = entry.data.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL)
     session = async_get_clientsession(hass, verify_ssl=verify_ssl)
 
@@ -44,6 +47,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: SyncthingConfigEntry) ->
         host=entry.data[CONF_HOST],
         port=entry.data[CONF_PORT],
         api_key=entry.data[CONF_API_KEY],
+        use_ssl=use_ssl,
         verify_ssl=verify_ssl,
         session=session,
     )

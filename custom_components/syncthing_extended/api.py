@@ -46,15 +46,17 @@ class SyncthingApi:
         host: str,
         port: int,
         api_key: str,
+        use_ssl: bool = True,
         verify_ssl: bool = False,
         session: aiohttp.ClientSession | None = None,
     ) -> None:
         self._host = host
         self._port = port
         self._api_key = api_key
+        self._use_ssl = use_ssl
         self._verify_ssl = verify_ssl
         self._session = session
-        scheme = "https" if verify_ssl else "http"
+        scheme = "https" if use_ssl else "http"
         self._base_url = f"{scheme}://{host}:{port}"
 
     @property

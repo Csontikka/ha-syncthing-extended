@@ -8,6 +8,7 @@
           "host": "Host",
           "port": "Port",
           "api_key": "API Key",
+          "use_ssl": "Use HTTPS (SSL)",
           "verify_ssl": "Verify SSL certificate",
           "scan_interval": "Update interval (seconds)"
         },

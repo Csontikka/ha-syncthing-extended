@@ -173,12 +173,12 @@ def test_scan_folder_returns_false_on_error():
 
 
 def test_base_url_http():
-    api = SyncthingApi("myhost", 8384, "key", verify_ssl=False)
+    api = SyncthingApi("myhost", 8384, "key", use_ssl=False)
     assert api.base_url == "http://myhost:8384"
 
 
 def test_base_url_https():
-    api = SyncthingApi("myhost", 8384, "key", verify_ssl=True)
+    api = SyncthingApi("myhost", 8384, "key", use_ssl=True)
     assert api.base_url == "https://myhost:8384"
 
 
