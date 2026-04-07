@@ -15,3 +15,16 @@ Thumbs.db
 deploy.py
 create_repo.py
 import/
+
+# Dev utility scripts (contain credentials)
+check_syncthing.py
+check_entity_values.py
+setup_sonar.py
+screenshot_entities.py
+screenshot_readme.py
+screenshot_targeted.py
+mask_screenshots.py
+test_ssl_error_ui.py
+ssl_test_*.png
+screenshots_targeted/
+.omc/
