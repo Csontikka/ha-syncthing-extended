@@ -203,10 +203,8 @@ automation:
 - Home Assistant 2024.1.0+
 - Syncthing v1.20.0+
 
-## Contributing
+## Support
 
-Issues and PRs welcome at [github.com/Csontikka/ha-syncthing](https://github.com/Csontikka/ha-syncthing).
+Found a bug or have an idea? [Open an issue](https://github.com/Csontikka/ha-syncthing/issues) — feedback and feature requests are welcome!
 
-## License
-
-MIT
+If you find this integration useful, consider [buying me a coffee](https://buymeacoffee.com/Csontikka).
