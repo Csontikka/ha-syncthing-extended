@@ -87,6 +87,8 @@ After setup, the integration appears in Settings → Integrations:
 
 ### Finding your API key
 
+![Syncthing API key location](https://raw.githubusercontent.com/Csontikka/ha-syncthing/master/images/syncthing_api_key.png)
+
 - **Syncthing UI**: Actions → Settings → right panel → API Key
 - **Linux**: `~/.local/state/syncthing/config.xml` → `<gui><apikey>…</apikey></gui>`
 - **Proxmox LXC**: `/root/.local/state/syncthing/config.xml`
