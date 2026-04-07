@@ -82,7 +82,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "Syncthing Extended オプション",
+        "title": "Syncthing オプション",
         "data": { "scan_interval": "更新間隔（秒）" }
       }
     }

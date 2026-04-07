@@ -82,7 +82,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "Syncthing Extended 옵션",
+        "title": "Syncthing 옵션",
         "data": { "scan_interval": "업데이트 간격 (초)" }
       }
     }

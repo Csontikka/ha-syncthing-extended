@@ -82,7 +82,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "Επιλογές Syncthing Extended",
+        "title": "Επιλογές Syncthing",
         "data": { "scan_interval": "Διάστημα ενημέρωσης (δευτερόλεπτα)" }
       }
     }

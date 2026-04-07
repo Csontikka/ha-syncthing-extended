@@ -82,7 +82,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "Tùy chọn Syncthing Extended",
+        "title": "Tùy chọn Syncthing",
         "data": { "scan_interval": "Khoảng thời gian cập nhật (giây)" }
       }
     }

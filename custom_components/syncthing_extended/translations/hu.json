@@ -84,7 +84,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "Syncthing Extended beállítások",
+        "title": "Syncthing beállítások",
         "data": {
           "scan_interval": "Frissítési időköz (másodperc)"
         }

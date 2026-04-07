@@ -82,7 +82,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "Valkostir Syncthing Extended",
+        "title": "Valkostir Syncthing",
         "data": { "scan_interval": "Uppfærslutímabil (sekúndur)" }
       }
     }

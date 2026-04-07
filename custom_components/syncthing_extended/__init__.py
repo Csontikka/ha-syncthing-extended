@@ -1,4 +1,4 @@
-"""Syncthing Extended integration for Home Assistant."""
+"""Syncthing integration for Home Assistant."""
 from __future__ import annotations
 
 import logging
@@ -32,13 +32,13 @@ type SyncthingConfigEntry = ConfigEntry[SyncthingCoordinator]
 
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
-    """Set up the Syncthing Extended integration (registers services)."""
+    """Set up the Syncthing integration (registers services)."""
     _async_register_services(hass)
     return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: SyncthingConfigEntry) -> bool:
-    """Set up Syncthing Extended from a config entry."""
+    """Set up Syncthing from a config entry."""
     use_ssl = entry.data.get(CONF_USE_SSL, DEFAULT_USE_SSL)
     verify_ssl = entry.data.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL)
     session = async_get_clientsession(hass, verify_ssl=verify_ssl)
@@ -86,7 +86,7 @@ def _get_coordinator(hass: HomeAssistant) -> SyncthingCoordinator:
     for entry in hass.config_entries.async_entries(DOMAIN):
         if hasattr(entry, "runtime_data") and entry.runtime_data:
             return entry.runtime_data
-    raise ValueError("No Syncthing Extended config entry found")
+    raise ValueError("No Syncthing config entry found")
 
 
 def _async_register_services(hass: HomeAssistant) -> None:

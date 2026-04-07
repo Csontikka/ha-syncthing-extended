@@ -1,4 +1,4 @@
-"""Config flow for Syncthing Extended."""
+"""Config flow for Syncthing."""
 from __future__ import annotations
 
 import logging
@@ -44,7 +44,7 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 
 
 class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
-    """Handle config flow for Syncthing Extended."""
+    """Handle config flow for Syncthing."""
 
     VERSION = 1
 
@@ -168,7 +168,7 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
 
 
 class SyncthingOptionsFlow(OptionsFlow):
-    """Handle options flow for Syncthing Extended."""
+    """Handle options flow for Syncthing."""
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None

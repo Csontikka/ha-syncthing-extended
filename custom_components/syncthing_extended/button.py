@@ -1,4 +1,4 @@
-"""Button platform for Syncthing Extended."""
+"""Button platform for Syncthing."""
 from __future__ import annotations
 
 import logging

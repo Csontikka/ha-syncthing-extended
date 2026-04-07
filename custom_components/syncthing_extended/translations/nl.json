@@ -82,7 +82,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "Syncthing Extended opties",
+        "title": "Syncthing opties",
         "data": { "scan_interval": "Verversingsinterval (seconden)" }
       }
     }

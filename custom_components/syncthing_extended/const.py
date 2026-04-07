@@ -1,4 +1,4 @@
-"""Constants for Syncthing Extended integration."""
+"""Constants for Syncthing integration."""
 
 DOMAIN = "syncthing_extended"
 DEFAULT_PORT = 8384

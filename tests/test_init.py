@@ -57,7 +57,7 @@ def test_get_coordinator_returns_runtime_data():
 
 def test_get_coordinator_raises_when_no_entries():
     hass = make_hass()
-    with pytest.raises(ValueError, match="No Syncthing Extended"):
+    with pytest.raises(ValueError, match="No Syncthing"):
         _get_coordinator(hass)
 
 

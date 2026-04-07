@@ -82,7 +82,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "Syncthing Extended -asetukset",
+        "title": "Syncthing -asetukset",
         "data": { "scan_interval": "Päivitysväli (sekuntia)" }
       }
     }

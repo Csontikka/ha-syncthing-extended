@@ -1,4 +1,4 @@
-"""Binary sensor platform for Syncthing Extended."""
+"""Binary sensor platform for Syncthing."""
 from __future__ import annotations
 
 from collections.abc import Callable

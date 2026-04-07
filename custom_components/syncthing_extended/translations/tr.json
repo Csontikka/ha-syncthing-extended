@@ -82,7 +82,7 @@
   "options": {
     "step": {
       "init": {
-        "title": "Syncthing Extended Seçenekleri",
+        "title": "Syncthing Seçenekleri",
         "data": { "scan_interval": "Güncelleme aralığı (saniye)" }
       }
     }
