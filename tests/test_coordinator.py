@@ -6,8 +6,8 @@ from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 
-from custom_components.syncthing_extended.api import SyncthingApiError
-from custom_components.syncthing_extended.coordinator import (
+from custom_components.syncthing.api import SyncthingApiError
+from custom_components.syncthing.coordinator import (
     SyncthingCoordinator,
     SyncthingData,
 )

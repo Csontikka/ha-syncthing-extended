@@ -8,7 +8,7 @@ import pytest
 
 import aiohttp
 
-from custom_components.syncthing_extended.api import (
+from custom_components.syncthing.api import (
     SyncthingApi,
     SyncthingApiError,
     SyncthingAuthError,

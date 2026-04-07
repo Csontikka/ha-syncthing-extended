@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from custom_components.syncthing_extended.sensor import (
+from custom_components.syncthing.sensor import (
     SYSTEM_SENSORS,
     FOLDER_SENSORS,
     DEVICE_SENSORS,

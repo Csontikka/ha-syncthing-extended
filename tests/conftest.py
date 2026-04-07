@@ -8,7 +8,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from custom_components.syncthing_extended.coordinator import SyncthingData
+from custom_components.syncthing.coordinator import SyncthingData
 
 
 # Reset event loop policy — HA overrides it with a custom one that breaks on Windows
@@ -192,7 +192,7 @@ def build_mock_coordinator_data() -> SyncthingData:
 
 def build_mock_api(healthy: bool = True, auth_error: bool = False) -> MagicMock:
     """Build a mock SyncthingApi."""
-    from custom_components.syncthing_extended.api import (
+    from custom_components.syncthing.api import (
         SyncthingAuthError,
         SyncthingConnectionError,
     )

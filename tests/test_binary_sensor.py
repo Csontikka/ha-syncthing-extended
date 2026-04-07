@@ -4,7 +4,7 @@ from __future__ import annotations
 import asyncio
 from unittest.mock import AsyncMock, MagicMock
 
-from custom_components.syncthing_extended.binary_sensor import (
+from custom_components.syncthing.binary_sensor import (
     DEVICE_BINARY_SENSORS,
     FOLDER_BINARY_SENSORS,
     SYSTEM_BINARY_SENSORS,
@@ -207,7 +207,7 @@ def test_device_binary_sensor_no_attr_fn():
 
 def test_system_binary_sensor_no_attr_fn_returns_none():
     """Cover the extra_state_attributes None branch when attr_fn is absent."""
-    from custom_components.syncthing_extended.binary_sensor import (
+    from custom_components.syncthing.binary_sensor import (
         SyncthingBinarySensorEntityDescription,
     )
     from homeassistant.components.binary_sensor import BinarySensorDeviceClass

@@ -4,7 +4,7 @@ from __future__ import annotations
 import asyncio
 from unittest.mock import AsyncMock, MagicMock
 
-from custom_components.syncthing_extended.button import (
+from custom_components.syncthing.button import (
     SyncthingFolderScanButton,
     SyncthingScanAllButton,
     async_setup_entry,

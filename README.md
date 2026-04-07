@@ -66,7 +66,7 @@ After setup, the integration appears in Settings → Integrations:
 
 ### Manual
 
-1. Copy `custom_components/syncthing_extended/` to your HA `config/custom_components/` directory
+1. Copy `custom_components/syncthing/` to your HA `config/custom_components/` directory
 2. Restart Home Assistant
 
 ## Configuration
@@ -160,14 +160,14 @@ If your API key changes, Home Assistant will show a re-authentication prompt. Cl
 
 | Service | Parameters | Description |
 |---------|-----------|-------------|
-| `syncthing_extended.scan_folder` | `folder_id` | Trigger rescan of one folder |
-| `syncthing_extended.scan_all` | — | Trigger rescan of all folders |
-| `syncthing_extended.pause_folder` | `folder_id` | Pause a specific folder |
-| `syncthing_extended.resume_folder` | `folder_id` | Resume a specific folder |
-| `syncthing_extended.pause_device` | `device_id` | Pause sync with a device |
-| `syncthing_extended.resume_device` | `device_id` | Resume sync with a device |
-| `syncthing_extended.pause_all` | — | Pause all devices |
-| `syncthing_extended.resume_all` | — | Resume all devices |
+| `syncthing.scan_folder` | `folder_id` | Trigger rescan of one folder |
+| `syncthing.scan_all` | — | Trigger rescan of all folders |
+| `syncthing.pause_folder` | `folder_id` | Pause a specific folder |
+| `syncthing.resume_folder` | `folder_id` | Resume a specific folder |
+| `syncthing.pause_device` | `device_id` | Pause sync with a device |
+| `syncthing.resume_device` | `device_id` | Resume sync with a device |
+| `syncthing.pause_all` | — | Pause all devices |
+| `syncthing.resume_all` | — | Resume all devices |
 
 ### Example automation
 
@@ -189,14 +189,14 @@ automation:
         entity_id: sensor.backup_status
         to: "completed"
     action:
-      - service: syncthing_extended.scan_all
+      - service: syncthing.scan_all
 ```
 
 ## Removal
 
 1. Go to **Settings → Devices & Services → Syncthing**
 2. Click the three-dot menu → **Delete**
-3. Optionally remove `custom_components/syncthing_extended/` and restart HA
+3. Optionally remove `custom_components/syncthing/` and restart HA
 
 ## Supported versions
 

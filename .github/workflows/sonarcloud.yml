@@ -28,7 +28,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           pytest tests/ \
-            --cov=custom_components/syncthing_extended \
+            --cov=custom_components/syncthing \
             --cov-report=xml:coverage.xml \
             -q
       - name: SonarQube Scan

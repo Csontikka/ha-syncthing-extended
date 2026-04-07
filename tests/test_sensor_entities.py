@@ -4,7 +4,7 @@ from __future__ import annotations
 import pytest
 from unittest.mock import MagicMock
 
-from custom_components.syncthing_extended.sensor import (
+from custom_components.syncthing.sensor import (
     DEVICE_SENSORS,
     FOLDER_SENSORS,
     SYSTEM_SENSORS,
@@ -277,7 +277,7 @@ def test_device_sensor_unique_id():
 def test_sensor_async_setup_entry_creates_entities():
     import asyncio
     from unittest.mock import MagicMock
-    from custom_components.syncthing_extended.sensor import async_setup_entry
+    from custom_components.syncthing.sensor import async_setup_entry
 
     async def _run():
         coordinator = make_coordinator()

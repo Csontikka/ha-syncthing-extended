@@ -1,5 +1,5 @@
 {
-  "domain": "syncthing_extended",
+  "domain": "syncthing",
   "name": "Syncthing",
   "version": "0.1.0",
   "config_flow": true,

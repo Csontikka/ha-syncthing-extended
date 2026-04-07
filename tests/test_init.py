@@ -6,8 +6,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from custom_components.syncthing_extended import _async_register_services, _get_coordinator
-from custom_components.syncthing_extended.const import DOMAIN
+from custom_components.syncthing import _async_register_services, _get_coordinator
+from custom_components.syncthing.const import DOMAIN
 from tests.conftest import build_mock_api, build_mock_coordinator_data
 
 
@@ -204,7 +204,7 @@ def test_handle_resume_all_failure_raises():
 
 def test_async_setup_registers_services():
     async def _run():
-        from custom_components.syncthing_extended import async_setup
+        from custom_components.syncthing import async_setup
         hass = make_hass(has_service=False)
         result = await async_setup(hass, {})
         return hass, result
@@ -252,8 +252,8 @@ def test_api_resume_all_returns_true():
 
 def test_async_setup_entry_stores_coordinator():
     async def _run():
-        from custom_components.syncthing_extended import async_setup_entry
-        from custom_components.syncthing_extended.coordinator import SyncthingCoordinator
+        from custom_components.syncthing import async_setup_entry
+        from custom_components.syncthing.coordinator import SyncthingCoordinator
 
         entry = MagicMock()
         entry.data = {
@@ -274,12 +274,12 @@ def test_async_setup_entry_stores_coordinator():
         mock_coordinator.data = build_mock_coordinator_data()
 
         with patch(
-            "custom_components.syncthing_extended.SyncthingApi",
+            "custom_components.syncthing.SyncthingApi",
         ), patch(
-            "custom_components.syncthing_extended.async_get_clientsession",
+            "custom_components.syncthing.async_get_clientsession",
             return_value=MagicMock(),
         ), patch(
-            "custom_components.syncthing_extended.SyncthingCoordinator",
+            "custom_components.syncthing.SyncthingCoordinator",
             return_value=mock_coordinator,
         ):
             result = await async_setup_entry(hass, entry)
@@ -293,7 +293,7 @@ def test_async_setup_entry_stores_coordinator():
 
 def test_async_unload_entry():
     async def _run():
-        from custom_components.syncthing_extended import async_unload_entry
+        from custom_components.syncthing import async_unload_entry
 
         entry = MagicMock()
         hass = MagicMock()
@@ -306,7 +306,7 @@ def test_async_unload_entry():
 
 def test_async_update_listener_reloads():
     async def _run():
-        from custom_components.syncthing_extended import _async_update_listener
+        from custom_components.syncthing import _async_update_listener
 
         entry = MagicMock()
         entry.entry_id = "test_entry"

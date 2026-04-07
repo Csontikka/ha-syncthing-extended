@@ -4,11 +4,11 @@ from __future__ import annotations
 import asyncio
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from custom_components.syncthing_extended.api import (
+from custom_components.syncthing.api import (
     SyncthingAuthError,
     SyncthingConnectionError,
 )
-from custom_components.syncthing_extended.const import (
+from custom_components.syncthing.const import (
     CONF_API_KEY,
     CONF_HOST,
     CONF_PORT,
@@ -42,7 +42,7 @@ def _mock_api(healthy=True, auth_error=False, connect_error=False):
 
 
 def _make_flow():
-    from custom_components.syncthing_extended.config_flow import SyncthingConfigFlow
+    from custom_components.syncthing.config_flow import SyncthingConfigFlow
 
     flow = SyncthingConfigFlow()
     flow.hass = MagicMock()
@@ -72,10 +72,10 @@ def test_config_flow_success():
         mock_api = _mock_api()
 
         with patch(
-            "custom_components.syncthing_extended.config_flow.SyncthingApi",
+            "custom_components.syncthing.config_flow.SyncthingApi",
             return_value=mock_api,
         ), patch(
-            "custom_components.syncthing_extended.config_flow.async_get_clientsession",
+            "custom_components.syncthing.config_flow.async_get_clientsession",
             return_value=MagicMock(),
         ), patch.object(
             flow, "async_set_unique_id", AsyncMock()
@@ -98,10 +98,10 @@ def test_config_flow_cannot_connect():
         mock_api = _mock_api(healthy=False)
 
         with patch(
-            "custom_components.syncthing_extended.config_flow.SyncthingApi",
+            "custom_components.syncthing.config_flow.SyncthingApi",
             return_value=mock_api,
         ), patch(
-            "custom_components.syncthing_extended.config_flow.async_get_clientsession",
+            "custom_components.syncthing.config_flow.async_get_clientsession",
             return_value=MagicMock(),
         ), patch.object(
             flow,
@@ -120,10 +120,10 @@ def test_config_flow_invalid_auth():
         mock_api = _mock_api(auth_error=True)
 
         with patch(
-            "custom_components.syncthing_extended.config_flow.SyncthingApi",
+            "custom_components.syncthing.config_flow.SyncthingApi",
             return_value=mock_api,
         ), patch(
-            "custom_components.syncthing_extended.config_flow.async_get_clientsession",
+            "custom_components.syncthing.config_flow.async_get_clientsession",
             return_value=MagicMock(),
         ), patch.object(
             flow,
@@ -137,7 +137,7 @@ def test_config_flow_invalid_auth():
 
 
 def _make_options_flow():
-    from custom_components.syncthing_extended.config_flow import SyncthingOptionsFlow
+    from custom_components.syncthing.config_flow import SyncthingOptionsFlow
 
     config_entry = MagicMock()
     config_entry.options = {}
@@ -190,10 +190,10 @@ def test_reauth_confirm_success():
         }
 
         with patch(
-            "custom_components.syncthing_extended.config_flow.SyncthingApi",
+            "custom_components.syncthing.config_flow.SyncthingApi",
             return_value=mock_api,
         ), patch(
-            "custom_components.syncthing_extended.config_flow.async_get_clientsession",
+            "custom_components.syncthing.config_flow.async_get_clientsession",
             return_value=MagicMock(),
         ), patch.object(
             flow, "_get_reauth_entry", return_value=reauth_entry
@@ -223,10 +223,10 @@ def test_reauth_confirm_invalid_auth():
         }
 
         with patch(
-            "custom_components.syncthing_extended.config_flow.SyncthingApi",
+            "custom_components.syncthing.config_flow.SyncthingApi",
             return_value=mock_api,
         ), patch(
-            "custom_components.syncthing_extended.config_flow.async_get_clientsession",
+            "custom_components.syncthing.config_flow.async_get_clientsession",
             return_value=MagicMock(),
         ), patch.object(
             flow, "_get_reauth_entry", return_value=reauth_entry
@@ -276,10 +276,10 @@ def test_config_flow_unknown_exception():
         mock_api.check_health = AsyncMock(side_effect=Exception("unexpected"))
 
         with patch(
-            "custom_components.syncthing_extended.config_flow.SyncthingApi",
+            "custom_components.syncthing.config_flow.SyncthingApi",
             return_value=mock_api,
         ), patch(
-            "custom_components.syncthing_extended.config_flow.async_get_clientsession",
+            "custom_components.syncthing.config_flow.async_get_clientsession",
             return_value=MagicMock(),
         ), patch.object(
             flow,
@@ -300,10 +300,10 @@ def test_config_flow_empty_unique_id():
         mock_api.get_system_status = AsyncMock(return_value={"myID": ""})
 
         with patch(
-            "custom_components.syncthing_extended.config_flow.SyncthingApi",
+            "custom_components.syncthing.config_flow.SyncthingApi",
             return_value=mock_api,
         ), patch(
-            "custom_components.syncthing_extended.config_flow.async_get_clientsession",
+            "custom_components.syncthing.config_flow.async_get_clientsession",
             return_value=MagicMock(),
         ), patch.object(
             flow,

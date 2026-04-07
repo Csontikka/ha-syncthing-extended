@@ -13,15 +13,15 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Zip syncthing_extended dir
+      - name: Zip syncthing dir
         run: |
-          cd ${{ github.workspace }}/custom_components/syncthing_extended
-          zip syncthing_extended.zip -r ./
+          cd ${{ github.workspace }}/custom_components/syncthing
+          zip syncthing.zip -r ./
       - name: Upload zip to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ github.workspace }}/custom_components/syncthing_extended/syncthing_extended.zip
-          asset_name: syncthing_extended.zip
+          file: ${{ github.workspace }}/custom_components/syncthing/syncthing.zip
+          asset_name: syncthing.zip
           tag: ${{ github.ref }}
           overwrite: true
