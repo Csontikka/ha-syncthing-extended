@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Kết nối với Syncthing",
+        "description": "Nhập thông tin kết nối Syncthing của bạn.\nTìm khóa API tại: Giao diện Syncthing > Hành động > Cài đặt > Khóa API",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "Sử dụng HTTPS (SSL)",
+          "verify_ssl": "Xác minh chứng chỉ SSL",
+          "scan_interval": "Khoảng thời gian cập nhật (giây)"
+        },
+        "data_description": {
+          "host": "Địa chỉ IP hoặc tên máy chủ của phiên bản Syncthing",
+          "port": "Mặc định: 8384",
+          "api_key": "Tìm thấy trong giao diện Syncthing tại Hành động > Cài đặt",
+          "scan_interval": "Tần suất kiểm tra cập nhật (10–300 giây)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Xác thực lại Syncthing",
+        "description": "Khóa API Syncthing của bạn không còn hợp lệ. Vui lòng nhập khóa mới.",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Không thể kết nối với Syncthing. Kiểm tra máy chủ và cổng.",
+      "invalid_auth": "Khóa API không hợp lệ.",
+      "ssl_error": "Xác minh chứng chỉ SSL thất bại. Tắt 'Xác minh chứng chỉ SSL' nếu bạn đang sử dụng chứng chỉ tự ký.",
+      "unknown": "Đã xảy ra lỗi không mong đợi."
+    },
+    "abort": {
+      "already_configured": "Phiên bản Syncthing này đã được cấu hình."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "Phiên bản" },
+      "uptime": { "name": "Thời gian hoạt động" },
+      "my_id": { "name": "ID thiết bị" },
+      "total_in_bytes": { "name": "Tổng đã tải xuống" },
+      "total_out_bytes": { "name": "Tổng đã tải lên" },
+      "folder_state": { "name": "Trạng thái" },
+      "folder_completion": { "name": "Hoàn thành" },
+      "folder_need_bytes": { "name": "Byte cần thiết" },
+      "folder_need_files": { "name": "Tệp cần thiết" },
+      "folder_global_bytes": { "name": "Tổng kích thước" },
+      "folder_global_files": { "name": "Tổng số tệp" },
+      "folder_in_sync_bytes": { "name": "Kích thước đã đồng bộ" },
+      "folder_in_sync_files": { "name": "Tệp đã đồng bộ" },
+      "folder_local_bytes": { "name": "Kích thước cục bộ" },
+      "folder_local_files": { "name": "Tệp cục bộ" },
+      "folder_pull_errors": { "name": "Lỗi tải xuống" },
+      "folder_last_scan": { "name": "Lần quét cuối" },
+      "folder_last_file": { "name": "Tệp đồng bộ cuối" },
+      "device_connection_type": { "name": "Loại kết nối" },
+      "device_address": { "name": "Địa chỉ" },
+      "device_client_version": { "name": "Phiên bản máy khách" },
+      "device_last_seen": { "name": "Lần cuối thấy" },
+      "device_in_bytes": { "name": "Đã tải xuống" },
+      "device_out_bytes": { "name": "Đã tải lên" }
+    },
+    "binary_sensor": {
+      "running": { "name": "Đang chạy" },
+      "folder_error": { "name": "Lỗi" },
+      "folder_syncing": { "name": "Đang đồng bộ" },
+      "folder_paused": { "name": "Đã tạm dừng" },
+      "device_connected": { "name": "Đã kết nối" },
+      "device_paused": { "name": "Đã tạm dừng" }
+    },
+    "button": {
+      "scan_all": { "name": "Quét tất cả thư mục" },
+      "folder_scan": { "name": "Quét" },
+      "folder_pause": { "name": "Tạm dừng" },
+      "folder_resume": { "name": "Tiếp tục" },
+      "device_pause": { "name": "Tạm dừng" },
+      "device_resume": { "name": "Tiếp tục" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Tùy chọn Syncthing Extended",
+        "data": { "scan_interval": "Khoảng thời gian cập nhật (giây)" }
+      }
+    }
+  }
+}

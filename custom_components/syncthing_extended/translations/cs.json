@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Připojit k Syncthing",
+        "description": "Zadejte podrobnosti připojení k Syncthing.\nNajděte svůj API klíč v: Syncthing UI > Akce > Nastavení > API klíč",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "Použít HTTPS (SSL)",
+          "verify_ssl": "Ověřit SSL certifikát",
+          "scan_interval": "Interval aktualizace (sekundy)"
+        },
+        "data_description": {
+          "host": "IP adresa nebo název hostitele instance Syncthing",
+          "port": "Výchozí: 8384",
+          "api_key": "Nachází se v Syncthing UI pod Akce > Nastavení",
+          "scan_interval": "Jak často se dotazovat na aktualizace (10–300 sekund)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Opětovné ověření Syncthing",
+        "description": "Váš API klíč pro Syncthing již není platný. Zadejte prosím nový.",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nelze se připojit k Syncthing. Zkontrolujte hostitele a port.",
+      "invalid_auth": "Neplatný API klíč.",
+      "ssl_error": "Ověření SSL certifikátu selhalo. Vypněte 'Ověřit SSL certifikát', pokud používáte certifikát podepsaný vlastní autoritou.",
+      "unknown": "Došlo k neočekávané chybě."
+    },
+    "abort": {
+      "already_configured": "Tato instance Syncthing je již nakonfigurována."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "Verze" },
+      "uptime": { "name": "Doba provozu" },
+      "my_id": { "name": "ID zařízení" },
+      "total_in_bytes": { "name": "Celkem staženo" },
+      "total_out_bytes": { "name": "Celkem odesláno" },
+      "folder_state": { "name": "Stav" },
+      "folder_completion": { "name": "Dokončení" },
+      "folder_need_bytes": { "name": "Potřebné bajty" },
+      "folder_need_files": { "name": "Potřebné soubory" },
+      "folder_global_bytes": { "name": "Celková velikost" },
+      "folder_global_files": { "name": "Celkem souborů" },
+      "folder_in_sync_bytes": { "name": "Synchronizovaná velikost" },
+      "folder_in_sync_files": { "name": "Synchronizované soubory" },
+      "folder_local_bytes": { "name": "Lokální velikost" },
+      "folder_local_files": { "name": "Lokální soubory" },
+      "folder_pull_errors": { "name": "Chyby stahování" },
+      "folder_last_scan": { "name": "Poslední sken" },
+      "folder_last_file": { "name": "Naposledy synchronizovaný soubor" },
+      "device_connection_type": { "name": "Typ připojení" },
+      "device_address": { "name": "Adresa" },
+      "device_client_version": { "name": "Verze klienta" },
+      "device_last_seen": { "name": "Naposledy viděno" },
+      "device_in_bytes": { "name": "Staženo" },
+      "device_out_bytes": { "name": "Odesláno" }
+    },
+    "binary_sensor": {
+      "running": { "name": "Spuštěno" },
+      "folder_error": { "name": "Chyba" },
+      "folder_syncing": { "name": "Synchronizace" },
+      "folder_paused": { "name": "Pozastaveno" },
+      "device_connected": { "name": "Připojeno" },
+      "device_paused": { "name": "Pozastaveno" }
+    },
+    "button": {
+      "scan_all": { "name": "Skenovat všechny složky" },
+      "folder_scan": { "name": "Skenovat" },
+      "folder_pause": { "name": "Pozastavit" },
+      "folder_resume": { "name": "Obnovit" },
+      "device_pause": { "name": "Pozastavit" },
+      "device_resume": { "name": "Obnovit" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Možnosti Syncthing Extended",
+        "data": { "scan_interval": "Interval aktualizace (sekundy)" }
+      }
+    }
+  }
+}

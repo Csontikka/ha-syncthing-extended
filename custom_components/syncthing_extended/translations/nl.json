@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Verbinden met Syncthing",
+        "description": "Voer de verbindingsgegevens voor Syncthing in.\nVind uw API-sleutel in: Syncthing UI > Acties > Instellingen > API-sleutel",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "HTTPS (SSL) gebruiken",
+          "verify_ssl": "SSL-certificaat verifiëren",
+          "scan_interval": "Verversingsinterval (seconden)"
+        },
+        "data_description": {
+          "host": "IP-adres of hostnaam van de Syncthing-instantie",
+          "port": "Standaard: 8384",
+          "api_key": "Te vinden in de Syncthing UI onder Acties > Instellingen",
+          "scan_interval": "Hoe vaak op updates te controleren (10–300 seconden)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Syncthing opnieuw authenticeren",
+        "description": "Uw Syncthing API-sleutel is niet meer geldig. Voer een nieuwe sleutel in.",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kan geen verbinding maken met Syncthing. Controleer host en poort.",
+      "invalid_auth": "Ongeldige API-sleutel.",
+      "ssl_error": "SSL-certificaatverificatie mislukt. Schakel 'SSL-certificaat verifiëren' uit als u een zelfondertekend certificaat gebruikt.",
+      "unknown": "Er is een onverwachte fout opgetreden."
+    },
+    "abort": {
+      "already_configured": "Deze Syncthing-instantie is al geconfigureerd."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "Versie" },
+      "uptime": { "name": "Uptime" },
+      "my_id": { "name": "Apparaat-ID" },
+      "total_in_bytes": { "name": "Totaal gedownload" },
+      "total_out_bytes": { "name": "Totaal geüpload" },
+      "folder_state": { "name": "Status" },
+      "folder_completion": { "name": "Voortgang" },
+      "folder_need_bytes": { "name": "Benodigde bytes" },
+      "folder_need_files": { "name": "Benodigde bestanden" },
+      "folder_global_bytes": { "name": "Totale grootte" },
+      "folder_global_files": { "name": "Totaal bestanden" },
+      "folder_in_sync_bytes": { "name": "Gesynchroniseerde grootte" },
+      "folder_in_sync_files": { "name": "Gesynchroniseerde bestanden" },
+      "folder_local_bytes": { "name": "Lokale grootte" },
+      "folder_local_files": { "name": "Lokale bestanden" },
+      "folder_pull_errors": { "name": "Downloadfouten" },
+      "folder_last_scan": { "name": "Laatste scan" },
+      "folder_last_file": { "name": "Laatst gesynchroniseerd bestand" },
+      "device_connection_type": { "name": "Verbindingstype" },
+      "device_address": { "name": "Adres" },
+      "device_client_version": { "name": "Clientversie" },
+      "device_last_seen": { "name": "Laatst gezien" },
+      "device_in_bytes": { "name": "Gedownload" },
+      "device_out_bytes": { "name": "Geüpload" }
+    },
+    "binary_sensor": {
+      "running": { "name": "Actief" },
+      "folder_error": { "name": "Fout" },
+      "folder_syncing": { "name": "Synchroniseren" },
+      "folder_paused": { "name": "Gepauzeerd" },
+      "device_connected": { "name": "Verbonden" },
+      "device_paused": { "name": "Gepauzeerd" }
+    },
+    "button": {
+      "scan_all": { "name": "Alle mappen scannen" },
+      "folder_scan": { "name": "Scannen" },
+      "folder_pause": { "name": "Pauzeren" },
+      "folder_resume": { "name": "Hervatten" },
+      "device_pause": { "name": "Pauzeren" },
+      "device_resume": { "name": "Hervatten" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Syncthing Extended opties",
+        "data": { "scan_interval": "Verversingsinterval (seconden)" }
+      }
+    }
+  }
+}

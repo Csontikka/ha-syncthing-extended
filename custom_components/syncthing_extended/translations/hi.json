@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Syncthing से कनेक्ट करें",
+        "description": "अपने Syncthing कनेक्शन विवरण दर्ज करें।\nAPI कुंजी यहाँ खोजें: Syncthing UI > Actions > Settings > API Key",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "HTTPS (SSL) उपयोग करें",
+          "verify_ssl": "SSL प्रमाणपत्र सत्यापित करें",
+          "scan_interval": "अपडेट अंतराल (सेकंड)"
+        },
+        "data_description": {
+          "host": "Syncthing इंस्टेंस का IP पता या होस्टनाम",
+          "port": "डिफ़ॉल्ट: 8384",
+          "api_key": "Syncthing UI में Actions > Settings के अंतर्गत मिलेगी",
+          "scan_interval": "अपडेट के लिए कितनी बार जांच करें (10-300 सेकंड)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Syncthing पुनः प्रमाणित करें",
+        "description": "आपकी Syncthing API कुंजी अब मान्य नहीं है। कृपया नई कुंजी दर्ज करें।",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Syncthing से कनेक्ट नहीं हो सका। होस्ट और पोर्ट जांचें।",
+      "invalid_auth": "अमान्य API कुंजी।",
+      "ssl_error": "SSL प्रमाणपत्र सत्यापन विफल। यदि आप स्व-हस्ताक्षरित प्रमाणपत्र उपयोग कर रहे हैं तो 'SSL प्रमाणपत्र सत्यापित करें' को अक्षम करें।",
+      "unknown": "अप्रत्याशित त्रुटि हुई।"
+    },
+    "abort": {
+      "already_configured": "यह Syncthing इंस्टेंस पहले से कॉन्फ़िगर किया गया है।"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "संस्करण" },
+      "uptime": { "name": "अपटाइम" },
+      "my_id": { "name": "डिवाइस ID" },
+      "total_in_bytes": { "name": "कुल डाउनलोड" },
+      "total_out_bytes": { "name": "कुल अपलोड" },
+      "folder_state": { "name": "स्थिति" },
+      "folder_completion": { "name": "पूर्णता" },
+      "folder_need_bytes": { "name": "आवश्यक बाइट्स" },
+      "folder_need_files": { "name": "आवश्यक फ़ाइलें" },
+      "folder_global_bytes": { "name": "कुल आकार" },
+      "folder_global_files": { "name": "कुल फ़ाइलें" },
+      "folder_in_sync_bytes": { "name": "सिंक्ड आकार" },
+      "folder_in_sync_files": { "name": "सिंक्ड फ़ाइलें" },
+      "folder_local_bytes": { "name": "स्थानीय आकार" },
+      "folder_local_files": { "name": "स्थानीय फ़ाइलें" },
+      "folder_pull_errors": { "name": "पुल त्रुटियाँ" },
+      "folder_last_scan": { "name": "अंतिम स्कैन" },
+      "folder_last_file": { "name": "अंतिम सिंक्ड फ़ाइल" },
+      "device_connection_type": { "name": "कनेक्शन प्रकार" },
+      "device_address": { "name": "पता" },
+      "device_client_version": { "name": "क्लाइंट संस्करण" },
+      "device_last_seen": { "name": "अंतिम बार देखा गया" },
+      "device_in_bytes": { "name": "डाउनलोड किया गया" },
+      "device_out_bytes": { "name": "अपलोड किया गया" }
+    },
+    "binary_sensor": {
+      "running": { "name": "चल रहा है" },
+      "folder_error": { "name": "त्रुटि" },
+      "folder_syncing": { "name": "सिंक हो रहा है" },
+      "folder_paused": { "name": "रुका हुआ" },
+      "device_connected": { "name": "कनेक्टेड" },
+      "device_paused": { "name": "रुका हुआ" }
+    },
+    "button": {
+      "scan_all": { "name": "सभी फ़ोल्डर स्कैन करें" },
+      "folder_scan": { "name": "स्कैन करें" },
+      "folder_pause": { "name": "रोकें" },
+      "folder_resume": { "name": "पुनः शुरू करें" },
+      "device_pause": { "name": "रोकें" },
+      "device_resume": { "name": "पुनः शुरू करें" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Syncthing Extended विकल्प",
+        "data": { "scan_interval": "अपडेट अंतराल (सेकंड)" }
+      }
+    }
+  }
+}

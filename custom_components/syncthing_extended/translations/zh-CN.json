@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "连接到 Syncthing",
+        "description": "请输入 Syncthing 的连接信息。\n在以下位置找到 API 密钥：Syncthing 界面 > 操作 > 设置 > API 密钥",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "使用 HTTPS（SSL）",
+          "verify_ssl": "验证 SSL 证书",
+          "scan_interval": "更新间隔（秒）"
+        },
+        "data_description": {
+          "host": "Syncthing 实例的 IP 地址或主机名",
+          "port": "默认：8384",
+          "api_key": "在 Syncthing 界面的「操作 > 设置」中找到",
+          "scan_interval": "检查更新的频率（10–300 秒）"
+        }
+      },
+      "reauth_confirm": {
+        "title": "重新验证 Syncthing",
+        "description": "您的 Syncthing API 密钥已失效，请输入新密钥。",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "无法连接到 Syncthing，请检查主机和端口。",
+      "invalid_auth": "无效的 API 密钥。",
+      "ssl_error": "SSL 证书验证失败。如果使用自签名证书，请禁用「验证 SSL 证书」。",
+      "unknown": "发生了意外错误。"
+    },
+    "abort": {
+      "already_configured": "此 Syncthing 实例已配置。"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "版本" },
+      "uptime": { "name": "运行时间" },
+      "my_id": { "name": "设备 ID" },
+      "total_in_bytes": { "name": "总下载量" },
+      "total_out_bytes": { "name": "总上传量" },
+      "folder_state": { "name": "状态" },
+      "folder_completion": { "name": "完成度" },
+      "folder_need_bytes": { "name": "所需字节" },
+      "folder_need_files": { "name": "所需文件" },
+      "folder_global_bytes": { "name": "总大小" },
+      "folder_global_files": { "name": "总文件数" },
+      "folder_in_sync_bytes": { "name": "已同步大小" },
+      "folder_in_sync_files": { "name": "已同步文件" },
+      "folder_local_bytes": { "name": "本地大小" },
+      "folder_local_files": { "name": "本地文件" },
+      "folder_pull_errors": { "name": "拉取错误" },
+      "folder_last_scan": { "name": "上次扫描" },
+      "folder_last_file": { "name": "最后同步文件" },
+      "device_connection_type": { "name": "连接类型" },
+      "device_address": { "name": "地址" },
+      "device_client_version": { "name": "客户端版本" },
+      "device_last_seen": { "name": "最后在线" },
+      "device_in_bytes": { "name": "已下载" },
+      "device_out_bytes": { "name": "已上传" }
+    },
+    "binary_sensor": {
+      "running": { "name": "运行中" },
+      "folder_error": { "name": "错误" },
+      "folder_syncing": { "name": "同步中" },
+      "folder_paused": { "name": "已暂停" },
+      "device_connected": { "name": "已连接" },
+      "device_paused": { "name": "已暂停" }
+    },
+    "button": {
+      "scan_all": { "name": "扫描所有文件夹" },
+      "folder_scan": { "name": "扫描" },
+      "folder_pause": { "name": "暂停" },
+      "folder_resume": { "name": "恢复" },
+      "device_pause": { "name": "暂停" },
+      "device_resume": { "name": "恢复" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Syncthing Extended 选项",
+        "data": { "scan_interval": "更新间隔（秒）" }
+      }
+    }
+  }
+}

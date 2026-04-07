@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Koble til Syncthing",
+        "description": "Skriv inn tilkoblingsdetaljer for Syncthing.\nFinn API-nøkkelen din i: Syncthing UI > Handlinger > Innstillinger > API-nøkkel",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "Bruk HTTPS (SSL)",
+          "verify_ssl": "Verifiser SSL-sertifikat",
+          "scan_interval": "Oppdateringsintervall (sekunder)"
+        },
+        "data_description": {
+          "host": "IP-adresse eller vertsnavn for Syncthing-instansen",
+          "port": "Standard: 8384",
+          "api_key": "Finnes i Syncthing UI under Handlinger > Innstillinger",
+          "scan_interval": "Hvor ofte det skal sjekkes for oppdateringer (10–300 sekunder)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-autentiser Syncthing",
+        "description": "API-nøkkelen for Syncthing er ikke lenger gyldig. Skriv inn en ny.",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Kan ikke koble til Syncthing. Sjekk vert og port.",
+      "invalid_auth": "Ugyldig API-nøkkel.",
+      "ssl_error": "SSL-sertifikatverifisering mislyktes. Deaktiver 'Verifiser SSL-sertifikat' hvis du bruker et selvsignert sertifikat.",
+      "unknown": "En uventet feil oppstod."
+    },
+    "abort": {
+      "already_configured": "Denne Syncthing-instansen er allerede konfigurert."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "Versjon" },
+      "uptime": { "name": "Driftstid" },
+      "my_id": { "name": "Enhets-ID" },
+      "total_in_bytes": { "name": "Totalt nedlastet" },
+      "total_out_bytes": { "name": "Totalt opplastet" },
+      "folder_state": { "name": "Tilstand" },
+      "folder_completion": { "name": "Fullføring" },
+      "folder_need_bytes": { "name": "Nødvendige bytes" },
+      "folder_need_files": { "name": "Nødvendige filer" },
+      "folder_global_bytes": { "name": "Total størrelse" },
+      "folder_global_files": { "name": "Totalt antall filer" },
+      "folder_in_sync_bytes": { "name": "Synkronisert størrelse" },
+      "folder_in_sync_files": { "name": "Synkroniserte filer" },
+      "folder_local_bytes": { "name": "Lokal størrelse" },
+      "folder_local_files": { "name": "Lokale filer" },
+      "folder_pull_errors": { "name": "Nedlastingsfeil" },
+      "folder_last_scan": { "name": "Siste skanning" },
+      "folder_last_file": { "name": "Sist synkroniserte fil" },
+      "device_connection_type": { "name": "Tilkoblingstype" },
+      "device_address": { "name": "Adresse" },
+      "device_client_version": { "name": "Klientversjon" },
+      "device_last_seen": { "name": "Sist sett" },
+      "device_in_bytes": { "name": "Nedlastet" },
+      "device_out_bytes": { "name": "Opplastet" }
+    },
+    "binary_sensor": {
+      "running": { "name": "Kjører" },
+      "folder_error": { "name": "Feil" },
+      "folder_syncing": { "name": "Synkroniserer" },
+      "folder_paused": { "name": "Satt på pause" },
+      "device_connected": { "name": "Tilkoblet" },
+      "device_paused": { "name": "Satt på pause" }
+    },
+    "button": {
+      "scan_all": { "name": "Skann alle mapper" },
+      "folder_scan": { "name": "Skann" },
+      "folder_pause": { "name": "Sett på pause" },
+      "folder_resume": { "name": "Fortsett" },
+      "device_pause": { "name": "Sett på pause" },
+      "device_resume": { "name": "Fortsett" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Syncthing Extended alternativer",
+        "data": { "scan_interval": "Oppdateringsintervall (sekunder)" }
+      }
+    }
+  }
+}

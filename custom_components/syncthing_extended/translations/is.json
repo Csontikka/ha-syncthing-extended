@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Tengjast Syncthing",
+        "description": "Sláðu inn tengingarlegar upplýsingar fyrir Syncthing.\nFinndu API-lykil þinn í: Syncthing UI > Aðgerðir > Stillingar > API-lykill",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "Nota HTTPS (SSL)",
+          "verify_ssl": "Staðfesta SSL-vottorð",
+          "scan_interval": "Uppfærslutímabil (sekúndur)"
+        },
+        "data_description": {
+          "host": "IP-tala eða hýsilnafn Syncthing-tilviks",
+          "port": "Sjálfgefið: 8384",
+          "api_key": "Finnst í Syncthing UI undir Aðgerðir > Stillingar",
+          "scan_interval": "Hversu oft á að sækja uppfærslur (10–300 sekúndur)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Endurvottun Syncthing",
+        "description": "API-lykill Syncthing er ekki lengur gildur. Sláðu inn nýjan lykil.",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Gat ekki tengst Syncthing. Athugaðu hýsil og port.",
+      "invalid_auth": "Ógildur API-lykill.",
+      "ssl_error": "SSL-vottorðsstaðfesting mistókst. Slökktu á 'Staðfesta SSL-vottorð' ef þú ert að nota sjálfundirritað vottorð.",
+      "unknown": "Óvænt villa kom upp."
+    },
+    "abort": {
+      "already_configured": "Þetta Syncthing-tilvik er þegar stillt."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "Útgáfa" },
+      "uptime": { "name": "Keyrslutími" },
+      "my_id": { "name": "Tæki-ID" },
+      "total_in_bytes": { "name": "Samtals niðurhal" },
+      "total_out_bytes": { "name": "Samtals upphleðsla" },
+      "folder_state": { "name": "Staða" },
+      "folder_completion": { "name": "Framvinda" },
+      "folder_need_bytes": { "name": "Bytes sem vantar" },
+      "folder_need_files": { "name": "Skrár sem vantar" },
+      "folder_global_bytes": { "name": "Heildarstærð" },
+      "folder_global_files": { "name": "Heildarfjöldi skráa" },
+      "folder_in_sync_bytes": { "name": "Samstillt stærð" },
+      "folder_in_sync_files": { "name": "Samstilltar skrár" },
+      "folder_local_bytes": { "name": "Staðbundin stærð" },
+      "folder_local_files": { "name": "Staðbundnar skrár" },
+      "folder_pull_errors": { "name": "Niðurhalsvillur" },
+      "folder_last_scan": { "name": "Síðasta skönnun" },
+      "folder_last_file": { "name": "Síðast samstillt skrá" },
+      "device_connection_type": { "name": "Tengingargerð" },
+      "device_address": { "name": "Netfang" },
+      "device_client_version": { "name": "Útgáfa biðlara" },
+      "device_last_seen": { "name": "Síðast séð" },
+      "device_in_bytes": { "name": "Niðurhal" },
+      "device_out_bytes": { "name": "Upphleðsla" }
+    },
+    "binary_sensor": {
+      "running": { "name": "Í gangi" },
+      "folder_error": { "name": "Villa" },
+      "folder_syncing": { "name": "Samstilling" },
+      "folder_paused": { "name": "Í bið" },
+      "device_connected": { "name": "Tengt" },
+      "device_paused": { "name": "Í bið" }
+    },
+    "button": {
+      "scan_all": { "name": "Skanna allar möppur" },
+      "folder_scan": { "name": "Skanna" },
+      "folder_pause": { "name": "Gera hlé" },
+      "folder_resume": { "name": "Halda áfram" },
+      "device_pause": { "name": "Gera hlé" },
+      "device_resume": { "name": "Halda áfram" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Valkostir Syncthing Extended",
+        "data": { "scan_interval": "Uppfærslutímabil (sekúndur)" }
+      }
+    }
+  }
+}

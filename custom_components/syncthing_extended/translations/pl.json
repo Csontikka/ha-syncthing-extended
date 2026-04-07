@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Połącz z Syncthing",
+        "description": "Wprowadź dane połączenia z Syncthing.\nKlucz API znajdziesz w: Interfejs Syncthing > Akcje > Ustawienia > Klucz API",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "Używaj HTTPS (SSL)",
+          "verify_ssl": "Weryfikuj certyfikat SSL",
+          "scan_interval": "Interwał aktualizacji (sekundy)"
+        },
+        "data_description": {
+          "host": "Adres IP lub nazwa hosta instancji Syncthing",
+          "port": "Domyślnie: 8384",
+          "api_key": "Dostępny w interfejsie Syncthing w sekcji Akcje > Ustawienia",
+          "scan_interval": "Jak często sprawdzać aktualizacje (10–300 sekund)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Ponowne uwierzytelnienie Syncthing",
+        "description": "Twój klucz API Syncthing jest już nieważny. Wprowadź nowy klucz.",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nie można połączyć się z Syncthing. Sprawdź host i port.",
+      "invalid_auth": "Nieprawidłowy klucz API.",
+      "ssl_error": "Weryfikacja certyfikatu SSL nie powiodła się. Wyłącz 'Weryfikuj certyfikat SSL', jeśli używasz certyfikatu z podpisem własnym.",
+      "unknown": "Wystąpił nieoczekiwany błąd."
+    },
+    "abort": {
+      "already_configured": "Ta instancja Syncthing jest już skonfigurowana."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "Wersja" },
+      "uptime": { "name": "Czas pracy" },
+      "my_id": { "name": "ID urządzenia" },
+      "total_in_bytes": { "name": "Łącznie pobrano" },
+      "total_out_bytes": { "name": "Łącznie wysłano" },
+      "folder_state": { "name": "Stan" },
+      "folder_completion": { "name": "Postęp" },
+      "folder_need_bytes": { "name": "Potrzebne bajty" },
+      "folder_need_files": { "name": "Potrzebne pliki" },
+      "folder_global_bytes": { "name": "Łączny rozmiar" },
+      "folder_global_files": { "name": "Łączna liczba plików" },
+      "folder_in_sync_bytes": { "name": "Zsynchronizowany rozmiar" },
+      "folder_in_sync_files": { "name": "Zsynchronizowane pliki" },
+      "folder_local_bytes": { "name": "Lokalny rozmiar" },
+      "folder_local_files": { "name": "Lokalne pliki" },
+      "folder_pull_errors": { "name": "Błędy pobierania" },
+      "folder_last_scan": { "name": "Ostatnie skanowanie" },
+      "folder_last_file": { "name": "Ostatnio zsynchronizowany plik" },
+      "device_connection_type": { "name": "Typ połączenia" },
+      "device_address": { "name": "Adres" },
+      "device_client_version": { "name": "Wersja klienta" },
+      "device_last_seen": { "name": "Ostatnio widziany" },
+      "device_in_bytes": { "name": "Pobrano" },
+      "device_out_bytes": { "name": "Wysłano" }
+    },
+    "binary_sensor": {
+      "running": { "name": "Działa" },
+      "folder_error": { "name": "Błąd" },
+      "folder_syncing": { "name": "Synchronizacja" },
+      "folder_paused": { "name": "Wstrzymany" },
+      "device_connected": { "name": "Połączony" },
+      "device_paused": { "name": "Wstrzymany" }
+    },
+    "button": {
+      "scan_all": { "name": "Skanuj wszystkie foldery" },
+      "folder_scan": { "name": "Skanuj" },
+      "folder_pause": { "name": "Wstrzymaj" },
+      "folder_resume": { "name": "Wznów" },
+      "device_pause": { "name": "Wstrzymaj" },
+      "device_resume": { "name": "Wznów" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opcje Syncthing Extended",
+        "data": { "scan_interval": "Interwał aktualizacji (sekundy)" }
+      }
+    }
+  }
+}

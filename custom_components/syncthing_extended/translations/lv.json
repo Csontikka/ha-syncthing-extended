@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Savienoties ar Syncthing",
+        "description": "Ievadiet Syncthing savienojuma informāciju.\nAPI atslēgu atrodiet: Syncthing UI > Darbības > Iestatījumi > API atslēga",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "Izmantot HTTPS (SSL)",
+          "verify_ssl": "Pārbaudīt SSL sertifikātu",
+          "scan_interval": "Atjaunināšanas intervāls (sekundes)"
+        },
+        "data_description": {
+          "host": "Syncthing instances IP adrese vai resursdatora nosaukums",
+          "port": "Noklusējums: 8384",
+          "api_key": "Atrodams Syncthing UI sadaļā Darbības > Iestatījumi",
+          "scan_interval": "Cik bieži pārbaudīt atjauninājumus (10–300 sekundes)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Atkārtota Syncthing autentifikācija",
+        "description": "Jūsu Syncthing API atslēga vairs nav derīga. Lūdzu, ievadiet jaunu.",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nevar izveidot savienojumu ar Syncthing. Pārbaudiet resursdatoru un portu.",
+      "invalid_auth": "Nederīga API atslēga.",
+      "ssl_error": "SSL sertifikāta pārbaude neizdevās. Atspējojiet 'Pārbaudīt SSL sertifikātu', ja izmantojat pašparakstītu sertifikātu.",
+      "unknown": "Radās neparedzēta kļūda."
+    },
+    "abort": {
+      "already_configured": "Šī Syncthing instance jau ir konfigurēta."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "Versija" },
+      "uptime": { "name": "Darbības laiks" },
+      "my_id": { "name": "Ierīces ID" },
+      "total_in_bytes": { "name": "Kopā lejupielādēts" },
+      "total_out_bytes": { "name": "Kopā augšupielādēts" },
+      "folder_state": { "name": "Stāvoklis" },
+      "folder_completion": { "name": "Izpilde" },
+      "folder_need_bytes": { "name": "Nepieciešamie baiti" },
+      "folder_need_files": { "name": "Nepieciešamie faili" },
+      "folder_global_bytes": { "name": "Kopējais izmērs" },
+      "folder_global_files": { "name": "Failu kopskaits" },
+      "folder_in_sync_bytes": { "name": "Sinhronizētais izmērs" },
+      "folder_in_sync_files": { "name": "Sinhronizētie faili" },
+      "folder_local_bytes": { "name": "Lokālais izmērs" },
+      "folder_local_files": { "name": "Lokālie faili" },
+      "folder_pull_errors": { "name": "Lejupielādes kļūdas" },
+      "folder_last_scan": { "name": "Pēdējā skenēšana" },
+      "folder_last_file": { "name": "Pēdējais sinhronizētais fails" },
+      "device_connection_type": { "name": "Savienojuma veids" },
+      "device_address": { "name": "Adrese" },
+      "device_client_version": { "name": "Klienta versija" },
+      "device_last_seen": { "name": "Pēdējo reizi redzēts" },
+      "device_in_bytes": { "name": "Lejupielādēts" },
+      "device_out_bytes": { "name": "Augšupielādēts" }
+    },
+    "binary_sensor": {
+      "running": { "name": "Darbojas" },
+      "folder_error": { "name": "Kļūda" },
+      "folder_syncing": { "name": "Sinhronizācija" },
+      "folder_paused": { "name": "Apturēts" },
+      "device_connected": { "name": "Savienots" },
+      "device_paused": { "name": "Apturēts" }
+    },
+    "button": {
+      "scan_all": { "name": "Skenēt visas mapes" },
+      "folder_scan": { "name": "Skenēt" },
+      "folder_pause": { "name": "Apturēt" },
+      "folder_resume": { "name": "Atsākt" },
+      "device_pause": { "name": "Apturēt" },
+      "device_resume": { "name": "Atsākt" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Syncthing Extended opcijas",
+        "data": { "scan_interval": "Atjaunināšanas intervāls (sekundes)" }
+      }
+    }
+  }
+}

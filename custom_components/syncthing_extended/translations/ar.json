@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "الاتصال بـ Syncthing",
+        "description": "أدخل تفاصيل اتصال Syncthing الخاصة بك.\nابحث عن مفتاح API في: واجهة Syncthing > الإجراءات > الإعدادات > مفتاح API",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "استخدام HTTPS (SSL)",
+          "verify_ssl": "التحقق من شهادة SSL",
+          "scan_interval": "فترة التحديث (بالثواني)"
+        },
+        "data_description": {
+          "host": "عنوان IP أو اسم المضيف لنسخة Syncthing",
+          "port": "الافتراضي: 8384",
+          "api_key": "يوجد في واجهة Syncthing ضمن الإجراءات > الإعدادات",
+          "scan_interval": "عدد مرات الاستعلام عن التحديثات (10-300 ثانية)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "إعادة مصادقة Syncthing",
+        "description": "مفتاح API الخاص بـ Syncthing لم يعد صالحاً. يرجى إدخال مفتاح جديد.",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "تعذّر الاتصال بـ Syncthing. تحقق من المضيف والمنفذ.",
+      "invalid_auth": "مفتاح API غير صالح.",
+      "ssl_error": "فشل التحقق من شهادة SSL. قم بتعطيل 'التحقق من شهادة SSL' إذا كنت تستخدم شهادة موقّعة ذاتياً.",
+      "unknown": "حدث خطأ غير متوقع."
+    },
+    "abort": {
+      "already_configured": "نسخة Syncthing هذه مُهيّأة بالفعل."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "الإصدار" },
+      "uptime": { "name": "وقت التشغيل" },
+      "my_id": { "name": "معرّف الجهاز" },
+      "total_in_bytes": { "name": "إجمالي التنزيل" },
+      "total_out_bytes": { "name": "إجمالي الرفع" },
+      "folder_state": { "name": "الحالة" },
+      "folder_completion": { "name": "الاكتمال" },
+      "folder_need_bytes": { "name": "البايتات المطلوبة" },
+      "folder_need_files": { "name": "الملفات المطلوبة" },
+      "folder_global_bytes": { "name": "الحجم الإجمالي" },
+      "folder_global_files": { "name": "إجمالي الملفات" },
+      "folder_in_sync_bytes": { "name": "حجم المتزامن" },
+      "folder_in_sync_files": { "name": "الملفات المتزامنة" },
+      "folder_local_bytes": { "name": "الحجم المحلي" },
+      "folder_local_files": { "name": "الملفات المحلية" },
+      "folder_pull_errors": { "name": "أخطاء السحب" },
+      "folder_last_scan": { "name": "آخر فحص" },
+      "folder_last_file": { "name": "آخر ملف متزامن" },
+      "device_connection_type": { "name": "نوع الاتصال" },
+      "device_address": { "name": "العنوان" },
+      "device_client_version": { "name": "إصدار العميل" },
+      "device_last_seen": { "name": "آخر ظهور" },
+      "device_in_bytes": { "name": "المُنزَّل" },
+      "device_out_bytes": { "name": "المُرفَوع" }
+    },
+    "binary_sensor": {
+      "running": { "name": "يعمل" },
+      "folder_error": { "name": "خطأ" },
+      "folder_syncing": { "name": "جارٍ المزامنة" },
+      "folder_paused": { "name": "متوقف مؤقتاً" },
+      "device_connected": { "name": "متصل" },
+      "device_paused": { "name": "متوقف مؤقتاً" }
+    },
+    "button": {
+      "scan_all": { "name": "فحص جميع المجلدات" },
+      "folder_scan": { "name": "فحص" },
+      "folder_pause": { "name": "إيقاف مؤقت" },
+      "folder_resume": { "name": "استئناف" },
+      "device_pause": { "name": "إيقاف مؤقت" },
+      "device_resume": { "name": "استئناف" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "خيارات Syncthing Extended",
+        "data": { "scan_interval": "فترة التحديث (بالثواني)" }
+      }
+    }
+  }
+}

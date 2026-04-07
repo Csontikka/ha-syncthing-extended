@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Syncthing に接続",
+        "description": "Syncthing の接続情報を入力してください。\nAPI キーは Syncthing UI > アクション > 設定 > API キー から確認できます。",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "HTTPS (SSL) を使用する",
+          "verify_ssl": "SSL 証明書を検証する",
+          "scan_interval": "更新間隔（秒）"
+        },
+        "data_description": {
+          "host": "Syncthing インスタンスの IP アドレスまたはホスト名",
+          "port": "デフォルト: 8384",
+          "api_key": "Syncthing UI の「アクション > 設定」で確認できます",
+          "scan_interval": "更新を確認する頻度（10〜300 秒）"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Syncthing の再認証",
+        "description": "Syncthing の API キーが無効になりました。新しいキーを入力してください。",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Syncthing に接続できません。ホストとポートを確認してください。",
+      "invalid_auth": "API キーが無効です。",
+      "ssl_error": "SSL 証明書の検証に失敗しました。自己署名証明書を使用している場合は「SSL 証明書を検証する」を無効にしてください。",
+      "unknown": "予期しないエラーが発生しました。"
+    },
+    "abort": {
+      "already_configured": "この Syncthing インスタンスはすでに設定されています。"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "バージョン" },
+      "uptime": { "name": "稼働時間" },
+      "my_id": { "name": "デバイス ID" },
+      "total_in_bytes": { "name": "合計ダウンロード" },
+      "total_out_bytes": { "name": "合計アップロード" },
+      "folder_state": { "name": "状態" },
+      "folder_completion": { "name": "完了度" },
+      "folder_need_bytes": { "name": "必要なバイト数" },
+      "folder_need_files": { "name": "必要なファイル数" },
+      "folder_global_bytes": { "name": "合計サイズ" },
+      "folder_global_files": { "name": "合計ファイル数" },
+      "folder_in_sync_bytes": { "name": "同期済みサイズ" },
+      "folder_in_sync_files": { "name": "同期済みファイル数" },
+      "folder_local_bytes": { "name": "ローカルサイズ" },
+      "folder_local_files": { "name": "ローカルファイル数" },
+      "folder_pull_errors": { "name": "プルエラー" },
+      "folder_last_scan": { "name": "最終スキャン" },
+      "folder_last_file": { "name": "最後に同期したファイル" },
+      "device_connection_type": { "name": "接続タイプ" },
+      "device_address": { "name": "アドレス" },
+      "device_client_version": { "name": "クライアントバージョン" },
+      "device_last_seen": { "name": "最終確認" },
+      "device_in_bytes": { "name": "ダウンロード" },
+      "device_out_bytes": { "name": "アップロード" }
+    },
+    "binary_sensor": {
+      "running": { "name": "実行中" },
+      "folder_error": { "name": "エラー" },
+      "folder_syncing": { "name": "同期中" },
+      "folder_paused": { "name": "一時停止中" },
+      "device_connected": { "name": "接続済み" },
+      "device_paused": { "name": "一時停止中" }
+    },
+    "button": {
+      "scan_all": { "name": "すべてのフォルダをスキャン" },
+      "folder_scan": { "name": "スキャン" },
+      "folder_pause": { "name": "一時停止" },
+      "folder_resume": { "name": "再開" },
+      "device_pause": { "name": "一時停止" },
+      "device_resume": { "name": "再開" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Syncthing Extended オプション",
+        "data": { "scan_interval": "更新間隔（秒）" }
+      }
+    }
+  }
+}

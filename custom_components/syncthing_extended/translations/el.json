@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Σύνδεση στο Syncthing",
+        "description": "Εισαγάγετε τα στοιχεία σύνδεσης του Syncthing.\nΒρείτε το κλειδί API στο: Syncthing UI > Ενέργειες > Ρυθμίσεις > Κλειδί API",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "Χρήση HTTPS (SSL)",
+          "verify_ssl": "Επαλήθευση πιστοποιητικού SSL",
+          "scan_interval": "Διάστημα ενημέρωσης (δευτερόλεπτα)"
+        },
+        "data_description": {
+          "host": "Διεύθυνση IP ή όνομα κεντρικού υπολογιστή της παρουσίας Syncthing",
+          "port": "Προεπιλογή: 8384",
+          "api_key": "Βρίσκεται στο Syncthing UI κάτω από Ενέργειες > Ρυθμίσεις",
+          "scan_interval": "Πόσο συχνά γίνεται έλεγχος για ενημερώσεις (10–300 δευτερόλεπτα)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Επανέλεγχος ταυτότητας Syncthing",
+        "description": "Το κλειδί API του Syncthing δεν είναι πλέον έγκυρο. Εισαγάγετε ένα νέο.",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Αδυναμία σύνδεσης στο Syncthing. Ελέγξτε το host και το port.",
+      "invalid_auth": "Μη έγκυρο κλειδί API.",
+      "ssl_error": "Αποτυχία επαλήθευσης πιστοποιητικού SSL. Απενεργοποιήστε το 'Επαλήθευση πιστοποιητικού SSL' εάν χρησιμοποιείτε αυτο-υπογεγραμμένο πιστοποιητικό.",
+      "unknown": "Παρουσιάστηκε απροσδόκητο σφάλμα."
+    },
+    "abort": {
+      "already_configured": "Αυτή η παρουσία Syncthing έχει ήδη διαμορφωθεί."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "Έκδοση" },
+      "uptime": { "name": "Χρόνος λειτουργίας" },
+      "my_id": { "name": "ID συσκευής" },
+      "total_in_bytes": { "name": "Συνολικές λήψεις" },
+      "total_out_bytes": { "name": "Συνολικές αποστολές" },
+      "folder_state": { "name": "Κατάσταση" },
+      "folder_completion": { "name": "Ολοκλήρωση" },
+      "folder_need_bytes": { "name": "Bytes που απαιτούνται" },
+      "folder_need_files": { "name": "Αρχεία που απαιτούνται" },
+      "folder_global_bytes": { "name": "Συνολικό μέγεθος" },
+      "folder_global_files": { "name": "Συνολικά αρχεία" },
+      "folder_in_sync_bytes": { "name": "Συγχρονισμένο μέγεθος" },
+      "folder_in_sync_files": { "name": "Συγχρονισμένα αρχεία" },
+      "folder_local_bytes": { "name": "Τοπικό μέγεθος" },
+      "folder_local_files": { "name": "Τοπικά αρχεία" },
+      "folder_pull_errors": { "name": "Σφάλματα λήψης" },
+      "folder_last_scan": { "name": "Τελευταία σάρωση" },
+      "folder_last_file": { "name": "Τελευταίο συγχρονισμένο αρχείο" },
+      "device_connection_type": { "name": "Τύπος σύνδεσης" },
+      "device_address": { "name": "Διεύθυνση" },
+      "device_client_version": { "name": "Έκδοση πελάτη" },
+      "device_last_seen": { "name": "Τελευταία εμφάνιση" },
+      "device_in_bytes": { "name": "Ληφθέντα" },
+      "device_out_bytes": { "name": "Αποσταλθέντα" }
+    },
+    "binary_sensor": {
+      "running": { "name": "Σε λειτουργία" },
+      "folder_error": { "name": "Σφάλμα" },
+      "folder_syncing": { "name": "Συγχρονισμός" },
+      "folder_paused": { "name": "Σε παύση" },
+      "device_connected": { "name": "Συνδεδεμένο" },
+      "device_paused": { "name": "Σε παύση" }
+    },
+    "button": {
+      "scan_all": { "name": "Σάρωση όλων των φακέλων" },
+      "folder_scan": { "name": "Σάρωση" },
+      "folder_pause": { "name": "Παύση" },
+      "folder_resume": { "name": "Συνέχιση" },
+      "device_pause": { "name": "Παύση" },
+      "device_resume": { "name": "Συνέχιση" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Επιλογές Syncthing Extended",
+        "data": { "scan_interval": "Διάστημα ενημέρωσης (δευτερόλεπτα)" }
+      }
+    }
+  }
+}

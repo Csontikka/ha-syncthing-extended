@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Підключення до Syncthing",
+        "description": "Введіть дані для підключення до Syncthing.\nЗнайдіть ключ API у: Інтерфейс Syncthing > Дії > Налаштування > Ключ API",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "Використовувати HTTPS (SSL)",
+          "verify_ssl": "Перевіряти SSL-сертифікат",
+          "scan_interval": "Інтервал оновлення (секунди)"
+        },
+        "data_description": {
+          "host": "IP-адреса або ім'я хоста екземпляра Syncthing",
+          "port": "За замовчуванням: 8384",
+          "api_key": "Знаходиться в інтерфейсі Syncthing у розділі Дії > Налаштування",
+          "scan_interval": "Як часто перевіряти наявність оновлень (10–300 секунд)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Повторна автентифікація Syncthing",
+        "description": "Ключ API Syncthing більше не дійсний. Будь ласка, введіть новий ключ.",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Не вдається підключитися до Syncthing. Перевірте хост і порт.",
+      "invalid_auth": "Невірний ключ API.",
+      "ssl_error": "Помилка перевірки SSL-сертифіката. Вимкніть 'Перевіряти SSL-сертифікат', якщо використовуєте самопідписаний сертифікат.",
+      "unknown": "Сталася непередбачена помилка."
+    },
+    "abort": {
+      "already_configured": "Цей екземпляр Syncthing вже налаштовано."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "Версія" },
+      "uptime": { "name": "Час роботи" },
+      "my_id": { "name": "ID пристрою" },
+      "total_in_bytes": { "name": "Всього завантажено" },
+      "total_out_bytes": { "name": "Всього відправлено" },
+      "folder_state": { "name": "Стан" },
+      "folder_completion": { "name": "Завершеність" },
+      "folder_need_bytes": { "name": "Потрібно байт" },
+      "folder_need_files": { "name": "Потрібно файлів" },
+      "folder_global_bytes": { "name": "Загальний розмір" },
+      "folder_global_files": { "name": "Усього файлів" },
+      "folder_in_sync_bytes": { "name": "Синхронізовано (байт)" },
+      "folder_in_sync_files": { "name": "Синхронізованих файлів" },
+      "folder_local_bytes": { "name": "Локальний розмір" },
+      "folder_local_files": { "name": "Локальних файлів" },
+      "folder_pull_errors": { "name": "Помилки завантаження" },
+      "folder_last_scan": { "name": "Останнє сканування" },
+      "folder_last_file": { "name": "Останній синхронізований файл" },
+      "device_connection_type": { "name": "Тип підключення" },
+      "device_address": { "name": "Адреса" },
+      "device_client_version": { "name": "Версія клієнта" },
+      "device_last_seen": { "name": "Останній раз в мережі" },
+      "device_in_bytes": { "name": "Завантажено" },
+      "device_out_bytes": { "name": "Відправлено" }
+    },
+    "binary_sensor": {
+      "running": { "name": "Працює" },
+      "folder_error": { "name": "Помилка" },
+      "folder_syncing": { "name": "Синхронізація" },
+      "folder_paused": { "name": "Призупинено" },
+      "device_connected": { "name": "Підключено" },
+      "device_paused": { "name": "Призупинено" }
+    },
+    "button": {
+      "scan_all": { "name": "Сканувати всі папки" },
+      "folder_scan": { "name": "Сканувати" },
+      "folder_pause": { "name": "Призупинити" },
+      "folder_resume": { "name": "Відновити" },
+      "device_pause": { "name": "Призупинити" },
+      "device_resume": { "name": "Відновити" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Параметри Syncthing Extended",
+        "data": { "scan_interval": "Інтервал оновлення (секунди)" }
+      }
+    }
+  }
+}

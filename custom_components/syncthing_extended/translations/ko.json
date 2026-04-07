@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Syncthing 연결",
+        "description": "Syncthing 연결 정보를 입력하세요.\nAPI 키는 Syncthing UI > 작업 > 설정 > API 키에서 확인할 수 있습니다.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "HTTPS (SSL) 사용",
+          "verify_ssl": "SSL 인증서 확인",
+          "scan_interval": "업데이트 간격 (초)"
+        },
+        "data_description": {
+          "host": "Syncthing 인스턴스의 IP 주소 또는 호스트명",
+          "port": "기본값: 8384",
+          "api_key": "Syncthing UI의 작업 > 설정에서 확인할 수 있습니다",
+          "scan_interval": "업데이트를 확인하는 빈도 (10~300 초)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Syncthing 재인증",
+        "description": "Syncthing API 키가 더 이상 유효하지 않습니다. 새 키를 입력해 주세요.",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Syncthing에 연결할 수 없습니다. 호스트와 포트를 확인하세요.",
+      "invalid_auth": "유효하지 않은 API 키입니다.",
+      "ssl_error": "SSL 인증서 확인에 실패했습니다. 자체 서명된 인증서를 사용하는 경우 'SSL 인증서 확인'을 비활성화하세요.",
+      "unknown": "예기치 않은 오류가 발생했습니다."
+    },
+    "abort": {
+      "already_configured": "이 Syncthing 인스턴스는 이미 구성되어 있습니다."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "버전" },
+      "uptime": { "name": "가동 시간" },
+      "my_id": { "name": "장치 ID" },
+      "total_in_bytes": { "name": "총 다운로드" },
+      "total_out_bytes": { "name": "총 업로드" },
+      "folder_state": { "name": "상태" },
+      "folder_completion": { "name": "완료도" },
+      "folder_need_bytes": { "name": "필요한 바이트" },
+      "folder_need_files": { "name": "필요한 파일" },
+      "folder_global_bytes": { "name": "전체 크기" },
+      "folder_global_files": { "name": "전체 파일 수" },
+      "folder_in_sync_bytes": { "name": "동기화된 크기" },
+      "folder_in_sync_files": { "name": "동기화된 파일" },
+      "folder_local_bytes": { "name": "로컬 크기" },
+      "folder_local_files": { "name": "로컬 파일" },
+      "folder_pull_errors": { "name": "풀 오류" },
+      "folder_last_scan": { "name": "마지막 검사" },
+      "folder_last_file": { "name": "마지막 동기화 파일" },
+      "device_connection_type": { "name": "연결 유형" },
+      "device_address": { "name": "주소" },
+      "device_client_version": { "name": "클라이언트 버전" },
+      "device_last_seen": { "name": "마지막 확인" },
+      "device_in_bytes": { "name": "다운로드" },
+      "device_out_bytes": { "name": "업로드" }
+    },
+    "binary_sensor": {
+      "running": { "name": "실행 중" },
+      "folder_error": { "name": "오류" },
+      "folder_syncing": { "name": "동기화 중" },
+      "folder_paused": { "name": "일시 정지됨" },
+      "device_connected": { "name": "연결됨" },
+      "device_paused": { "name": "일시 정지됨" }
+    },
+    "button": {
+      "scan_all": { "name": "모든 폴더 검사" },
+      "folder_scan": { "name": "검사" },
+      "folder_pause": { "name": "일시 정지" },
+      "folder_resume": { "name": "재개" },
+      "device_pause": { "name": "일시 정지" },
+      "device_resume": { "name": "재개" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Syncthing Extended 옵션",
+        "data": { "scan_interval": "업데이트 간격 (초)" }
+      }
+    }
+  }
+}

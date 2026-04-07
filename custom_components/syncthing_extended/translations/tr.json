@@ -1,0 +1,90 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Syncthing'e Bağlan",
+        "description": "Syncthing bağlantı bilgilerini girin.\nAPI anahtarınızı şurada bulabilirsiniz: Syncthing UI > Eylemler > Ayarlar > API Anahtarı",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "api_key": "API Key",
+          "use_ssl": "HTTPS (SSL) kullan",
+          "verify_ssl": "SSL sertifikasını doğrula",
+          "scan_interval": "Güncelleme aralığı (saniye)"
+        },
+        "data_description": {
+          "host": "Syncthing örneğinin IP adresi veya ana bilgisayar adı",
+          "port": "Varsayılan: 8384",
+          "api_key": "Syncthing UI'da Eylemler > Ayarlar bölümünde bulunur",
+          "scan_interval": "Güncellemeleri ne sıklıkta kontrol edeceğiniz (10–300 saniye)"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Syncthing'i Yeniden Doğrula",
+        "description": "Syncthing API anahtarınız artık geçerli değil. Lütfen yeni bir anahtar girin.",
+        "data": { "api_key": "API Key" }
+      }
+    },
+    "error": {
+      "cannot_connect": "Syncthing'e bağlanılamıyor. Ana bilgisayar ve portu kontrol edin.",
+      "invalid_auth": "Geçersiz API anahtarı.",
+      "ssl_error": "SSL sertifikası doğrulaması başarısız oldu. Kendinden imzalı sertifika kullanıyorsanız 'SSL sertifikasını doğrula' seçeneğini devre dışı bırakın.",
+      "unknown": "Beklenmeyen bir hata oluştu."
+    },
+    "abort": {
+      "already_configured": "Bu Syncthing örneği zaten yapılandırılmış."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "version": { "name": "Sürüm" },
+      "uptime": { "name": "Çalışma süresi" },
+      "my_id": { "name": "Cihaz kimliği" },
+      "total_in_bytes": { "name": "Toplam indirilen" },
+      "total_out_bytes": { "name": "Toplam yüklenen" },
+      "folder_state": { "name": "Durum" },
+      "folder_completion": { "name": "Tamamlanma" },
+      "folder_need_bytes": { "name": "Gerekli baytlar" },
+      "folder_need_files": { "name": "Gerekli dosyalar" },
+      "folder_global_bytes": { "name": "Toplam boyut" },
+      "folder_global_files": { "name": "Toplam dosya sayısı" },
+      "folder_in_sync_bytes": { "name": "Senkronize boyut" },
+      "folder_in_sync_files": { "name": "Senkronize dosyalar" },
+      "folder_local_bytes": { "name": "Yerel boyut" },
+      "folder_local_files": { "name": "Yerel dosyalar" },
+      "folder_pull_errors": { "name": "Çekme hataları" },
+      "folder_last_scan": { "name": "Son tarama" },
+      "folder_last_file": { "name": "Son senkronize dosya" },
+      "device_connection_type": { "name": "Bağlantı türü" },
+      "device_address": { "name": "Adres" },
+      "device_client_version": { "name": "İstemci sürümü" },
+      "device_last_seen": { "name": "Son görülme" },
+      "device_in_bytes": { "name": "İndirilen" },
+      "device_out_bytes": { "name": "Yüklenen" }
+    },
+    "binary_sensor": {
+      "running": { "name": "Çalışıyor" },
+      "folder_error": { "name": "Hata" },
+      "folder_syncing": { "name": "Senkronize ediliyor" },
+      "folder_paused": { "name": "Duraklatıldı" },
+      "device_connected": { "name": "Bağlı" },
+      "device_paused": { "name": "Duraklatıldı" }
+    },
+    "button": {
+      "scan_all": { "name": "Tüm klasörleri tara" },
+      "folder_scan": { "name": "Tara" },
+      "folder_pause": { "name": "Duraklat" },
+      "folder_resume": { "name": "Devam et" },
+      "device_pause": { "name": "Duraklat" },
+      "device_resume": { "name": "Devam et" }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Syncthing Extended Seçenekleri",
+        "data": { "scan_interval": "Güncelleme aralığı (saniye)" }
+      }
+    }
+  }
+}
