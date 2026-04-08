@@ -64,7 +64,7 @@ This integration adds:
 
 After setup, the integration appears in Settings → Integrations:
 
-![Integration card](https://raw.githubusercontent.com/Csontikka/ha-syncthing-extended/master/images/integration_card.png)
+![Integration card](https://raw.githubusercontent.com/Csontikka/ha-syncthing-extended/master/images/integration_card_v015.png)
 
 ### Manual
 
