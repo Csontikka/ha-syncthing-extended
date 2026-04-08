@@ -195,17 +195,17 @@ automation:
 
 ## Performance & Database Tips
 
-This integration creates a large number of entities (sensors, binary sensors, buttons) per folder and device. A few tips to keep your database lean:
+This integration creates many entities per folder and device. If you notice increased database size, we recommend the following:
 
 ### Disable unused entities
 
-If you don't need certain sensors, disable them individually:
+We recommend disabling entities you don't actively use:
 **Settings → Devices & Services → Syncthing** → click the device → find the entity → toggle it off.
 Disabled entities are not polled and generate no history.
 
 ### Exclude from recorder
 
-High-frequency numeric sensors (traffic counters, uptime, bytes needed) can accumulate a lot of history. If you only care about the current state and not the history, exclude them from the recorder in `configuration.yaml`:
+High-frequency numeric sensors (traffic counters, uptime, bytes needed) can accumulate a lot of history. If you only need the current values and don't require historical data, we recommend excluding them from the recorder in `configuration.yaml`:
 
 ```yaml
 recorder:
