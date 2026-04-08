@@ -49,6 +49,7 @@ class SyncthingCoordinator(DataUpdateCoordinator[SyncthingData]):
 
     async def _async_update_data(self) -> SyncthingData:
         """Fetch all data from Syncthing API."""
+        _LOGGER.debug("Fetching Syncthing data from %s", self.api.base_url)
         try:
             version = await self.api.get_version()
             system_status = await self.api.get_system_status()
@@ -75,6 +76,15 @@ class SyncthingCoordinator(DataUpdateCoordinator[SyncthingData]):
                     _LOGGER.debug("Skipping completion for folder %s: %s", fid, err)
                     folder_completion[fid] = {}
 
+            remote_devices = [
+                d for d in config_devices
+                if d.get("deviceID") != system_status.get("myID")
+            ]
+            _LOGGER.debug(
+                "Update complete: %d folder(s), %d remote device(s)",
+                len(config_folders),
+                len(remote_devices),
+            )
             return SyncthingData(
                 version=version,
                 system_status=system_status,

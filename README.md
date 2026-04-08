@@ -192,6 +192,30 @@ automation:
       - service: syncthing.scan_all
 ```
 
+## Troubleshooting
+
+### Diagnostics Export
+
+Download the integration diagnostics file for bug reports — it includes integration state and the last 1000 debug log entries.
+
+1. Go to **Settings → Devices & Services**
+2. Find **Syncthing** → click the integration
+3. Click the **three-dot menu** → **Download diagnostics**
+4. Attach the `.json` file to your [GitHub issue](https://github.com/Csontikka/ha-syncthing/issues)
+
+### Debug Logs
+
+To see detailed logs in the HA log viewer, add to `configuration.yaml`:
+
+```yaml
+logger:
+  default: info
+  logs:
+    custom_components.syncthing: debug
+```
+
+This enables per-request API traces, coordinator update summaries, and button/service call tracking.
+
 ## Removal
 
 1. Go to **Settings → Devices & Services → Syncthing**

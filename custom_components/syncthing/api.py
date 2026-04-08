@@ -85,6 +85,7 @@ class SyncthingApi:
         headers = self._get_headers() if authenticated else {}
         ssl_context: bool | None = None if self._verify_ssl else False
 
+        _LOGGER.debug("→ %s %s (params=%s)", method, url, params)
         try:
             async with self._session.request(
                 method,
@@ -95,6 +96,7 @@ class SyncthingApi:
                 ssl=ssl_context,
                 timeout=aiohttp.ClientTimeout(total=10),
             ) as response:
+                _LOGGER.debug("← %s %s → HTTP %s", method, url, response.status)
                 if response.status in (401, 403):
                     raise SyncthingAuthError(
                         f"Authentication failed (HTTP {response.status})"

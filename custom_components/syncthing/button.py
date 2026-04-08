@@ -91,6 +91,7 @@ class SyncthingScanAllButton(CoordinatorEntity[SyncthingCoordinator], ButtonEnti
 
     async def async_press(self) -> None:
         """Trigger scan of all folders."""
+        _LOGGER.debug("Button pressed: scan_all")
         await self.coordinator.api.scan_all_folders()
         await self.coordinator.async_request_refresh()
 
@@ -121,6 +122,7 @@ class SyncthingFolderScanButton(CoordinatorEntity[SyncthingCoordinator], ButtonE
 
     async def async_press(self) -> None:
         """Trigger scan of this folder."""
+        _LOGGER.debug("Button pressed: scan_folder %s", self._folder_id)
         await self.coordinator.api.scan_folder(self._folder_id)
         await self.coordinator.async_request_refresh()
 
@@ -151,6 +153,7 @@ class SyncthingFolderPauseButton(CoordinatorEntity[SyncthingCoordinator], Button
 
     async def async_press(self) -> None:
         """Pause this folder."""
+        _LOGGER.debug("Button pressed: pause_folder %s", self._folder_id)
         await self.coordinator.api.pause_folder(self._folder_id)
         await self.coordinator.async_request_refresh()
 
@@ -181,6 +184,7 @@ class SyncthingFolderResumeButton(CoordinatorEntity[SyncthingCoordinator], Butto
 
     async def async_press(self) -> None:
         """Resume this folder."""
+        _LOGGER.debug("Button pressed: resume_folder %s", self._folder_id)
         await self.coordinator.api.resume_folder(self._folder_id)
         await self.coordinator.async_request_refresh()
 
@@ -211,6 +215,7 @@ class SyncthingDevicePauseButton(CoordinatorEntity[SyncthingCoordinator], Button
 
     async def async_press(self) -> None:
         """Pause this device."""
+        _LOGGER.debug("Button pressed: pause_device %s", self._device_id)
         await self.coordinator.api.pause_device(self._device_id)
         await self.coordinator.async_request_refresh()
 
@@ -241,5 +246,6 @@ class SyncthingDeviceResumeButton(CoordinatorEntity[SyncthingCoordinator], Butto
 
     async def async_press(self) -> None:
         """Resume this device."""
+        _LOGGER.debug("Button pressed: resume_device %s", self._device_id)
         await self.coordinator.api.resume_device(self._device_id)
         await self.coordinator.async_request_refresh()
