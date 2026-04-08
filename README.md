@@ -133,11 +133,11 @@ If your API key changes, Home Assistant will show a re-authentication prompt. Cl
 | Scan | Button | Trigger immediate rescan |
 | Pause | Button | Pause this folder |
 | Resume | Button | Resume this folder |
-| Total size ¹ | Sensor | Total folder size |
-| Total files ¹ | Sensor | Total file count |
-| Pull errors ¹ | Sensor | Number of pull errors |
-| Last scan ¹ | Sensor | Timestamp of last folder scan |
-| Last synced file ¹ | Sensor | Filename of last synced file |
+| Total size | Sensor | Total folder size |
+| Total files | Sensor | Total file count |
+| Pull errors | Sensor | Number of pull errors |
+| Last scan | Sensor | Timestamp of last folder scan |
+| Last synced file | Sensor | Filename of last synced file |
 
 ### Per device (sync partners)
 
@@ -149,12 +149,10 @@ If your API key changes, Home Assistant will show a re-authentication prompt. Cl
 | Uploaded | Sensor | Bytes sent to this device |
 | Pause | Button | Pause sync with this device |
 | Resume | Button | Resume sync with this device |
-| Connection type ¹ | Sensor | `tcp-client`, `relay-server`, `quic-client`, etc. |
-| Address ¹ | Sensor | Remote IP:port |
-| Client version ¹ | Sensor | Syncthing version on remote device |
-| Last seen ¹ | Sensor | Timestamp of last connection |
-
-*¹ Diagnostic entity — enabled by default, can be disabled in Settings → Entities*
+| Connection type | Sensor | `tcp-client`, `relay-server`, `quic-client`, etc. |
+| Address | Sensor | Remote IP:port |
+| Client version | Sensor | Syncthing version on remote device |
+| Last seen | Sensor | Timestamp of last connection |
 
 ## Services
 
