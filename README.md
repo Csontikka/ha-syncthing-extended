@@ -193,6 +193,17 @@ automation:
         to: "completed"
     action:
       - service: syncthing.scan_all
+
+  - alias: "Alert when device offline for 1 hour"
+    trigger:
+      - platform: state
+        entity_id: binary_sensor.syncthing_device_nas_connected
+        to: "off"
+        for: "01:00:00"
+    action:
+      - service: notify.mobile_app
+        data:
+          message: "Syncthing: NAS has been offline for 1 hour"
 ```
 
 ## Performance & Database Tips
