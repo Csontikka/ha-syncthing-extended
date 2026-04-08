@@ -1,4 +1,5 @@
 """Binary sensor platform for Syncthing."""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -89,9 +90,7 @@ FOLDER_BINARY_SENSORS: tuple[SyncthingFolderBinarySensorEntityDescription, ...] 
         key="error",
         translation_key="folder_error",
         device_class=BinarySensorDeviceClass.PROBLEM,
-        value_fn=lambda data, fid: (
-            _folder_status(data, fid).get("pullErrors", 0) > 0
-        ),
+        value_fn=lambda data, fid: _folder_status(data, fid).get("pullErrors", 0) > 0,
         attr_fn=lambda data, fid: {
             "pull_errors": _folder_status(data, fid).get("pullErrors"),
             "state": _folder_status(data, fid).get("state"),
@@ -101,9 +100,7 @@ FOLDER_BINARY_SENSORS: tuple[SyncthingFolderBinarySensorEntityDescription, ...] 
         key="syncing",
         translation_key="folder_syncing",
         device_class=BinarySensorDeviceClass.MOVING,
-        value_fn=lambda data, fid: (
-            _folder_status(data, fid).get("state") == "syncing"
-        ),
+        value_fn=lambda data, fid: _folder_status(data, fid).get("state") == "syncing",
     ),
     SyncthingFolderBinarySensorEntityDescription(
         key="paused",
@@ -127,7 +124,9 @@ DEVICE_BINARY_SENSORS: tuple[SyncthingDeviceBinarySensorEntityDescription, ...] 
         key="connected",
         translation_key="device_connected",
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
-        value_fn=lambda data, did: _device_connection(data, did).get("connected", False),
+        value_fn=lambda data, did: _device_connection(data, did).get(
+            "connected", False
+        ),
     ),
     SyncthingDeviceBinarySensorEntityDescription(
         key="paused",
@@ -205,7 +204,9 @@ class SyncthingSystemBinarySensor(
             "identifiers": {(DOMAIN, entry_id)},
             "name": "Syncthing",
             "manufacturer": "Syncthing Foundation",
-            "sw_version": coordinator.data.version.get("version") if coordinator.data else None,
+            "sw_version": coordinator.data.version.get("version")
+            if coordinator.data
+            else None,
         }
 
     @property
@@ -257,7 +258,9 @@ class SyncthingFolderBinarySensor(
     def extra_state_attributes(self) -> dict[str, Any] | None:
         """Return extra state attributes."""
         if self.entity_description.attr_fn:
-            return self.entity_description.attr_fn(self.coordinator.data, self._folder_id)
+            return self.entity_description.attr_fn(
+                self.coordinator.data, self._folder_id
+            )
         return None
 
 
@@ -297,5 +300,7 @@ class SyncthingDeviceBinarySensor(
     def extra_state_attributes(self) -> dict[str, Any] | None:
         """Return extra state attributes."""
         if self.entity_description.attr_fn:
-            return self.entity_description.attr_fn(self.coordinator.data, self._device_id)
+            return self.entity_description.attr_fn(
+                self.coordinator.data, self._device_id
+            )
         return None

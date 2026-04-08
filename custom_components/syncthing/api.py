@@ -1,4 +1,5 @@
 """Syncthing REST API client."""
+
 from __future__ import annotations
 
 import logging
@@ -156,9 +157,7 @@ class SyncthingApi:
 
     async def get_folder_status(self, folder_id: str) -> dict[str, Any]:
         """Get folder sync status (expensive call)."""
-        return await self._request(
-            "GET", API_DB_STATUS, params={"folder": folder_id}
-        )
+        return await self._request("GET", API_DB_STATUS, params={"folder": folder_id})
 
     async def get_folder_completion(
         self, folder_id: str, device_id: str | None = None
@@ -190,9 +189,7 @@ class SyncthingApi:
     async def scan_folder(self, folder_id: str) -> bool:
         """Trigger a folder rescan."""
         try:
-            await self._request(
-                "POST", API_DB_SCAN, params={"folder": folder_id}
-            )
+            await self._request("POST", API_DB_SCAN, params={"folder": folder_id})
             return True
         except SyncthingApiError as err:
             _LOGGER.error("Failed to scan folder %s: %s", folder_id, err)
@@ -229,7 +226,8 @@ class SyncthingApi:
         """Pause a folder."""
         try:
             await self._request(
-                "PATCH", f"/rest/config/folders/{folder_id}",
+                "PATCH",
+                f"/rest/config/folders/{folder_id}",
                 json_data={"paused": True},
             )
             return True
@@ -241,7 +239,8 @@ class SyncthingApi:
         """Resume a folder."""
         try:
             await self._request(
-                "PATCH", f"/rest/config/folders/{folder_id}",
+                "PATCH",
+                f"/rest/config/folders/{folder_id}",
                 json_data={"paused": False},
             )
             return True

@@ -1,4 +1,5 @@
 """Syncthing data coordinator."""
+
 from __future__ import annotations
 
 import logging
@@ -77,7 +78,8 @@ class SyncthingCoordinator(DataUpdateCoordinator[SyncthingData]):
                     folder_completion[fid] = {}
 
             remote_devices = [
-                d for d in config_devices
+                d
+                for d in config_devices
                 if d.get("deviceID") != system_status.get("myID")
             ]
             _LOGGER.debug(
@@ -98,6 +100,4 @@ class SyncthingCoordinator(DataUpdateCoordinator[SyncthingData]):
             )
 
         except SyncthingApiError as err:
-            raise UpdateFailed(
-                f"Error communicating with Syncthing: {err}"
-            ) from err
+            raise UpdateFailed(f"Error communicating with Syncthing: {err}") from err

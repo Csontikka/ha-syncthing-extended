@@ -1,4 +1,5 @@
 """Diagnostics support for Syncthing integration."""
+
 from __future__ import annotations
 
 from typing import Any
@@ -44,9 +45,7 @@ async def async_get_config_entry_diagnostics(
                 "deviceID": "**REDACTED**",
                 "paused": device.get("paused"),
                 "connection": async_redact_data(
-                    data.connections.get("connections", {}).get(
-                        device["deviceID"], {}
-                    ),
+                    data.connections.get("connections", {}).get(device["deviceID"], {}),
                     TO_REDACT,
                 ),
                 "stats": data.device_stats.get(device["deviceID"], {}),

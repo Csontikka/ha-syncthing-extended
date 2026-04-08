@@ -1,4 +1,5 @@
 """Syncthing integration for Home Assistant."""
+
 from __future__ import annotations
 
 import logging
@@ -34,9 +35,7 @@ CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 DEFAULT_PORT_INT = 8384
 
 
-async def _async_migrate_core_entry(
-    hass: HomeAssistant, entry: ConfigEntry
-) -> None:
+async def _async_migrate_core_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Migrate a core syncthing config entry to our format."""
     from urllib.parse import urlparse
 
@@ -57,6 +56,7 @@ async def _async_migrate_core_entry(
     }
     hass.config_entries.async_update_entry(entry, data=new_data)
     _LOGGER.info("Migrated core Syncthing config entry to extended format")
+
 
 type SyncthingConfigEntry = ConfigEntry[SyncthingCoordinator]
 
@@ -189,24 +189,34 @@ def _async_register_services(hass: HomeAssistant) -> None:
         await coordinator.async_request_refresh()
 
     hass.services.async_register(
-        DOMAIN, "scan_folder", handle_scan_folder,
+        DOMAIN,
+        "scan_folder",
+        handle_scan_folder,
         schema=vol.Schema({vol.Required("folder_id"): str}),
     )
     hass.services.async_register(DOMAIN, "scan_all", handle_scan_all)
     hass.services.async_register(
-        DOMAIN, "pause_folder", handle_pause_folder,
+        DOMAIN,
+        "pause_folder",
+        handle_pause_folder,
         schema=vol.Schema({vol.Required("folder_id"): str}),
     )
     hass.services.async_register(
-        DOMAIN, "resume_folder", handle_resume_folder,
+        DOMAIN,
+        "resume_folder",
+        handle_resume_folder,
         schema=vol.Schema({vol.Required("folder_id"): str}),
     )
     hass.services.async_register(
-        DOMAIN, "pause_device", handle_pause_device,
+        DOMAIN,
+        "pause_device",
+        handle_pause_device,
         schema=vol.Schema({vol.Required("device_id"): str}),
     )
     hass.services.async_register(
-        DOMAIN, "resume_device", handle_resume_device,
+        DOMAIN,
+        "resume_device",
+        handle_resume_device,
         schema=vol.Schema({vol.Required("device_id"): str}),
     )
     hass.services.async_register(DOMAIN, "pause_all", handle_pause_all)

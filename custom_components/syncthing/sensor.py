@@ -1,4 +1,5 @@
 """Sensor platform for Syncthing."""
+
 from __future__ import annotations
 
 from collections.abc import Callable
@@ -175,7 +176,6 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfInformation.BYTES,
         suggested_unit_of_measurement=UnitOfInformation.MEGABYTES,
         entity_category=EntityCategory.DIAGNOSTIC,
-
         value_fn=lambda data, fid: _folder_status(data, fid).get("globalBytes"),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -184,7 +184,6 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         icon="mdi:file-multiple",
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-
         value_fn=lambda data, fid: _folder_status(data, fid).get("globalFiles"),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -196,7 +195,6 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfInformation.BYTES,
         suggested_unit_of_measurement=UnitOfInformation.MEGABYTES,
         entity_category=EntityCategory.DIAGNOSTIC,
-
         value_fn=lambda data, fid: _folder_status(data, fid).get("inSyncBytes"),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -205,7 +203,6 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         icon="mdi:file-check",
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-
         value_fn=lambda data, fid: _folder_status(data, fid).get("inSyncFiles"),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -217,7 +214,6 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfInformation.BYTES,
         suggested_unit_of_measurement=UnitOfInformation.MEGABYTES,
         entity_category=EntityCategory.DIAGNOSTIC,
-
         value_fn=lambda data, fid: _folder_status(data, fid).get("localBytes"),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -226,7 +222,6 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         icon="mdi:file-multiple-outline",
         state_class=SensorStateClass.MEASUREMENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-
         value_fn=lambda data, fid: _folder_status(data, fid).get("localFiles"),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -242,14 +237,18 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         icon="mdi:calendar-clock",
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data, fid: datetime.fromisoformat(v) if (v := _folder_stats(data, fid).get("lastScan")) else None,
+        value_fn=lambda data, fid: (
+            datetime.fromisoformat(v)
+            if (v := _folder_stats(data, fid).get("lastScan"))
+            else None
+        ),
     ),
     SyncthingFolderSensorEntityDescription(
         key="last_file",
         translation_key="folder_last_file",
         icon="mdi:file-check-outline",
-        value_fn=lambda data, fid: (
-            (_folder_stats(data, fid).get("lastFile") or {}).get("filename")
+        value_fn=lambda data, fid: (_folder_stats(data, fid).get("lastFile") or {}).get(
+            "filename"
         ),
         attr_fn=lambda data, fid: {
             "at": (_folder_stats(data, fid).get("lastFile") or {}).get("at"),
@@ -277,7 +276,6 @@ DEVICE_SENSORS: tuple[SyncthingDeviceSensorEntityDescription, ...] = (
         translation_key="device_connection_type",
         icon="mdi:network-outline",
         entity_category=EntityCategory.DIAGNOSTIC,
-
         value_fn=lambda data, did: _device_connection(data, did).get("type"),
     ),
     SyncthingDeviceSensorEntityDescription(
@@ -285,7 +283,6 @@ DEVICE_SENSORS: tuple[SyncthingDeviceSensorEntityDescription, ...] = (
         translation_key="device_address",
         icon="mdi:ip-network",
         entity_category=EntityCategory.DIAGNOSTIC,
-
         value_fn=lambda data, did: _device_connection(data, did).get("address"),
     ),
     SyncthingDeviceSensorEntityDescription(
@@ -293,7 +290,6 @@ DEVICE_SENSORS: tuple[SyncthingDeviceSensorEntityDescription, ...] = (
         translation_key="device_client_version",
         icon="mdi:tag",
         entity_category=EntityCategory.DIAGNOSTIC,
-
         value_fn=lambda data, did: _device_connection(data, did).get("clientVersion"),
     ),
     SyncthingDeviceSensorEntityDescription(
@@ -301,7 +297,11 @@ DEVICE_SENSORS: tuple[SyncthingDeviceSensorEntityDescription, ...] = (
         translation_key="device_last_seen",
         icon="mdi:clock-check-outline",
         device_class=SensorDeviceClass.TIMESTAMP,
-        value_fn=lambda data, did: datetime.fromisoformat(v) if (v := _device_stats_entry(data, did).get("lastSeen")) else None,
+        value_fn=lambda data, did: (
+            datetime.fromisoformat(v)
+            if (v := _device_stats_entry(data, did).get("lastSeen"))
+            else None
+        ),
     ),
     SyncthingDeviceSensorEntityDescription(
         key="in_bytes",
@@ -390,7 +390,9 @@ class SyncthingSystemSensor(CoordinatorEntity[SyncthingCoordinator], SensorEntit
             "identifiers": {(DOMAIN, entry_id)},
             "name": "Syncthing",
             "manufacturer": "Syncthing Foundation",
-            "sw_version": coordinator.data.version.get("version") if coordinator.data else None,
+            "sw_version": coordinator.data.version.get("version")
+            if coordinator.data
+            else None,
         }
 
     @property
@@ -441,7 +443,9 @@ class SyncthingFolderSensor(CoordinatorEntity[SyncthingCoordinator], SensorEntit
     def extra_state_attributes(self) -> dict[str, Any] | None:
         """Return extra state attributes."""
         if self.entity_description.attr_fn:
-            return self.entity_description.attr_fn(self.coordinator.data, self._folder_id)
+            return self.entity_description.attr_fn(
+                self.coordinator.data, self._folder_id
+            )
         return None
 
 
@@ -479,5 +483,7 @@ class SyncthingDeviceSensor(CoordinatorEntity[SyncthingCoordinator], SensorEntit
     def extra_state_attributes(self) -> dict[str, Any] | None:
         """Return extra state attributes."""
         if self.entity_description.attr_fn:
-            return self.entity_description.attr_fn(self.coordinator.data, self._device_id)
+            return self.entity_description.attr_fn(
+                self.coordinator.data, self._device_id
+            )
         return None

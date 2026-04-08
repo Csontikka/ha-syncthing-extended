@@ -1,4 +1,5 @@
 """Config flow for Syncthing."""
+
 from __future__ import annotations
 
 import logging
@@ -11,7 +12,12 @@ from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .api import SyncthingApi, SyncthingAuthError, SyncthingConnectionError, SyncthingSslError
+from .api import (
+    SyncthingApi,
+    SyncthingAuthError,
+    SyncthingConnectionError,
+    SyncthingSslError,
+)
 from .const import (
     CONF_API_KEY,
     CONF_HOST,
@@ -85,7 +91,10 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
                         title = f"Syncthing ({user_input[CONF_HOST]}:{user_input[CONF_PORT]})"
                         try:
                             devices = await api.get_config_devices()
-                            own = next((d for d in devices if d.get("deviceID") == unique_id), None)
+                            own = next(
+                                (d for d in devices if d.get("deviceID") == unique_id),
+                                None,
+                            )
                             if own and own.get("name"):
                                 title = f"Syncthing @ {own['name']}"
                         except Exception:
@@ -113,9 +122,7 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    async def async_step_reauth(
-        self, entry_data: dict[str, Any]
-    ) -> FlowResult:
+    async def async_step_reauth(self, entry_data: dict[str, Any]) -> FlowResult:
         """Handle re-authentication when credentials become invalid."""
         return await self.async_step_reauth_confirm()
 
@@ -128,7 +135,8 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             reauth_entry = self._get_reauth_entry()
             session = async_get_clientsession(
-                self.hass, verify_ssl=reauth_entry.data.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL)
+                self.hass,
+                verify_ssl=reauth_entry.data.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL),
             )
             api = SyncthingApi(
                 host=reauth_entry.data[CONF_HOST],
@@ -183,9 +191,9 @@ class SyncthingOptionsFlow(OptionsFlow):
 
         options_schema = vol.Schema(
             {
-                vol.Optional(
-                    CONF_SCAN_INTERVAL, default=current_interval
-                ): vol.All(int, vol.Range(min=10, max=300)),
+                vol.Optional(CONF_SCAN_INTERVAL, default=current_interval): vol.All(
+                    int, vol.Range(min=10, max=300)
+                ),
             }
         )
 

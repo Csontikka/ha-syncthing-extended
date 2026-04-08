@@ -1,4 +1,5 @@
 """Button platform for Syncthing."""
+
 from __future__ import annotations
 
 import logging
@@ -157,7 +158,9 @@ class SyncthingFolderPauseButton(CoordinatorEntity[SyncthingCoordinator], Button
         await self.coordinator.async_request_refresh()
 
 
-class SyncthingFolderResumeButton(CoordinatorEntity[SyncthingCoordinator], ButtonEntity):
+class SyncthingFolderResumeButton(
+    CoordinatorEntity[SyncthingCoordinator], ButtonEntity
+):
     """Button to resume a specific folder."""
 
     _attr_has_entity_name = True
@@ -219,7 +222,9 @@ class SyncthingDevicePauseButton(CoordinatorEntity[SyncthingCoordinator], Button
         await self.coordinator.async_request_refresh()
 
 
-class SyncthingDeviceResumeButton(CoordinatorEntity[SyncthingCoordinator], ButtonEntity):
+class SyncthingDeviceResumeButton(
+    CoordinatorEntity[SyncthingCoordinator], ButtonEntity
+):
     """Button to resume a specific device."""
 
     _attr_has_entity_name = True
