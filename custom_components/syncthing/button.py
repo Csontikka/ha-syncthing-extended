@@ -10,10 +10,10 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import SyncthingConfigEntry
-
-PARALLEL_UPDATES = 1
 from .const import DOMAIN
 from .coordinator import SyncthingCoordinator
+
+PARALLEL_UPDATES = 1
 
 _LOGGER = logging.getLogger(__name__)
 
