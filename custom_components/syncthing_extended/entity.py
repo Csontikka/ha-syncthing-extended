@@ -17,9 +17,7 @@ class SyncthingSystemEntity(CoordinatorEntity[SyncthingCoordinator]):
     def __init__(self, coordinator: SyncthingCoordinator, entry_id: str) -> None:
         super().__init__(coordinator)
         self._entry_id = entry_id
-        version = (
-            coordinator.data.version.get("version") if coordinator.data else None
-        )
+        version = coordinator.data.version.get("version") if coordinator.data else None
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, entry_id)},
             name="Syncthing",
