@@ -66,12 +66,12 @@ def test_system_sensor_my_id_value():
 
 
 def test_system_sensor_my_id_attrs():
+    from tests.conftest import MOCK_SYSTEM_STATUS
     coordinator = make_coordinator()
     desc = next(d for d in SYSTEM_SENSORS if d.key == "my_id")
     entity = SyncthingSystemSensor(coordinator, desc, ENTRY_ID)
     attrs = entity.extra_state_attributes
-    assert "full_id" in attrs
-    assert len(attrs["full_id"]) > 7
+    assert attrs["full_id"] == MOCK_SYSTEM_STATUS["myID"]
 
 
 def test_system_sensor_total_in_bytes():
@@ -97,11 +97,18 @@ def test_system_sensor_unique_id():
 
 # --- SyncthingFolderSensor ---
 
-def test_folder_sensor_state_value():
+def test_folder_sensor_state_value_idle():
     coordinator = make_coordinator()
     desc = next(d for d in FOLDER_SENSORS if d.key == "state")
     entity = SyncthingFolderSensor(coordinator, desc, ENTRY_ID, "abcd-1234", "Documents")
     assert entity.native_value == "idle"
+
+
+def test_folder_sensor_state_value_syncing():
+    coordinator = make_coordinator()
+    desc = next(d for d in FOLDER_SENSORS if d.key == "state")
+    entity = SyncthingFolderSensor(coordinator, desc, ENTRY_ID, "efgh-5678", "Photos")
+    assert entity.native_value == "syncing"
 
 
 def test_folder_sensor_state_attrs():
@@ -118,6 +125,13 @@ def test_folder_sensor_completion_value():
     desc = next(d for d in FOLDER_SENSORS if d.key == "completion")
     entity = SyncthingFolderSensor(coordinator, desc, ENTRY_ID, "abcd-1234", "Documents")
     assert entity.native_value == pytest.approx(99.99)  # round(99.9937, 2)
+
+
+def test_folder_sensor_completion_value_partial():
+    coordinator = make_coordinator()
+    desc = next(d for d in FOLDER_SENSORS if d.key == "completion")
+    entity = SyncthingFolderSensor(coordinator, desc, ENTRY_ID, "efgh-5678", "Photos")
+    assert entity.native_value == pytest.approx(80.0)
 
 
 def test_folder_sensor_need_bytes_value():
@@ -160,6 +174,13 @@ def test_folder_sensor_pull_errors_zero():
     desc = next(d for d in FOLDER_SENSORS if d.key == "pull_errors")
     entity = SyncthingFolderSensor(coordinator, desc, ENTRY_ID, "abcd-1234", "Documents")
     assert entity.native_value == 0
+
+
+def test_folder_sensor_pull_errors_nonzero():
+    coordinator = make_coordinator()
+    desc = next(d for d in FOLDER_SENSORS if d.key == "pull_errors")
+    entity = SyncthingFolderSensor(coordinator, desc, ENTRY_ID, "efgh-5678", "Photos")
+    assert entity.native_value == 2
 
 
 def test_folder_sensor_last_scan():
@@ -274,7 +295,7 @@ def test_device_sensor_unique_id():
 
 # --- async_setup_entry for sensor platform ---
 
-def test_sensor_async_setup_entry_creates_entities():
+def test_sensor_async_setup_entry_creates_expected_entities():
     import asyncio
     from unittest.mock import MagicMock
     from custom_components.syncthing_extended.sensor import async_setup_entry
@@ -293,10 +314,27 @@ def test_sensor_async_setup_entry_creates_entities():
     entities = asyncio.run(_run())
     # 5 system + 2 folders * 13 + 1 remote device * 6 = 5 + 26 + 6 = 37
     assert len(entities) == 37
-    types = {type(e).__name__ for e in entities}
-    assert "SyncthingSystemSensor" in types
-    assert "SyncthingFolderSensor" in types
-    assert "SyncthingDeviceSensor" in types
+
+    by_type: dict[str, list] = {}
+    for e in entities:
+        by_type.setdefault(type(e).__name__, []).append(e)
+
+    # Expected count per type — detects regressions that create right total but
+    # wrong mix (e.g. duplicate system sensors instead of per-device sensors).
+    assert len(by_type["SyncthingSystemSensor"]) == 5
+    assert len(by_type["SyncthingFolderSensor"]) == 2 * 13
+    assert len(by_type["SyncthingDeviceSensor"]) == 6  # 1 remote device, myID filtered
+
+    unique_ids = {e.unique_id for e in entities}
+    # Spot-check specific expected unique_ids exist — proves the right folder_ids
+    # and device_ids were wired through.
+    assert f"{ENTRY_ID}_version" in unique_ids
+    assert f"{ENTRY_ID}_folder_abcd-1234_state" in unique_ids
+    assert f"{ENTRY_ID}_folder_efgh-5678_completion" in unique_ids
+    assert f"{ENTRY_ID}_device_{DEVICE_ID}_connection_type" in unique_ids
+    # myID device must NOT get per-device sensors (it's the local node)
+    my_id_full = "P56IOI7-MZJNU2Y-IQGDREY-DM2MGTI-MNT4YXL-CLFRA3N-SMUX2ZC-2HXNUQQ"
+    assert not any(my_id_full in uid for uid in unique_ids if "_device_" in uid)
 
 
 def test_device_sensor_extra_state_attributes_with_attr_fn():
