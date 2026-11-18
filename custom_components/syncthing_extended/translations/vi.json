@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "Đường dẫn (thư mục con)",
           "api_key": "API Key",
           "use_ssl": "Sử dụng HTTPS (SSL)",
           "verify_ssl": "Xác minh chứng chỉ SSL",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "Địa chỉ IP hoặc tên máy chủ của phiên bản Syncthing",
           "port": "Mặc định: 8384",
+          "path": "Tiền tố đường dẫn nếu Syncthing chạy sau proxy ngược, ví dụ /syncthing. Để trống nếu kết nối trực tiếp. URL đầy đủ trong trường máy chủ sẽ được nhận diện tự động.",
+          "api_key": "Tìm thấy trong giao diện Syncthing tại Hành động > Cài đặt",
+          "scan_interval": "Tần suất kiểm tra cập nhật (10–300 giây)"
+        }
+      },
+      "reconfigure": {
+        "title": "Cấu hình lại Syncthing",
+        "description": "Cập nhật thông tin kết nối của phiên bản Syncthing này.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "Đường dẫn (thư mục con)",
+          "api_key": "API Key",
+          "use_ssl": "Sử dụng HTTPS (SSL)",
+          "verify_ssl": "Xác minh chứng chỉ SSL",
+          "scan_interval": "Khoảng thời gian cập nhật (giây)"
+        },
+        "data_description": {
+          "host": "Địa chỉ IP hoặc tên máy chủ của phiên bản Syncthing",
+          "port": "Mặc định: 8384",
+          "path": "Tiền tố đường dẫn nếu Syncthing chạy sau proxy ngược, ví dụ /syncthing. Để trống nếu kết nối trực tiếp. URL đầy đủ trong trường máy chủ sẽ được nhận diện tự động.",
           "api_key": "Tìm thấy trong giao diện Syncthing tại Hành động > Cài đặt",
           "scan_interval": "Tần suất kiểm tra cập nhật (10–300 giây)"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "Xác thực lại Syncthing",
         "description": "Khóa API Syncthing của bạn không còn hợp lệ. Vui lòng nhập khóa mới.",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "Không thể kết nối với Syncthing. Kiểm tra máy chủ và cổng.",
+      "invalid_host": "Giá trị máy chủ không hợp lệ. Hãy dùng tên máy chủ, địa chỉ IP hoặc URL đầy đủ.",
       "invalid_auth": "Khóa API không hợp lệ.",
       "ssl_error": "Xác minh chứng chỉ SSL thất bại. Tắt 'Xác minh chứng chỉ SSL' nếu bạn đang sử dụng chứng chỉ tự ký.",
       "unknown": "Đã xảy ra lỗi không mong đợi."
     },
     "abort": {
-      "already_configured": "Phiên bản Syncthing này đã được cấu hình."
+      "already_configured": "Phiên bản Syncthing này đã được cấu hình.",
+      "reconfigure_successful": "Đã cập nhật cấu hình Syncthing.",
+      "wrong_instance": "Đây là một phiên bản Syncthing khác với phiên bản đã cấu hình."
     }
   },
   "entity": {

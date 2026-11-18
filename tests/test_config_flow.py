@@ -14,6 +14,7 @@ from custom_components.syncthing_extended.api import (
 from custom_components.syncthing_extended.const import (
     CONF_API_KEY,
     CONF_HOST,
+    CONF_PATH,
     CONF_PORT,
     CONF_SCAN_INTERVAL,
     CONF_USE_SSL,
@@ -130,8 +131,8 @@ def test_config_flow_success_creates_entry_with_correct_data_and_unique_id():
         result = _run_step(flow, lambda f: f.async_step_user(VALID_INPUT))
 
     assert result["type"] == "create_entry"
-    # The flow must forward the user input verbatim
-    assert rec.last["data"] == VALID_INPUT
+    # The flow must forward the user input, with the resolved location added
+    assert rec.last["data"] == {**VALID_INPUT, CONF_PATH: ""}
     # Title falls back to host:port (no friendly device name in this test)
     assert rec.last["title"] == f"Syncthing ({VALID_INPUT[CONF_HOST]}:{VALID_INPUT[CONF_PORT]})"
     # Unique ID must be myID from the health check
@@ -413,3 +414,173 @@ def test_config_flow_is_registered_under_our_domain():
     from custom_components.syncthing_extended.config_flow import SyncthingConfigFlow
 
     assert HANDLERS.get(DOMAIN) is SyncthingConfigFlow
+
+
+# --- location / subdirectory support ---
+
+def _create_entry(user_input):
+    """Run the user step to completion and return the recorded create_entry call."""
+    flow = _make_flow()
+    mock_api = _mock_api()
+    rec = _Recorder()
+    patches = _patch_common(flow, mock_api)
+    with patches[0] as api_cls, patches[1], patch.object(
+        flow, "async_set_unique_id", AsyncMock()
+    ), patch.object(flow, "_abort_if_unique_id_configured", MagicMock()), patch.object(
+        flow, "async_create_entry", side_effect=rec.create_entry
+    ):
+        result = _run_step(flow, lambda f: f.async_step_user(user_input))
+    assert result["type"] == "create_entry"
+    return rec.last, api_cls.call_args.kwargs
+
+
+def test_location_field_is_normalized_and_stored():
+    data, api_kwargs = _create_entry({**VALID_INPUT, CONF_PATH: "syncthing/"})
+    assert data["data"][CONF_PATH] == "/syncthing"
+    assert api_kwargs["path"] == "/syncthing"
+
+
+def test_location_is_detected_from_host_field():
+    data, api_kwargs = _create_entry({**VALID_INPUT, CONF_HOST: "xyz/syncthing/"})
+    assert data["data"][CONF_HOST] == "xyz"
+    assert data["data"][CONF_PATH] == "/syncthing"
+    # port field untouched — the host entry did not specify one
+    assert data["data"][CONF_PORT] == VALID_INPUT[CONF_PORT]
+
+
+def test_full_url_in_host_field_sets_host_port_path_and_ssl():
+    data, _ = _create_entry(
+        {**VALID_INPUT, CONF_HOST: "https://xyz/syncthing/", CONF_USE_SSL: False}
+    )
+    assert data["data"][CONF_HOST] == "xyz"
+    assert data["data"][CONF_PORT] == 443
+    assert data["data"][CONF_PATH] == "/syncthing"
+    assert data["data"][CONF_USE_SSL] is True
+
+
+def test_plain_host_keeps_existing_behaviour():
+    """Without a location the stored data must match the classic setup."""
+    data, api_kwargs = _create_entry(VALID_INPUT)
+    assert data["data"] == {**VALID_INPUT, CONF_PATH: ""}
+    assert api_kwargs["path"] == ""
+
+
+def test_location_field_wins_over_path_in_host_field():
+    data, _ = _create_entry(
+        {**VALID_INPUT, CONF_HOST: "xyz/detected", CONF_PATH: "/explicit"}
+    )
+    assert data["data"][CONF_PATH] == "/explicit"
+
+
+def test_title_includes_location_when_set():
+    data, _ = _create_entry({**VALID_INPUT, CONF_PATH: "/syncthing"})
+    assert data["title"] == (
+        f"Syncthing ({VALID_INPUT[CONF_HOST]}:{VALID_INPUT[CONF_PORT]}/syncthing)"
+    )
+
+
+def test_invalid_host_entry_shows_form_error():
+    flow = _make_flow()
+    rec = _Recorder()
+    with patch.object(flow, "async_show_form", side_effect=rec.show_form):
+        result = _run_step(
+            flow, lambda f: f.async_step_user({**VALID_INPUT, CONF_HOST: "ftp://xyz"})
+        )
+    assert result["type"] == "form"
+    assert rec.last["errors"] == {CONF_HOST: "invalid_host"}
+
+
+# --- reconfigure flow ---
+
+def _make_reconfigure_flow(entry_data=None):
+    from custom_components.syncthing_extended.config_flow import SyncthingConfigFlow
+
+    entry = MagicMock()
+    entry.data = entry_data if entry_data is not None else dict(VALID_INPUT)
+    flow = SyncthingConfigFlow()
+    flow.hass = MagicMock()
+    flow._get_reconfigure_entry = MagicMock(return_value=entry)
+    return flow, entry
+
+
+def test_reconfigure_shows_form_prefilled_with_current_data():
+    flow, entry = _make_reconfigure_flow()
+    rec = _Recorder()
+    with patch.object(flow, "async_show_form", side_effect=rec.show_form):
+        result = _run_step(flow, lambda f: f.async_step_reconfigure(None))
+    assert result["type"] == "form"
+    assert rec.last["step_id"] == "reconfigure"
+    assert rec.last.get("data_schema") is not None
+
+
+def test_reconfigure_updates_entry_with_new_location():
+    flow, entry = _make_reconfigure_flow()
+    mock_api = _mock_api()
+    rec = _Recorder()
+    patches = _patch_common(flow, mock_api)
+    with patches[0], patches[1], patch.object(
+        flow, "async_set_unique_id", AsyncMock()
+    ), patch.object(flow, "_abort_if_unique_id_mismatch", MagicMock()), patch.object(
+        flow,
+        "async_update_reload_and_abort",
+        side_effect=lambda entry, **kwargs: rec.create_entry(**kwargs),
+    ):
+        _run_step(
+            flow,
+            lambda f: f.async_step_reconfigure(
+                {**VALID_INPUT, CONF_HOST: "https://xyz/syncthing", CONF_PORT: 8384}
+            ),
+        )
+    updates = rec.last["data_updates"]
+    assert updates[CONF_HOST] == "xyz"
+    assert updates[CONF_PORT] == 443
+    assert updates[CONF_PATH] == "/syncthing"
+    assert updates[CONF_USE_SSL] is True
+
+
+def test_reconfigure_rejects_invalid_host_entry():
+    flow, _ = _make_reconfigure_flow()
+    rec = _Recorder()
+    with patch.object(flow, "async_show_form", side_effect=rec.show_form):
+        result = _run_step(
+            flow,
+            lambda f: f.async_step_reconfigure({**VALID_INPUT, CONF_HOST: "ftp://xyz"}),
+        )
+    assert result["type"] == "form"
+    assert rec.last["errors"] == {CONF_HOST: "invalid_host"}
+
+
+@pytest.mark.parametrize(
+    ("error", "expected"),
+    [
+        (SyncthingAuthError("bad key"), "invalid_auth"),
+        (SyncthingSslError("bad cert"), "ssl_error"),
+        (SyncthingConnectionError("no route"), "cannot_connect"),
+        (RuntimeError("boom"), "unknown"),
+    ],
+)
+def test_reconfigure_maps_api_errors_to_form_errors(error, expected):
+    flow, _ = _make_reconfigure_flow()
+    mock_api = _mock_api()
+    mock_api.get_system_status = AsyncMock(side_effect=error)
+    rec = _Recorder()
+    patches = _patch_common(flow, mock_api)
+    with patches[0], patches[1], patch.object(
+        flow, "async_show_form", side_effect=rec.show_form
+    ):
+        result = _run_step(flow, lambda f: f.async_step_reconfigure(dict(VALID_INPUT)))
+    assert result["type"] == "form"
+    assert rec.last["errors"] == {"base": expected}
+
+
+def test_reconfigure_reports_cannot_connect_without_my_id():
+    flow, _ = _make_reconfigure_flow()
+    mock_api = _mock_api()
+    mock_api.get_system_status = AsyncMock(return_value={})
+    rec = _Recorder()
+    patches = _patch_common(flow, mock_api)
+    with patches[0], patches[1], patch.object(
+        flow, "async_show_form", side_effect=rec.show_form
+    ):
+        result = _run_step(flow, lambda f: f.async_step_reconfigure(dict(VALID_INPUT)))
+    assert rec.last["errors"] == {"base": "cannot_connect"}

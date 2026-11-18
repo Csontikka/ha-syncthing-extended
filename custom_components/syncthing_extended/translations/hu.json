@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "Útvonal (alkönyvtár)",
           "api_key": "API Key",
           "use_ssl": "HTTPS (SSL) használata",
           "verify_ssl": "SSL tanúsítvány ellenőrzése",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "A Syncthing példány IP-címe vagy hosztneve",
           "port": "Alapértelmezett: 8384",
+          "path": "Útvonal-előtag, ha a Syncthing fordított proxy mögött fut, pl. /syncthing. Közvetlen kapcsolathoz hagyd üresen. A hoszt mezőben megadott teljes URL automatikusan felismerésre kerül.",
+          "api_key": "A Syncthing UI-ban: Actions > Settings > API Key",
+          "scan_interval": "Milyen gyakran kérdezze le az adatokat (10-300 másodperc)"
+        }
+      },
+      "reconfigure": {
+        "title": "Syncthing újrakonfigurálása",
+        "description": "Frissítsd ennek a Syncthing példánynak a kapcsolati adatait.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "Útvonal (alkönyvtár)",
+          "api_key": "API Key",
+          "use_ssl": "HTTPS (SSL) használata",
+          "verify_ssl": "SSL tanúsítvány ellenőrzése",
+          "scan_interval": "Frissítési időköz (másodperc)"
+        },
+        "data_description": {
+          "host": "A Syncthing példány IP-címe vagy hosztneve",
+          "port": "Alapértelmezett: 8384",
+          "path": "Útvonal-előtag, ha a Syncthing fordított proxy mögött fut, pl. /syncthing. Közvetlen kapcsolathoz hagyd üresen. A hoszt mezőben megadott teljes URL automatikusan felismerésre kerül.",
           "api_key": "A Syncthing UI-ban: Actions > Settings > API Key",
           "scan_interval": "Milyen gyakran kérdezze le az adatokat (10-300 másodperc)"
         }
@@ -29,12 +51,15 @@
     },
     "error": {
       "cannot_connect": "Nem sikerült csatlakozni a Syncthing-hez. Ellenőrizd a hosztnevet és a portot.",
+      "invalid_host": "Érvénytelen hoszt megadás. Használj hosztnevet, IP-címet vagy teljes URL-t.",
       "invalid_auth": "Érvénytelen API kulcs.",
       "ssl_error": "SSL tanúsítvány ellenőrzése sikertelen. Ha önaláírt tanúsítványt használsz, kapcsold ki az 'SSL tanúsítvány ellenőrzése' opciót.",
       "unknown": "Váratlan hiba történt."
     },
     "abort": {
-      "already_configured": "Ez a Syncthing példány már be van állítva."
+      "already_configured": "Ez a Syncthing példány már be van állítva.",
+      "reconfigure_successful": "A Syncthing konfiguráció frissítve.",
+      "wrong_instance": "Ez egy másik Syncthing példány, mint a beállított."
     }
   },
   "entity": {

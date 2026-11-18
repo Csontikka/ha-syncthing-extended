@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "Cesta (podadresár)",
           "api_key": "API Key",
           "use_ssl": "Použiť HTTPS (SSL)",
           "verify_ssl": "Overiť SSL certifikát",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "IP adresa alebo názov hostiteľa inštancie Syncthing",
           "port": "Predvolené: 8384",
+          "path": "Predpona cesty, ak Syncthing beží za reverznou proxy, napr. /syncthing. Pre priame pripojenie nechajte prázdne. Úplná URL v poli hostiteľa sa rozpozná automaticky.",
+          "api_key": "Nachádza sa v Syncthing UI pod Akcie > Nastavenia",
+          "scan_interval": "Ako často kontrolovať aktualizácie (10–300 sekúnd)"
+        }
+      },
+      "reconfigure": {
+        "title": "Prekonfigurovať Syncthing",
+        "description": "Aktualizujte údaje o pripojení tejto inštancie Syncthing.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "Cesta (podadresár)",
+          "api_key": "API Key",
+          "use_ssl": "Použiť HTTPS (SSL)",
+          "verify_ssl": "Overiť SSL certifikát",
+          "scan_interval": "Interval aktualizácie (sekundy)"
+        },
+        "data_description": {
+          "host": "IP adresa alebo názov hostiteľa inštancie Syncthing",
+          "port": "Predvolené: 8384",
+          "path": "Predpona cesty, ak Syncthing beží za reverznou proxy, napr. /syncthing. Pre priame pripojenie nechajte prázdne. Úplná URL v poli hostiteľa sa rozpozná automaticky.",
           "api_key": "Nachádza sa v Syncthing UI pod Akcie > Nastavenia",
           "scan_interval": "Ako často kontrolovať aktualizácie (10–300 sekúnd)"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "Opätovné overenie Syncthing",
         "description": "Váš API kľúč pre Syncthing už nie je platný. Zadajte prosím nový kľúč.",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "Nedá sa pripojiť k Syncthing. Skontrolujte hostiteľa a port.",
+      "invalid_host": "Neplatný hostiteľ. Použite názov hostiteľa, IP adresu alebo úplnú URL.",
       "invalid_auth": "Neplatný API kľúč.",
       "ssl_error": "Overenie SSL certifikátu zlyhalo. Vypnite 'Overiť SSL certifikát', ak používate certifikát podpísaný vlastnou autoritou.",
       "unknown": "Vyskytla sa neočakávaná chyba."
     },
     "abort": {
-      "already_configured": "Táto inštancia Syncthing je už nakonfigurovaná."
+      "already_configured": "Táto inštancia Syncthing je už nakonfigurovaná.",
+      "reconfigure_successful": "Konfigurácia Syncthing bola aktualizovaná.",
+      "wrong_instance": "Toto je iná inštancia Syncthing než tá nakonfigurovaná."
     }
   },
   "entity": {

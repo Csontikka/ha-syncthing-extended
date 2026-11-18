@@ -27,6 +27,84 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 
+def normalize_base_path(path: str | None) -> str:
+    """Normalize a base path so it can be prefixed to every REST endpoint.
+
+    Accepts values like "syncthing", "/syncthing" or "/syncthing/" and always
+    returns either an empty string or a leading-slash path without a trailing
+    slash (e.g. "/syncthing").
+    """
+    value = (path or "").strip()
+    if not value:
+        return ""
+    if not value.startswith("/"):
+        value = f"/{value}"
+    value = value.rstrip("/")
+    return "" if value == "/" else value
+
+
+def parse_host_input(raw: str) -> tuple[str, int | None, str, bool | None]:
+    """Split a host entry that may also carry a scheme, a port and a path.
+
+    Returns (host, port, path, use_ssl) where port and use_ssl are None when
+    the input did not specify them, so the caller can fall back to the values
+    from the dedicated form fields.
+
+    Raises ValueError if the input cannot be interpreted.
+    """
+    value = (raw or "").strip()
+    if not value:
+        raise ValueError("empty host")
+
+    use_ssl: bool | None = None
+    if "://" in value:
+        scheme, _, value = value.partition("://")
+        scheme = scheme.lower()
+        if scheme not in ("http", "https"):
+            raise ValueError(f"unsupported scheme: {scheme}")
+        use_ssl = scheme == "https"
+        value = value.strip()
+
+    value, separator, remainder = value.partition("/")
+    path = normalize_base_path(f"/{remainder}") if separator else ""
+
+    port: int | None = None
+    if value.startswith("["):
+        # IPv6 literal, e.g. [::1]:8384
+        literal, closing, rest = value.partition("]")
+        if not closing:
+            raise ValueError("unterminated IPv6 literal")
+        host = f"{literal}]"
+        if rest:
+            if not rest.startswith(":"):
+                raise ValueError(f"invalid host suffix: {rest}")
+            port = _parse_port(rest[1:])
+    else:
+        host, separator, port_part = value.partition(":")
+        if separator:
+            port = _parse_port(port_part)
+
+    if not host:
+        raise ValueError("missing host")
+
+    if port is None and use_ssl is not None:
+        # A scheme without an explicit port implies the standard HTTP(S) port.
+        port = 443 if use_ssl else 80
+
+    return host, port, path, use_ssl
+
+
+def _parse_port(value: str) -> int:
+    """Parse and validate a port number."""
+    try:
+        port = int(value)
+    except ValueError as err:
+        raise ValueError(f"invalid port: {value}") from err
+    if not 1 <= port <= 65535:
+        raise ValueError(f"port out of range: {port}")
+    return port
+
+
 class SyncthingApiError(Exception):
     """Base API error."""
 
@@ -54,6 +132,7 @@ class SyncthingApi:
         use_ssl: bool = True,
         verify_ssl: bool = False,
         session: aiohttp.ClientSession | None = None,
+        path: str = "",
     ) -> None:
         self._host = host
         self._port = port
@@ -61,8 +140,9 @@ class SyncthingApi:
         self._use_ssl = use_ssl
         self._verify_ssl = verify_ssl
         self._session = session
+        self._path = normalize_base_path(path)
         scheme = "https" if use_ssl else "http"
-        self._base_url = f"{scheme}://{host}:{port}"
+        self._base_url = f"{scheme}://{host}:{port}{self._path}"
 
     @property
     def base_url(self) -> str:
@@ -110,11 +190,11 @@ class SyncthingApi:
             raise
         except aiohttp.ClientSSLError as err:
             raise SyncthingSslError(
-                f"SSL certificate verification failed for {self._host}:{self._port}: {err}"
+                f"SSL certificate verification failed for {self._base_url}: {err}"
             ) from err
         except aiohttp.ClientConnectorError as err:
             raise SyncthingConnectionError(
-                f"Cannot connect to {self._host}:{self._port}: {err}"
+                f"Cannot connect to {self._base_url}: {err}"
             ) from err
         except aiohttp.ClientError as err:
             raise SyncthingApiError(f"Request failed: {err}") from err

@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "Pad (submap)",
           "api_key": "API Key",
           "use_ssl": "HTTPS (SSL) gebruiken",
           "verify_ssl": "SSL-certificaat verifiëren",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "IP-adres of hostnaam van de Syncthing-instantie",
           "port": "Standaard: 8384",
+          "path": "Padvoorvoegsel als Syncthing achter een reverse proxy draait, bijv. /syncthing. Laat leeg voor een directe verbinding. Een volledige URL in het hostveld wordt automatisch herkend.",
+          "api_key": "Te vinden in de Syncthing UI onder Acties > Instellingen",
+          "scan_interval": "Hoe vaak op updates te controleren (10–300 seconden)"
+        }
+      },
+      "reconfigure": {
+        "title": "Syncthing opnieuw configureren",
+        "description": "Werk de verbindingsgegevens van deze Syncthing-instantie bij.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "Pad (submap)",
+          "api_key": "API Key",
+          "use_ssl": "HTTPS (SSL) gebruiken",
+          "verify_ssl": "SSL-certificaat verifiëren",
+          "scan_interval": "Verversingsinterval (seconden)"
+        },
+        "data_description": {
+          "host": "IP-adres of hostnaam van de Syncthing-instantie",
+          "port": "Standaard: 8384",
+          "path": "Padvoorvoegsel als Syncthing achter een reverse proxy draait, bijv. /syncthing. Laat leeg voor een directe verbinding. Een volledige URL in het hostveld wordt automatisch herkend.",
           "api_key": "Te vinden in de Syncthing UI onder Acties > Instellingen",
           "scan_interval": "Hoe vaak op updates te controleren (10–300 seconden)"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "Syncthing opnieuw authenticeren",
         "description": "Uw Syncthing API-sleutel is niet meer geldig. Voer een nieuwe sleutel in.",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "Kan geen verbinding maken met Syncthing. Controleer host en poort.",
+      "invalid_host": "Ongeldige hostinvoer. Gebruik een hostnaam, een IP-adres of een volledige URL.",
       "invalid_auth": "Ongeldige API-sleutel.",
       "ssl_error": "SSL-certificaatverificatie mislukt. Schakel 'SSL-certificaat verifiëren' uit als u een zelfondertekend certificaat gebruikt.",
       "unknown": "Er is een onverwachte fout opgetreden."
     },
     "abort": {
-      "already_configured": "Deze Syncthing-instantie is al geconfigureerd."
+      "already_configured": "Deze Syncthing-instantie is al geconfigureerd.",
+      "reconfigure_successful": "Syncthing-configuratie bijgewerkt.",
+      "wrong_instance": "Dit is een andere Syncthing-instantie dan de geconfigureerde."
     }
   },
   "entity": {

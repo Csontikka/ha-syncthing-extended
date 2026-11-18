@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "Slóð (undirmappa)",
           "api_key": "API Key",
           "use_ssl": "Nota HTTPS (SSL)",
           "verify_ssl": "Staðfesta SSL-vottorð",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "IP-tala eða hýsilnafn Syncthing-tilviks",
           "port": "Sjálfgefið: 8384",
+          "path": "Slóðarforskeyti ef Syncthing keyrir á bak við öfugan staðgengil, t.d. /syncthing. Skildu eftir autt fyrir beina tengingu. Full vefslóð í hýsilreitnum greinist sjálfkrafa.",
+          "api_key": "Finnst í Syncthing UI undir Aðgerðir > Stillingar",
+          "scan_interval": "Hversu oft á að sækja uppfærslur (10–300 sekúndur)"
+        }
+      },
+      "reconfigure": {
+        "title": "Endurstilla Syncthing",
+        "description": "Uppfærðu tengiupplýsingar þessa Syncthing-tilviks.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "Slóð (undirmappa)",
+          "api_key": "API Key",
+          "use_ssl": "Nota HTTPS (SSL)",
+          "verify_ssl": "Staðfesta SSL-vottorð",
+          "scan_interval": "Uppfærslutímabil (sekúndur)"
+        },
+        "data_description": {
+          "host": "IP-tala eða hýsilnafn Syncthing-tilviks",
+          "port": "Sjálfgefið: 8384",
+          "path": "Slóðarforskeyti ef Syncthing keyrir á bak við öfugan staðgengil, t.d. /syncthing. Skildu eftir autt fyrir beina tengingu. Full vefslóð í hýsilreitnum greinist sjálfkrafa.",
           "api_key": "Finnst í Syncthing UI undir Aðgerðir > Stillingar",
           "scan_interval": "Hversu oft á að sækja uppfærslur (10–300 sekúndur)"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "Endurvottun Syncthing",
         "description": "API-lykill Syncthing er ekki lengur gildur. Sláðu inn nýjan lykil.",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "Gat ekki tengst Syncthing. Athugaðu hýsil og port.",
+      "invalid_host": "Ógild hýsilfærsla. Notaðu hýsilnafn, IP-tölu eða fulla vefslóð.",
       "invalid_auth": "Ógildur API-lykill.",
       "ssl_error": "SSL-vottorðsstaðfesting mistókst. Slökktu á 'Staðfesta SSL-vottorð' ef þú ert að nota sjálfundirritað vottorð.",
       "unknown": "Óvænt villa kom upp."
     },
     "abort": {
-      "already_configured": "Þetta Syncthing-tilvik er þegar stillt."
+      "already_configured": "Þetta Syncthing-tilvik er þegar stillt.",
+      "reconfigure_successful": "Syncthing stillingar uppfærðar.",
+      "wrong_instance": "Þetta er annað Syncthing-tilvik en það sem er stillt."
     }
   },
   "entity": {

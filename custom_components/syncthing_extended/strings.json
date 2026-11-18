@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "Location (subdirectory)",
           "api_key": "API Key",
           "use_ssl": "Use HTTPS (SSL)",
           "verify_ssl": "Verify SSL certificate",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "IP address or hostname of the Syncthing instance",
           "port": "Default: 8384",
+          "path": "Path prefix if Syncthing runs behind a reverse proxy, e.g. /syncthing. Leave empty for a direct connection. A full URL in the host field is detected automatically.",
+          "api_key": "Found in Syncthing UI under Actions > Settings",
+          "scan_interval": "How often to poll for updates (10-300 seconds)"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Syncthing",
+        "description": "Update the connection details of this Syncthing instance.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "Location (subdirectory)",
+          "api_key": "API Key",
+          "use_ssl": "Use HTTPS (SSL)",
+          "verify_ssl": "Verify SSL certificate",
+          "scan_interval": "Update interval (seconds)"
+        },
+        "data_description": {
+          "host": "IP address or hostname of the Syncthing instance",
+          "port": "Default: 8384",
+          "path": "Path prefix if Syncthing runs behind a reverse proxy, e.g. /syncthing. Leave empty for a direct connection. A full URL in the host field is detected automatically.",
           "api_key": "Found in Syncthing UI under Actions > Settings",
           "scan_interval": "How often to poll for updates (10-300 seconds)"
         }
@@ -29,12 +51,15 @@
     },
     "error": {
       "cannot_connect": "Cannot connect to Syncthing. Check host and port.",
+      "invalid_host": "Invalid host entry. Use a hostname, an IP address or a full URL.",
       "invalid_auth": "Invalid API key.",
       "ssl_error": "SSL certificate verification failed. Disable 'Verify SSL certificate' if using a self-signed certificate.",
       "unknown": "Unexpected error occurred."
     },
     "abort": {
-      "already_configured": "This Syncthing instance is already configured."
+      "already_configured": "This Syncthing instance is already configured.",
+      "reconfigure_successful": "Syncthing configuration updated.",
+      "wrong_instance": "This is a different Syncthing instance than the configured one."
     }
   },
   "entity": {
