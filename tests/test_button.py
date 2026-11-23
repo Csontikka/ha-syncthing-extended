@@ -4,6 +4,9 @@ from __future__ import annotations
 import asyncio
 from unittest.mock import AsyncMock, MagicMock
 
+import pytest
+from homeassistant.exceptions import HomeAssistantError
+
 from custom_components.syncthing_extended.button import (
     SyncthingDevicePauseButton,
     SyncthingDeviceResumeButton,
@@ -157,3 +160,27 @@ def test_device_pause_button_unique_id():
     coordinator = make_coordinator()
     button = SyncthingDevicePauseButton(coordinator, ENTRY_ID, "DEV123", "Laptop")
     assert button.unique_id == f"{ENTRY_ID}_device_DEV123_pause"
+
+
+# --- a rejected command must be visible to the user ---
+
+@pytest.mark.parametrize(
+    ("make_button", "method", "message"),
+    [
+        (lambda c: SyncthingScanAllButton(c, ENTRY_ID), "scan_all_folders", "Failed to scan all folders"),
+        (lambda c: SyncthingFolderScanButton(c, ENTRY_ID, "abcd", "Docs"), "scan_folder", "Failed to scan folder abcd"),
+        (lambda c: SyncthingFolderPauseButton(c, ENTRY_ID, "abcd", "Docs"), "pause_folder", "Failed to pause folder abcd"),
+        (lambda c: SyncthingFolderResumeButton(c, ENTRY_ID, "abcd", "Docs"), "resume_folder", "Failed to resume folder abcd"),
+        (lambda c: SyncthingDevicePauseButton(c, ENTRY_ID, "DEV1", "Laptop"), "pause_device", "Failed to pause device DEV1"),
+        (lambda c: SyncthingDeviceResumeButton(c, ENTRY_ID, "DEV1", "Laptop"), "resume_device", "Failed to resume device DEV1"),
+    ],
+)
+def test_button_press_raises_when_syncthing_rejects_the_command(make_button, method, message):
+    coordinator = make_coordinator()
+    setattr(coordinator.api, method, AsyncMock(return_value=False))
+    press = make_button(coordinator).async_press()
+
+    with pytest.raises(HomeAssistantError, match=message):
+        asyncio.run(press)
+
+    coordinator.async_refresh.assert_not_called()
