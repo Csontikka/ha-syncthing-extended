@@ -7,6 +7,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 
 from custom_components.syncthing_extended.api import (
+    SyncthingApiError,
     SyncthingAuthError,
     SyncthingConnectionError,
     SyncthingSslError,
@@ -560,6 +561,8 @@ def test_reconfigure_rejects_invalid_host_entry():
         (SyncthingAuthError("bad key"), "invalid_auth"),
         (SyncthingSslError("bad cert"), "ssl_error"),
         (SyncthingConnectionError("no route"), "cannot_connect"),
+        # e.g. HTTP 404 because the location prefix is wrong
+        (SyncthingApiError("Request failed: 404"), "cannot_connect"),
         (RuntimeError("boom"), "unknown"),
     ],
 )
@@ -588,3 +591,72 @@ def test_reconfigure_reports_cannot_connect_without_my_id():
     ):
         result = _run_step(flow, lambda f: f.async_step_reconfigure(dict(VALID_INPUT)))
     assert rec.last["errors"] == {"base": "cannot_connect"}
+
+
+# --- flow aborts must surface as aborts, not as an "unknown" form error ---
+
+def test_user_step_lets_already_configured_abort_through():
+    from homeassistant.data_entry_flow import AbortFlow
+
+    flow = _make_flow()
+    patches = _patch_common(flow, _mock_api())
+    with patches[0], patches[1], patch.object(
+        flow, "async_set_unique_id", AsyncMock()
+    ), patch.object(
+        flow,
+        "_abort_if_unique_id_configured",
+        side_effect=AbortFlow("already_configured"),
+    ), pytest.raises(AbortFlow) as raised:
+        _run_step(flow, lambda f: f.async_step_user(VALID_INPUT))
+    assert raised.value.reason == "already_configured"
+
+
+def test_reconfigure_lets_wrong_instance_abort_through():
+    from homeassistant.data_entry_flow import AbortFlow
+
+    flow, _ = _make_reconfigure_flow()
+    patches = _patch_common(flow, _mock_api())
+    with patches[0], patches[1], patch.object(
+        flow, "async_set_unique_id", AsyncMock()
+    ), patch.object(
+        flow,
+        "_abort_if_unique_id_mismatch",
+        side_effect=AbortFlow("wrong_instance"),
+    ), pytest.raises(AbortFlow) as raised:
+        _run_step(flow, lambda f: f.async_step_reconfigure(dict(VALID_INPUT)))
+    assert raised.value.reason == "wrong_instance"
+
+
+# --- ending reauth / reconfigure on cores that have async_update_and_abort ---
+
+def _flow_with_update_and_abort(entry_data):
+    from custom_components.syncthing_extended.config_flow import SyncthingConfigFlow
+
+    flow = SyncthingConfigFlow()
+    flow.hass = MagicMock()
+    flow.async_update_and_abort = MagicMock(return_value={"type": "abort"})
+    entry = MagicMock()
+    entry.entry_id = "entry-1"
+    entry.data = entry_data
+    return flow, entry
+
+
+def test_changed_data_is_left_to_the_update_listener_to_reload():
+    flow, entry = _flow_with_update_and_abort({CONF_API_KEY: "old"})
+
+    result = flow._update_entry_and_abort(entry, {CONF_API_KEY: "new"})
+
+    assert result == {"type": "abort"}
+    flow.async_update_and_abort.assert_called_once_with(
+        entry, data_updates={CONF_API_KEY: "new"}
+    )
+    flow.hass.config_entries.async_schedule_reload.assert_not_called()
+
+
+def test_unchanged_data_still_reloads_the_entry():
+    flow, entry = _flow_with_update_and_abort({CONF_API_KEY: "same"})
+
+    flow._update_entry_and_abort(entry, {CONF_API_KEY: "same"})
+
+    flow.hass.config_entries.async_schedule_reload.assert_called_once_with("entry-1")
+    flow.async_update_and_abort.assert_called_once()

@@ -33,3 +33,4 @@ brand_icons/
 # Titoktar (lakat) login
 .secrets/
 _lakat.py
+ha_dev.py

@@ -8,11 +8,12 @@ from typing import Any
 import voluptuous as vol
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
 from homeassistant.core import callback
-from homeassistant.data_entry_flow import FlowResult
+from homeassistant.data_entry_flow import AbortFlow, FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import (
     SyncthingApi,
+    SyncthingApiError,
     SyncthingAuthError,
     SyncthingConnectionError,
     SyncthingSslError,
@@ -96,6 +97,24 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
 
     VERSION = 1
 
+    def _update_entry_and_abort(
+        self, entry: ConfigEntry, data_updates: dict[str, Any]
+    ) -> FlowResult:
+        """Store new entry data, make sure the entry reloads, and end the flow.
+
+        The entry's update listener already reloads it whenever its data
+        changes. Newer cores therefore reject `async_update_reload_and_abort`
+        for entries with an update listener and offer `async_update_and_abort`.
+        """
+        update_and_abort = getattr(self, "async_update_and_abort", None)
+        if update_and_abort is None:  # cores without async_update_and_abort
+            return self.async_update_reload_and_abort(entry, data_updates=data_updates)
+        if all(entry.data.get(key) == value for key, value in data_updates.items()):
+            # Nothing changes, so the listener will not fire. Reload anyway: the
+            # user just confirmed the settings, e.g. to retry a failed setup.
+            self.hass.config_entries.async_schedule_reload(entry.entry_id)
+        return update_and_abort(entry, data_updates=data_updates)
+
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
@@ -167,6 +186,9 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
                             title=title,
                             data=resolved,
                         )
+            except AbortFlow:
+                # e.g. "already configured": an outcome of the flow, not an error
+                raise
             except SyncthingAuthError:
                 errors["base"] = "invalid_auth"
             except SyncthingSslError:
@@ -221,15 +243,20 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
                     else:
                         await self.async_set_unique_id(unique_id)
                         self._abort_if_unique_id_mismatch(reason="wrong_instance")
-                        return self.async_update_reload_and_abort(
-                            reconfigure_entry,
-                            data_updates=resolved,
-                        )
+                        return self._update_entry_and_abort(reconfigure_entry, resolved)
+                except AbortFlow:
+                    # e.g. "wrong instance": an outcome of the flow, not an error
+                    raise
                 except SyncthingAuthError:
                     errors["base"] = "invalid_auth"
                 except SyncthingSslError:
                     errors["base"] = "ssl_error"
                 except SyncthingConnectionError:
+                    errors["base"] = "cannot_connect"
+                except SyncthingApiError as err:
+                    # Typically an HTTP error: something answers at that address,
+                    # but not the Syncthing API, e.g. a wrong location prefix.
+                    _LOGGER.debug("Syncthing API not reachable: %s", err)
                     errors["base"] = "cannot_connect"
                 except Exception:
                     _LOGGER.exception("Unexpected error during reconfiguration")
@@ -270,9 +297,8 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
             )
             try:
                 await api.get_system_status()
-                return self.async_update_reload_and_abort(
-                    reauth_entry,
-                    data_updates={CONF_API_KEY: user_input[CONF_API_KEY]},
+                return self._update_entry_and_abort(
+                    reauth_entry, {CONF_API_KEY: user_input[CONF_API_KEY]}
                 )
             except SyncthingAuthError:
                 errors["base"] = "invalid_auth"
