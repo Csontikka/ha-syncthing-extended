@@ -68,8 +68,9 @@ def test_coordinator_raises_update_failed_on_generic_api_error():
         coordinator = SyncthingCoordinator(_make_hass_in_loop(), api)
         await coordinator._async_update_data()
 
+    update = _run()
     with pytest.raises(UpdateFailed, match=r"Error communicating with Syncthing"):
-        asyncio.run(_run())
+        asyncio.run(update)
 
 
 def test_coordinator_raises_config_entry_auth_failed_on_auth_error():
@@ -79,8 +80,9 @@ def test_coordinator_raises_config_entry_auth_failed_on_auth_error():
         coordinator = SyncthingCoordinator(_make_hass_in_loop(), api)
         await coordinator._async_update_data()
 
+    update = _run()
     with pytest.raises(ConfigEntryAuthFailed, match=r"re-authenticate"):
-        asyncio.run(_run())
+        asyncio.run(update)
 
 
 def test_coordinator_per_folder_status_failure_falls_back_to_empty_dict():

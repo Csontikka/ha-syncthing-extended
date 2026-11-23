@@ -8,7 +8,7 @@ from typing import Any
 import voluptuous as vol
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
 from homeassistant.core import callback
-from homeassistant.data_entry_flow import AbortFlow, FlowResult
+from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import (
@@ -115,6 +115,63 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
             self.hass.config_entries.async_schedule_reload(entry.entry_id)
         return update_and_abort(entry, data_updates=data_updates)
 
+    def _api_for(self, resolved: dict[str, Any]) -> SyncthingApi:
+        """Build an API client for resolved connection settings."""
+        verify_ssl = resolved.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL)
+        return SyncthingApi(
+            host=resolved[CONF_HOST],
+            port=resolved[CONF_PORT],
+            api_key=resolved[CONF_API_KEY],
+            use_ssl=resolved.get(CONF_USE_SSL, DEFAULT_USE_SSL),
+            verify_ssl=verify_ssl,
+            session=async_get_clientsession(self.hass, verify_ssl=verify_ssl),
+            path=resolved[CONF_PATH],
+        )
+
+    async def _async_probe(
+        self, api: SyncthingApi, *, check_health: bool
+    ) -> tuple[str | None, str | None]:
+        """Contact Syncthing and return (device id, error key); one of them is None."""
+        try:
+            if check_health and not await api.check_health():
+                return None, "cannot_connect"
+            # An authenticated call, so it also validates the API key
+            status = await api.get_system_status()
+        except SyncthingAuthError:
+            return None, "invalid_auth"
+        except SyncthingSslError:
+            return None, "ssl_error"
+        except SyncthingConnectionError:
+            return None, "cannot_connect"
+        except SyncthingApiError as err:
+            # Typically an HTTP error: something answers at that address, but
+            # not the Syncthing API, e.g. a wrong location prefix.
+            _LOGGER.debug("Syncthing API not reachable: %s", err)
+            return None, "cannot_connect"
+        except Exception:
+            _LOGGER.exception("Unexpected error while contacting Syncthing")
+            return None, "unknown"
+
+        unique_id = status.get("myID", "")
+        return (unique_id, None) if unique_id else (None, "cannot_connect")
+
+    async def _async_entry_title(
+        self, api: SyncthingApi, resolved: dict[str, Any], unique_id: str
+    ) -> str:
+        """Return a title for the entry, preferring the Syncthing device name."""
+        try:
+            devices = await api.get_config_devices()
+            own = next((d for d in devices if d.get("deviceID") == unique_id), None)
+            if own and own.get("name"):
+                return f"Syncthing @ {own['name']}"
+        except Exception:
+            # The name is cosmetic; fall back to the address.
+            _LOGGER.debug("Could not look up the Syncthing device name", exc_info=True)
+        return (
+            f"Syncthing ({resolved[CONF_HOST]}:"
+            f"{resolved[CONF_PORT]}{resolved[CONF_PATH]})"
+        )
+
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
@@ -126,78 +183,18 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
                 resolved = _resolve_connection(user_input)
             except ValueError as err:
                 _LOGGER.debug("Invalid host entry %r: %s", user_input[CONF_HOST], err)
-                return self.async_show_form(
-                    step_id="user",
-                    data_schema=self.add_suggested_values_to_schema(
-                        STEP_USER_DATA_SCHEMA, user_input
-                    ),
-                    errors={CONF_HOST: "invalid_host"},
-                )
-
-            use_ssl = resolved.get(CONF_USE_SSL, DEFAULT_USE_SSL)
-            verify_ssl = resolved.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL)
-            session = async_get_clientsession(self.hass, verify_ssl=verify_ssl)
-            api = SyncthingApi(
-                host=resolved[CONF_HOST],
-                port=resolved[CONF_PORT],
-                api_key=resolved[CONF_API_KEY],
-                use_ssl=use_ssl,
-                verify_ssl=verify_ssl,
-                session=session,
-                path=resolved[CONF_PATH],
-            )
-
-            try:
-                healthy = await api.check_health()
-                if not healthy:
-                    errors["base"] = "cannot_connect"
-                else:
-                    # Validate API key by making an authenticated call
-                    status = await api.get_system_status()
-                    unique_id = status.get("myID", "")
-
-                    if not unique_id:
-                        errors["base"] = "cannot_connect"
-                    else:
-                        await self.async_set_unique_id(unique_id)
-                        self._abort_if_unique_id_configured()
-
-                        # Try to get a friendly device name
-                        title = (
-                            f"Syncthing ({resolved[CONF_HOST]}:"
-                            f"{resolved[CONF_PORT]}{resolved[CONF_PATH]})"
-                        )
-                        try:
-                            devices = await api.get_config_devices()
-                            own = next(
-                                (d for d in devices if d.get("deviceID") == unique_id),
-                                None,
-                            )
-                            if own and own.get("name"):
-                                title = f"Syncthing @ {own['name']}"
-                        except Exception:
-                            # The name is cosmetic; keep the host:port title.
-                            _LOGGER.debug(
-                                "Could not look up the Syncthing device name",
-                                exc_info=True,
-                            )
-
-                        return self.async_create_entry(
-                            title=title,
-                            data=resolved,
-                        )
-            except AbortFlow:
-                # e.g. "already configured": an outcome of the flow, not an error
-                raise
-            except SyncthingAuthError:
-                errors["base"] = "invalid_auth"
-            except SyncthingSslError:
-                errors["base"] = "ssl_error"
-            except SyncthingConnectionError:
-                errors["base"] = "cannot_connect"
-            except Exception:
-                _LOGGER.exception("Unexpected error during config flow")
-                errors["base"] = "unknown"
+                errors[CONF_HOST] = "invalid_host"
+            else:
+                api = self._api_for(resolved)
+                unique_id, error = await self._async_probe(api, check_health=True)
+                if unique_id is not None:
+                    await self.async_set_unique_id(unique_id)
+                    self._abort_if_unique_id_configured()
+                    return self.async_create_entry(
+                        title=await self._async_entry_title(api, resolved, unique_id),
+                        data=resolved,
+                    )
+                errors["base"] = error
 
         return self.async_show_form(
             step_id="user",
@@ -225,42 +222,14 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
                 _LOGGER.debug("Invalid host entry %r: %s", user_input[CONF_HOST], err)
                 errors[CONF_HOST] = "invalid_host"
             else:
-                verify_ssl = resolved.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL)
-                api = SyncthingApi(
-                    host=resolved[CONF_HOST],
-                    port=resolved[CONF_PORT],
-                    api_key=resolved[CONF_API_KEY],
-                    use_ssl=resolved.get(CONF_USE_SSL, DEFAULT_USE_SSL),
-                    verify_ssl=verify_ssl,
-                    session=async_get_clientsession(self.hass, verify_ssl=verify_ssl),
-                    path=resolved[CONF_PATH],
+                unique_id, error = await self._async_probe(
+                    self._api_for(resolved), check_health=False
                 )
-                try:
-                    status = await api.get_system_status()
-                    unique_id = status.get("myID", "")
-                    if not unique_id:
-                        errors["base"] = "cannot_connect"
-                    else:
-                        await self.async_set_unique_id(unique_id)
-                        self._abort_if_unique_id_mismatch(reason="wrong_instance")
-                        return self._update_entry_and_abort(reconfigure_entry, resolved)
-                except AbortFlow:
-                    # e.g. "wrong instance": an outcome of the flow, not an error
-                    raise
-                except SyncthingAuthError:
-                    errors["base"] = "invalid_auth"
-                except SyncthingSslError:
-                    errors["base"] = "ssl_error"
-                except SyncthingConnectionError:
-                    errors["base"] = "cannot_connect"
-                except SyncthingApiError as err:
-                    # Typically an HTTP error: something answers at that address,
-                    # but not the Syncthing API, e.g. a wrong location prefix.
-                    _LOGGER.debug("Syncthing API not reachable: %s", err)
-                    errors["base"] = "cannot_connect"
-                except Exception:
-                    _LOGGER.exception("Unexpected error during reconfiguration")
-                    errors["base"] = "unknown"
+                if unique_id is not None:
+                    await self.async_set_unique_id(unique_id)
+                    self._abort_if_unique_id_mismatch(reason="wrong_instance")
+                    return self._update_entry_and_abort(reconfigure_entry, resolved)
+                errors["base"] = error
 
         return self.async_show_form(
             step_id="reconfigure",

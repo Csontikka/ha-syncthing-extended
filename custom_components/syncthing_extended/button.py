@@ -33,19 +33,12 @@ async def async_setup_entry(
     for folder in coordinator.data.config_folders:
         folder_id = folder["id"]
         folder_label = folder.get("label") or folder_id
-        entities.append(
-            SyncthingFolderScanButton(
-                coordinator, entry.entry_id, folder_id, folder_label
-            )
-        )
-        entities.append(
-            SyncthingFolderPauseButton(
-                coordinator, entry.entry_id, folder_id, folder_label
-            )
-        )
-        entities.append(
-            SyncthingFolderResumeButton(
-                coordinator, entry.entry_id, folder_id, folder_label
+        entities.extend(
+            button(coordinator, entry.entry_id, folder_id, folder_label)
+            for button in (
+                SyncthingFolderScanButton,
+                SyncthingFolderPauseButton,
+                SyncthingFolderResumeButton,
             )
         )
 
@@ -55,15 +48,9 @@ async def async_setup_entry(
         if device_id == my_id:
             continue
         device_label = device.get("name") or device_id[:8]
-        entities.append(
-            SyncthingDevicePauseButton(
-                coordinator, entry.entry_id, device_id, device_label
-            )
-        )
-        entities.append(
-            SyncthingDeviceResumeButton(
-                coordinator, entry.entry_id, device_id, device_label
-            )
+        entities.extend(
+            button(coordinator, entry.entry_id, device_id, device_label)
+            for button in (SyncthingDevicePauseButton, SyncthingDeviceResumeButton)
         )
 
     async_add_entities(entities)

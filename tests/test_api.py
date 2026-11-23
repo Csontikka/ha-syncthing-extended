@@ -145,19 +145,15 @@ def test_check_health_ssl_error_propagates():
 # --- Auth / error classification ---
 
 def test_auth_error_403_raises_with_status_in_message():
+    response = make_mock_response(403)
     with pytest.raises(SyncthingAuthError, match=r"HTTP 403"):
-        _run_with_session(
-            make_mock_response(403),
-            lambda api: api.get_version(),
-        )
+        _run_with_session(response, lambda api: api.get_version())
 
 
 def test_auth_error_401_raises_with_status_in_message():
+    response = make_mock_response(401)
     with pytest.raises(SyncthingAuthError, match=r"HTTP 401"):
-        _run_with_session(
-            make_mock_response(401),
-            lambda api: api.get_system_status(),
-        )
+        _run_with_session(response, lambda api: api.get_system_status())
 
 
 def test_connection_error_wraps_with_host_port():

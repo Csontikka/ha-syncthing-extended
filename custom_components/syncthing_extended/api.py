@@ -56,34 +56,10 @@ def parse_host_input(raw: str) -> tuple[str, int | None, str, bool | None]:
     if not value:
         raise ValueError("empty host")
 
-    use_ssl: bool | None = None
-    if "://" in value:
-        scheme, _, value = value.partition("://")
-        scheme = scheme.lower()
-        if scheme not in ("http", "https"):
-            raise ValueError(f"unsupported scheme: {scheme}")
-        use_ssl = scheme == "https"
-        value = value.strip()
-
+    use_ssl, value = _split_scheme(value)
     value, separator, remainder = value.partition("/")
     path = normalize_base_path(f"/{remainder}") if separator else ""
-
-    port: int | None = None
-    if value.startswith("["):
-        # IPv6 literal, e.g. [::1]:8384
-        literal, closing, rest = value.partition("]")
-        if not closing:
-            raise ValueError("unterminated IPv6 literal")
-        host = f"{literal}]"
-        if rest:
-            if not rest.startswith(":"):
-                raise ValueError(f"invalid host suffix: {rest}")
-            port = _parse_port(rest[1:])
-    else:
-        host, separator, port_part = value.partition(":")
-        if separator:
-            port = _parse_port(port_part)
-
+    host, port = _split_host_port(value)
     if not host:
         raise ValueError("missing host")
 
@@ -92,6 +68,33 @@ def parse_host_input(raw: str) -> tuple[str, int | None, str, bool | None]:
         port = 443 if use_ssl else 80
 
     return host, port, path, use_ssl
+
+
+def _split_scheme(value: str) -> tuple[bool | None, str]:
+    """Strip an http(s) scheme; return (use_ssl or None if absent, the rest)."""
+    if "://" not in value:
+        return None, value
+    scheme, _, rest = value.partition("://")
+    scheme = scheme.lower()
+    if scheme not in ("http", "https"):
+        raise ValueError(f"unsupported scheme: {scheme}")
+    return scheme == "https", rest.strip()
+
+
+def _split_host_port(value: str) -> tuple[str, int | None]:
+    """Split "host", "host:port" or an IPv6 literal such as "[::1]:8384"."""
+    if not value.startswith("["):
+        host, separator, port_part = value.partition(":")
+        return host, _parse_port(port_part) if separator else None
+
+    literal, closing, rest = value.partition("]")
+    if not closing:
+        raise ValueError("unterminated IPv6 literal")
+    if not rest:
+        return f"{literal}]", None
+    if not rest.startswith(":"):
+        raise ValueError(f"invalid host suffix: {rest}")
+    return f"{literal}]", _parse_port(rest[1:])
 
 
 def _parse_port(value: str) -> int:
@@ -266,82 +269,78 @@ class SyncthingApi:
 
     # --- Action endpoints ---
 
+    async def _command(
+        self,
+        action: str,
+        method: str,
+        endpoint: str,
+        *,
+        params: dict[str, str] | None = None,
+        json_data: dict[str, Any] | None = None,
+    ) -> bool:
+        """Send a command to Syncthing; return whether it was accepted."""
+        try:
+            await self._request(method, endpoint, params=params, json_data=json_data)
+        except SyncthingApiError as err:
+            # An unreachable instance is an expected condition, not a bug:
+            # report it without a traceback.
+            _LOGGER.error("Failed to %s: %s", action, err)
+            return False
+        return True
+
     async def scan_folder(self, folder_id: str) -> bool:
         """Trigger a folder rescan."""
-        try:
-            await self._request("POST", API_DB_SCAN, params={"folder": folder_id})
-            return True
-        except SyncthingApiError as err:
-            _LOGGER.error("Failed to scan folder %s: %s", folder_id, err)
-            return False
+        return await self._command(
+            f"scan folder {folder_id}",
+            "POST",
+            API_DB_SCAN,
+            params={"folder": folder_id},
+        )
 
     async def scan_all_folders(self) -> bool:
         """Trigger rescan of all folders."""
-        try:
-            await self._request("POST", API_DB_SCAN)
-            return True
-        except SyncthingApiError as err:
-            _LOGGER.error("Failed to scan all folders: %s", err)
-            return False
+        return await self._command("scan all folders", "POST", API_DB_SCAN)
 
     async def pause_device(self, device_id: str) -> bool:
         """Pause a device."""
-        try:
-            await self._request("POST", API_SYSTEM_PAUSE, params={"device": device_id})
-            return True
-        except SyncthingApiError as err:
-            _LOGGER.error("Failed to pause device %s: %s", device_id, err)
-            return False
+        return await self._command(
+            f"pause device {device_id}",
+            "POST",
+            API_SYSTEM_PAUSE,
+            params={"device": device_id},
+        )
 
     async def resume_device(self, device_id: str) -> bool:
         """Resume a device."""
-        try:
-            await self._request("POST", API_SYSTEM_RESUME, params={"device": device_id})
-            return True
-        except SyncthingApiError as err:
-            _LOGGER.error("Failed to resume device %s: %s", device_id, err)
-            return False
+        return await self._command(
+            f"resume device {device_id}",
+            "POST",
+            API_SYSTEM_RESUME,
+            params={"device": device_id},
+        )
 
     async def pause_folder(self, folder_id: str) -> bool:
         """Pause a folder."""
-        try:
-            await self._request(
-                "PATCH",
-                f"/rest/config/folders/{folder_id}",
-                json_data={"paused": True},
-            )
-            return True
-        except SyncthingApiError as err:
-            _LOGGER.error("Failed to pause folder %s: %s", folder_id, err)
-            return False
+        return await self._command(
+            f"pause folder {folder_id}",
+            "PATCH",
+            f"/rest/config/folders/{folder_id}",
+            json_data={"paused": True},
+        )
 
     async def resume_folder(self, folder_id: str) -> bool:
         """Resume a folder."""
-        try:
-            await self._request(
-                "PATCH",
-                f"/rest/config/folders/{folder_id}",
-                json_data={"paused": False},
-            )
-            return True
-        except SyncthingApiError as err:
-            _LOGGER.error("Failed to resume folder %s: %s", folder_id, err)
-            return False
+        return await self._command(
+            f"resume folder {folder_id}",
+            "PATCH",
+            f"/rest/config/folders/{folder_id}",
+            json_data={"paused": False},
+        )
 
     async def pause_all(self) -> bool:
         """Pause all devices."""
-        try:
-            await self._request("POST", API_SYSTEM_PAUSE)
-            return True
-        except SyncthingApiError as err:
-            _LOGGER.error("Failed to pause all devices: %s", err)
-            return False
+        return await self._command("pause all devices", "POST", API_SYSTEM_PAUSE)
 
     async def resume_all(self) -> bool:
         """Resume all devices."""
-        try:
-            await self._request("POST", API_SYSTEM_RESUME)
-            return True
-        except SyncthingApiError as err:
-            _LOGGER.error("Failed to resume all devices: %s", err)
-            return False
+        return await self._command("resume all devices", "POST", API_SYSTEM_RESUME)

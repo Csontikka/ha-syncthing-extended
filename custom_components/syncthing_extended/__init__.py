@@ -116,110 +116,48 @@ def _get_coordinator(hass: HomeAssistant) -> SyncthingCoordinator:
     raise ValueError("No Syncthing config entry found")
 
 
+# Service name -> (API method, call data field naming the target, what it does).
+# Services without a field act on the whole instance.
+_SERVICES: dict[str, tuple[str, str | None, str]] = {
+    "scan_folder": ("scan_folder", "folder_id", "scan folder"),
+    "scan_all": ("scan_all_folders", None, "scan all folders"),
+    "pause_folder": ("pause_folder", "folder_id", "pause folder"),
+    "resume_folder": ("resume_folder", "folder_id", "resume folder"),
+    "pause_device": ("pause_device", "device_id", "pause device"),
+    "resume_device": ("resume_device", "device_id", "resume device"),
+    "pause_all": ("pause_all", None, "pause all devices"),
+    "resume_all": ("resume_all", None, "resume all devices"),
+}
+
+
 def _async_register_services(hass: HomeAssistant) -> None:
     """Register integration services (idempotent)."""
     if hass.services.has_service(DOMAIN, "scan_folder"):
         return
 
-    async def handle_scan_folder(call: ServiceCall) -> None:
+    for service, (method, field, action) in _SERVICES.items():
+        hass.services.async_register(
+            DOMAIN,
+            service,
+            _service_handler(hass, service, method, field, action),
+            schema=vol.Schema({vol.Required(field): str}) if field else None,
+        )
+
+
+def _service_handler(
+    hass: HomeAssistant, service: str, method: str, field: str | None, action: str
+):
+    """Build the handler that forwards one service to the Syncthing API."""
+
+    async def handle(call: ServiceCall) -> None:
         coordinator = _get_coordinator(hass)
-        folder_id = call.data["folder_id"]
-        _LOGGER.debug("Service: scan_folder %s", folder_id)
-        if not await coordinator.api.scan_folder(folder_id):
-            raise HomeAssistantError(f"Failed to scan folder {folder_id}")
+        command = getattr(coordinator.api, method)
+        target = call.data[field] if field else None
+        description = f"{action} {target}" if field else action
+        _LOGGER.debug("Service: %s (%s)", service, description)
+        if not await (command(target) if field else command()):
+            raise HomeAssistantError(f"Failed to {description}")
         await asyncio.sleep(1)
         await coordinator.async_refresh()
 
-    async def handle_scan_all(call: ServiceCall) -> None:
-        coordinator = _get_coordinator(hass)
-        _LOGGER.debug("Service: scan_all")
-        if not await coordinator.api.scan_all_folders():
-            raise HomeAssistantError("Failed to scan all folders")
-        await asyncio.sleep(1)
-        await coordinator.async_refresh()
-
-    async def handle_pause_device(call: ServiceCall) -> None:
-        coordinator = _get_coordinator(hass)
-        device_id = call.data["device_id"]
-        _LOGGER.debug("Service: pause_device %s", device_id)
-        if not await coordinator.api.pause_device(device_id):
-            raise HomeAssistantError(f"Failed to pause device {device_id}")
-        await asyncio.sleep(1)
-        await coordinator.async_refresh()
-
-    async def handle_resume_device(call: ServiceCall) -> None:
-        coordinator = _get_coordinator(hass)
-        device_id = call.data["device_id"]
-        _LOGGER.debug("Service: resume_device %s", device_id)
-        if not await coordinator.api.resume_device(device_id):
-            raise HomeAssistantError(f"Failed to resume device {device_id}")
-        await asyncio.sleep(1)
-        await coordinator.async_refresh()
-
-    async def handle_pause_folder(call: ServiceCall) -> None:
-        coordinator = _get_coordinator(hass)
-        folder_id = call.data["folder_id"]
-        _LOGGER.debug("Service: pause_folder %s", folder_id)
-        if not await coordinator.api.pause_folder(folder_id):
-            raise HomeAssistantError(f"Failed to pause folder {folder_id}")
-        await asyncio.sleep(1)
-        await coordinator.async_refresh()
-
-    async def handle_resume_folder(call: ServiceCall) -> None:
-        coordinator = _get_coordinator(hass)
-        folder_id = call.data["folder_id"]
-        _LOGGER.debug("Service: resume_folder %s", folder_id)
-        if not await coordinator.api.resume_folder(folder_id):
-            raise HomeAssistantError(f"Failed to resume folder {folder_id}")
-        await asyncio.sleep(1)
-        await coordinator.async_refresh()
-
-    async def handle_pause_all(call: ServiceCall) -> None:
-        coordinator = _get_coordinator(hass)
-        _LOGGER.debug("Service: pause_all")
-        if not await coordinator.api.pause_all():
-            raise HomeAssistantError("Failed to pause all devices")
-        await asyncio.sleep(1)
-        await coordinator.async_refresh()
-
-    async def handle_resume_all(call: ServiceCall) -> None:
-        coordinator = _get_coordinator(hass)
-        _LOGGER.debug("Service: resume_all")
-        if not await coordinator.api.resume_all():
-            raise HomeAssistantError("Failed to resume all devices")
-        await asyncio.sleep(1)
-        await coordinator.async_refresh()
-
-    hass.services.async_register(
-        DOMAIN,
-        "scan_folder",
-        handle_scan_folder,
-        schema=vol.Schema({vol.Required("folder_id"): str}),
-    )
-    hass.services.async_register(DOMAIN, "scan_all", handle_scan_all)
-    hass.services.async_register(
-        DOMAIN,
-        "pause_folder",
-        handle_pause_folder,
-        schema=vol.Schema({vol.Required("folder_id"): str}),
-    )
-    hass.services.async_register(
-        DOMAIN,
-        "resume_folder",
-        handle_resume_folder,
-        schema=vol.Schema({vol.Required("folder_id"): str}),
-    )
-    hass.services.async_register(
-        DOMAIN,
-        "pause_device",
-        handle_pause_device,
-        schema=vol.Schema({vol.Required("device_id"): str}),
-    )
-    hass.services.async_register(
-        DOMAIN,
-        "resume_device",
-        handle_resume_device,
-        schema=vol.Schema({vol.Required("device_id"): str}),
-    )
-    hass.services.async_register(DOMAIN, "pause_all", handle_pause_all)
-    hass.services.async_register(DOMAIN, "resume_all", handle_resume_all)
+    return handle

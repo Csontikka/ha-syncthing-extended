@@ -27,6 +27,11 @@ PARALLEL_UPDATES = 1
 # --- Descriptions ---
 
 
+def _parse_timestamp(value: str | None) -> datetime | None:
+    """Parse an ISO timestamp from Syncthing; empty or missing means unknown."""
+    return datetime.fromisoformat(value) if value else None
+
+
 @dataclass(frozen=True, kw_only=True)
 class SyncthingSensorEntityDescription(SensorEntityDescription):
     """Describes a Syncthing sensor entity."""
@@ -236,10 +241,8 @@ FOLDER_SENSORS: tuple[SyncthingFolderSensorEntityDescription, ...] = (
         icon="mdi:calendar-clock",
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data, fid: (
-            datetime.fromisoformat(v)
-            if (v := _folder_stats(data, fid).get("lastScan"))
-            else None
+        value_fn=lambda data, fid: _parse_timestamp(
+            _folder_stats(data, fid).get("lastScan")
         ),
     ),
     SyncthingFolderSensorEntityDescription(
@@ -296,10 +299,8 @@ DEVICE_SENSORS: tuple[SyncthingDeviceSensorEntityDescription, ...] = (
         translation_key="device_last_seen",
         icon="mdi:clock-check-outline",
         device_class=SensorDeviceClass.TIMESTAMP,
-        value_fn=lambda data, did: (
-            datetime.fromisoformat(v)
-            if (v := _device_stats_entry(data, did).get("lastSeen"))
-            else None
+        value_fn=lambda data, did: _parse_timestamp(
+            _device_stats_entry(data, did).get("lastSeen")
         ),
     ),
     SyncthingDeviceSensorEntityDescription(
