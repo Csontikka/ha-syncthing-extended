@@ -511,6 +511,10 @@ def test_reconfigure_shows_form_prefilled_with_current_data():
     assert result["type"] == "form"
     assert rec.last["step_id"] == "reconfigure"
     assert rec.last.get("data_schema") is not None
+    # The update interval belongs to the options flow, not to reconfigure.
+    fields = {str(key) for key in rec.last["data_schema"].schema}
+    assert CONF_SCAN_INTERVAL not in fields
+    assert {CONF_HOST, CONF_PORT, CONF_PATH, CONF_API_KEY} <= fields
 
 
 def test_reconfigure_updates_entry_with_new_location():

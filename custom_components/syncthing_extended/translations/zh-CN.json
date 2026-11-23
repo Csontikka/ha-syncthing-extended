@@ -30,15 +30,13 @@
           "path": "路径（子目录）",
           "api_key": "API Key",
           "use_ssl": "使用 HTTPS（SSL）",
-          "verify_ssl": "验证 SSL 证书",
-          "scan_interval": "更新间隔（秒）"
+          "verify_ssl": "验证 SSL 证书"
         },
         "data_description": {
           "host": "Syncthing 实例的 IP 地址或主机名",
           "port": "默认：8384",
           "path": "如果 Syncthing 运行在反向代理之后，请填写路径前缀，例如 /syncthing。直连时留空。在主机字段中填写完整 URL 时会自动识别。",
-          "api_key": "在 Syncthing 界面的「操作 > 设置」中找到",
-          "scan_interval": "检查更新的频率（10–300 秒）"
+          "api_key": "在 Syncthing 界面的「操作 > 设置」中找到"
         }
       },
       "reauth_confirm": {

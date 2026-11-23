@@ -30,15 +30,13 @@
           "path": "Đường dẫn (thư mục con)",
           "api_key": "API Key",
           "use_ssl": "Sử dụng HTTPS (SSL)",
-          "verify_ssl": "Xác minh chứng chỉ SSL",
-          "scan_interval": "Khoảng thời gian cập nhật (giây)"
+          "verify_ssl": "Xác minh chứng chỉ SSL"
         },
         "data_description": {
           "host": "Địa chỉ IP hoặc tên máy chủ của phiên bản Syncthing",
           "port": "Mặc định: 8384",
           "path": "Tiền tố đường dẫn nếu Syncthing chạy sau proxy ngược, ví dụ /syncthing. Để trống nếu kết nối trực tiếp. URL đầy đủ trong trường máy chủ sẽ được nhận diện tự động.",
-          "api_key": "Tìm thấy trong giao diện Syncthing tại Hành động > Cài đặt",
-          "scan_interval": "Tần suất kiểm tra cập nhật (10–300 giây)"
+          "api_key": "Tìm thấy trong giao diện Syncthing tại Hành động > Cài đặt"
         }
       },
       "reauth_confirm": {

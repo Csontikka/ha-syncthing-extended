@@ -30,15 +30,13 @@
           "path": "Slóð (undirmappa)",
           "api_key": "API Key",
           "use_ssl": "Nota HTTPS (SSL)",
-          "verify_ssl": "Staðfesta SSL-vottorð",
-          "scan_interval": "Uppfærslutímabil (sekúndur)"
+          "verify_ssl": "Staðfesta SSL-vottorð"
         },
         "data_description": {
           "host": "IP-tala eða hýsilnafn Syncthing-tilviks",
           "port": "Sjálfgefið: 8384",
           "path": "Slóðarforskeyti ef Syncthing keyrir á bak við öfugan staðgengil, t.d. /syncthing. Skildu eftir autt fyrir beina tengingu. Full vefslóð í hýsilreitnum greinist sjálfkrafa.",
-          "api_key": "Finnst í Syncthing UI undir Aðgerðir > Stillingar",
-          "scan_interval": "Hversu oft á að sækja uppfærslur (10–300 sekúndur)"
+          "api_key": "Finnst í Syncthing UI undir Aðgerðir > Stillingar"
         }
       },
       "reauth_confirm": {

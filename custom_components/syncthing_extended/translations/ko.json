@@ -30,15 +30,13 @@
           "path": "경로 (하위 디렉터리)",
           "api_key": "API Key",
           "use_ssl": "HTTPS (SSL) 사용",
-          "verify_ssl": "SSL 인증서 확인",
-          "scan_interval": "업데이트 간격 (초)"
+          "verify_ssl": "SSL 인증서 확인"
         },
         "data_description": {
           "host": "Syncthing 인스턴스의 IP 주소 또는 호스트명",
           "port": "기본값: 8384",
           "path": "Syncthing이 리버스 프록시 뒤에서 실행되는 경우의 경로 접두사입니다(예: /syncthing). 직접 연결하려면 비워 두세요. 호스트 항목에 입력한 전체 URL은 자동으로 인식됩니다.",
-          "api_key": "Syncthing UI의 작업 > 설정에서 확인할 수 있습니다",
-          "scan_interval": "업데이트를 확인하는 빈도 (10~300 초)"
+          "api_key": "Syncthing UI의 작업 > 설정에서 확인할 수 있습니다"
         }
       },
       "reauth_confirm": {

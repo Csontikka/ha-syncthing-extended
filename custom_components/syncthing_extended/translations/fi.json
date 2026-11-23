@@ -30,15 +30,13 @@
           "path": "Polku (alihakemisto)",
           "api_key": "API Key",
           "use_ssl": "Käytä HTTPS:ää (SSL)",
-          "verify_ssl": "Tarkista SSL-varmenne",
-          "scan_interval": "Päivitysväli (sekuntia)"
+          "verify_ssl": "Tarkista SSL-varmenne"
         },
         "data_description": {
           "host": "Syncthing-instanssin IP-osoite tai isäntänimi",
           "port": "Oletus: 8384",
           "path": "Polun etuliite, jos Syncthing on käänteisen välityspalvelimen takana, esim. /syncthing. Jätä tyhjäksi suoraa yhteyttä varten. Isäntäkentässä oleva täysi URL-osoite tunnistetaan automaattisesti.",
-          "api_key": "Löytyy Syncthing-käyttöliittymästä kohdasta Toiminnot > Asetukset",
-          "scan_interval": "Kuinka usein päivityksiä haetaan (10–300 sekuntia)"
+          "api_key": "Löytyy Syncthing-käyttöliittymästä kohdasta Toiminnot > Asetukset"
         }
       },
       "reauth_confirm": {

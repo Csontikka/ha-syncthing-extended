@@ -30,15 +30,13 @@
           "path": "Cale (subdirector)",
           "api_key": "API Key",
           "use_ssl": "Utilizați HTTPS (SSL)",
-          "verify_ssl": "Verificați certificatul SSL",
-          "scan_interval": "Interval de actualizare (secunde)"
+          "verify_ssl": "Verificați certificatul SSL"
         },
         "data_description": {
           "host": "Adresa IP sau numele de gazdă al instanței Syncthing",
           "port": "Implicit: 8384",
           "path": "Prefixul căii dacă Syncthing rulează în spatele unui proxy invers, de ex. /syncthing. Lăsați gol pentru conexiune directă. O adresă URL completă în câmpul gazdă este detectată automat.",
-          "api_key": "Se găsește în interfața Syncthing la Acțiuni > Setări",
-          "scan_interval": "Cât de des se verifică actualizările (10–300 secunde)"
+          "api_key": "Se găsește în interfața Syncthing la Acțiuni > Setări"
         }
       },
       "reauth_confirm": {

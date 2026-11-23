@@ -30,15 +30,13 @@
           "path": "Location (subdirectory)",
           "api_key": "API Key",
           "use_ssl": "Use HTTPS (SSL)",
-          "verify_ssl": "Verify SSL certificate",
-          "scan_interval": "Update interval (seconds)"
+          "verify_ssl": "Verify SSL certificate"
         },
         "data_description": {
           "host": "IP address or hostname of the Syncthing instance",
           "port": "Default: 8384",
           "path": "Path prefix if Syncthing runs behind a reverse proxy, e.g. /syncthing. Leave empty for a direct connection. A full URL in the host field is detected automatically.",
-          "api_key": "Found in Syncthing UI under Actions > Settings",
-          "scan_interval": "How often to poll for updates (10-300 seconds)"
+          "api_key": "Found in Syncthing UI under Actions > Settings"
         }
       },
       "reauth_confirm": {

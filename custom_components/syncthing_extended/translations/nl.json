@@ -30,15 +30,13 @@
           "path": "Pad (submap)",
           "api_key": "API Key",
           "use_ssl": "HTTPS (SSL) gebruiken",
-          "verify_ssl": "SSL-certificaat verifiëren",
-          "scan_interval": "Verversingsinterval (seconden)"
+          "verify_ssl": "SSL-certificaat verifiëren"
         },
         "data_description": {
           "host": "IP-adres of hostnaam van de Syncthing-instantie",
           "port": "Standaard: 8384",
           "path": "Padvoorvoegsel als Syncthing achter een reverse proxy draait, bijv. /syncthing. Laat leeg voor een directe verbinding. Een volledige URL in het hostveld wordt automatisch herkend.",
-          "api_key": "Te vinden in de Syncthing UI onder Acties > Instellingen",
-          "scan_interval": "Hoe vaak op updates te controleren (10–300 seconden)"
+          "api_key": "Te vinden in de Syncthing UI onder Acties > Instellingen"
         }
       },
       "reauth_confirm": {

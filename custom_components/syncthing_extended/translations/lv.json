@@ -30,15 +30,13 @@
           "path": "Ceļš (apakšdirektorija)",
           "api_key": "API Key",
           "use_ssl": "Izmantot HTTPS (SSL)",
-          "verify_ssl": "Pārbaudīt SSL sertifikātu",
-          "scan_interval": "Atjaunināšanas intervāls (sekundes)"
+          "verify_ssl": "Pārbaudīt SSL sertifikātu"
         },
         "data_description": {
           "host": "Syncthing instances IP adrese vai resursdatora nosaukums",
           "port": "Noklusējums: 8384",
           "path": "Ceļa prefikss, ja Syncthing darbojas aiz reversā starpniekservera, piemēram, /syncthing. Tiešam savienojumam atstājiet tukšu. Pilna URL adrese resursdatora laukā tiek atpazīta automātiski.",
-          "api_key": "Atrodams Syncthing UI sadaļā Darbības > Iestatījumi",
-          "scan_interval": "Cik bieži pārbaudīt atjauninājumus (10–300 sekundes)"
+          "api_key": "Atrodams Syncthing UI sadaļā Darbības > Iestatījumi"
         }
       },
       "reauth_confirm": {

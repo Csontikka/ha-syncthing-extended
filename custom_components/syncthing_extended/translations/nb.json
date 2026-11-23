@@ -30,15 +30,13 @@
           "path": "Sti (underkatalog)",
           "api_key": "API Key",
           "use_ssl": "Bruk HTTPS (SSL)",
-          "verify_ssl": "Verifiser SSL-sertifikat",
-          "scan_interval": "Oppdateringsintervall (sekunder)"
+          "verify_ssl": "Verifiser SSL-sertifikat"
         },
         "data_description": {
           "host": "IP-adresse eller vertsnavn for Syncthing-instansen",
           "port": "Standard: 8384",
           "path": "Sti-prefiks hvis Syncthing kjører bak en omvendt proxy, f.eks. /syncthing. La stå tomt for direkte tilkobling. En full URL i vertsfeltet gjenkjennes automatisk.",
-          "api_key": "Finnes i Syncthing UI under Handlinger > Innstillinger",
-          "scan_interval": "Hvor ofte det skal sjekkes for oppdateringer (10–300 sekunder)"
+          "api_key": "Finnes i Syncthing UI under Handlinger > Innstillinger"
         }
       },
       "reauth_confirm": {

@@ -30,15 +30,13 @@
           "path": "Yol (alt dizin)",
           "api_key": "API Key",
           "use_ssl": "HTTPS (SSL) kullan",
-          "verify_ssl": "SSL sertifikasını doğrula",
-          "scan_interval": "Güncelleme aralığı (saniye)"
+          "verify_ssl": "SSL sertifikasını doğrula"
         },
         "data_description": {
           "host": "Syncthing örneğinin IP adresi veya ana bilgisayar adı",
           "port": "Varsayılan: 8384",
           "path": "Syncthing bir ters vekil sunucu arkasında çalışıyorsa yol ön eki, örn. /syncthing. Doğrudan bağlantı için boş bırakın. Ana bilgisayar alanına girilen tam URL otomatik olarak algılanır.",
-          "api_key": "Syncthing UI'da Eylemler > Ayarlar bölümünde bulunur",
-          "scan_interval": "Güncellemeleri ne sıklıkta kontrol edeceğiniz (10–300 saniye)"
+          "api_key": "Syncthing UI'da Eylemler > Ayarlar bölümünde bulunur"
         }
       },
       "reauth_confirm": {

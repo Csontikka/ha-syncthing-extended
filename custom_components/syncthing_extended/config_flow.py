@@ -53,6 +53,21 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 )
 
 
+# Reconfigure only covers the connection. The update interval lives in the
+# options flow, and options take precedence over entry data, so offering it
+# here would silently have no effect once it was set there.
+STEP_RECONFIGURE_DATA_SCHEMA = vol.Schema(
+    {
+        vol.Required(CONF_HOST): str,
+        vol.Required(CONF_PORT, default=DEFAULT_PORT): int,
+        vol.Optional(CONF_PATH, default=DEFAULT_PATH): str,
+        vol.Required(CONF_API_KEY): str,
+        vol.Optional(CONF_USE_SSL, default=DEFAULT_USE_SSL): bool,
+        vol.Optional(CONF_VERIFY_SSL, default=DEFAULT_VERIFY_SSL): bool,
+    }
+)
+
+
 def _resolve_connection(user_input: dict[str, Any]) -> dict[str, Any]:
     """Return user input with host, port, path and SSL resolved.
 
@@ -220,7 +235,7 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="reconfigure",
             data_schema=self.add_suggested_values_to_schema(
-                STEP_USER_DATA_SCHEMA,
+                STEP_RECONFIGURE_DATA_SCHEMA,
                 user_input or dict(reconfigure_entry.data),
             ),
             errors=errors,
