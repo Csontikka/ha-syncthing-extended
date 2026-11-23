@@ -29,3 +29,6 @@ ssl_test_*.png
 screenshots_targeted/
 .omc/
 brand_icons/
+
+# Titoktar (lakat) login
+.secrets/

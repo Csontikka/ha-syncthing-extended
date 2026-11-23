@@ -6,7 +6,6 @@ import logging
 from typing import Any
 
 import voluptuous as vol
-
 from homeassistant.config_entries import ConfigEntry, ConfigFlow, OptionsFlow
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
@@ -158,7 +157,11 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
                             if own and own.get("name"):
                                 title = f"Syncthing @ {own['name']}"
                         except Exception:
-                            pass
+                            # The name is cosmetic; keep the host:port title.
+                            _LOGGER.debug(
+                                "Could not look up the Syncthing device name",
+                                exc_info=True,
+                            )
 
                         return self.async_create_entry(
                             title=title,

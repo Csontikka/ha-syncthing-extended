@@ -8,20 +8,20 @@ from typing import Any
 import aiohttp
 
 from .const import (
-    API_HEALTH,
-    API_VERSION,
-    API_STATUS,
-    API_CONNECTIONS,
     API_CONFIG_DEVICES,
     API_CONFIG_FOLDERS,
-    API_DB_STATUS,
+    API_CONNECTIONS,
     API_DB_COMPLETION,
+    API_DB_SCAN,
+    API_DB_STATUS,
+    API_FOLDER_ERRORS,
+    API_HEALTH,
     API_STATS_DEVICE,
     API_STATS_FOLDER,
-    API_DB_SCAN,
-    API_FOLDER_ERRORS,
+    API_STATUS,
     API_SYSTEM_PAUSE,
     API_SYSTEM_RESUME,
+    API_VERSION,
 )
 
 _LOGGER = logging.getLogger(__name__)
