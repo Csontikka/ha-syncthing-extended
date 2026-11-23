@@ -48,6 +48,9 @@ class SyncthingCoordinator(DataUpdateCoordinator[SyncthingData]):
             update_interval=timedelta(seconds=scan_interval),
         )
         self.api = api
+        # Registry id of the hub device, set once the hub is registered during
+        # setup. Folder and remote-device entries link to it.
+        self.hub_device_id: str | None = None
 
     async def _async_update_data(self) -> SyncthingData:
         """Fetch all data from Syncthing API."""

@@ -11,6 +11,7 @@ import homeassistant.helpers.config_validation as cv
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import SyncthingApi
@@ -30,6 +31,7 @@ from .const import (
     PLATFORMS,
 )
 from .coordinator import SyncthingCoordinator
+from .entity import HUB_MANUFACTURER, HUB_NAME
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -76,6 +78,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: SyncthingConfigEntry) ->
     await coordinator.async_config_entry_first_refresh()
 
     entry.runtime_data = coordinator
+
+    # Folder and remote-device entries link to the hub by its registry id, so the
+    # hub has to exist before the platforms create them.
+    hub = dr.async_get(hass).async_get_or_create(
+        config_entry_id=entry.entry_id,
+        identifiers={(DOMAIN, entry.entry_id)},
+        name=HUB_NAME,
+        manufacturer=HUB_MANUFACTURER,
+        sw_version=coordinator.data.version.get("version"),
+    )
+    coordinator.hub_device_id = hub.id
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 

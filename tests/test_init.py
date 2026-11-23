@@ -354,12 +354,31 @@ def test_async_setup_entry_stores_coordinator_and_forwards_platforms():
         ), patch(
             "custom_components.syncthing_extended.SyncthingCoordinator",
             return_value=mock_coordinator,
-        ):
+        ), patch(
+            "custom_components.syncthing_extended.dr.async_get",
+        ) as mock_dr_get:
+            # The hub must be registered before the platforms are forwarded,
+            # because folder and device entries link to it by registry id.
+            hass.config_entries.async_forward_entry_setups.side_effect = (
+                lambda *_: mock_dr_get.return_value.async_get_or_create.assert_called_once()
+            )
+            mock_dr_get.return_value.async_get_or_create.return_value.id = (
+                "hub-registry-id"
+            )
             result = await async_setup_entry(hass, entry)
 
-        return result, entry, hass, mock_coordinator, mock_api_cls
+        hub_kwargs = mock_dr_get.return_value.async_get_or_create.call_args.kwargs
+        return result, entry, hass, mock_coordinator, mock_api_cls, hub_kwargs
 
-    result, entry, hass, mock_coordinator, mock_api_cls = asyncio.run(_run())
+    result, entry, hass, mock_coordinator, mock_api_cls, hub_kwargs = asyncio.run(
+        _run()
+    )
+
+    assert mock_coordinator.hub_device_id == "hub-registry-id"
+    assert hub_kwargs["config_entry_id"] == "test_entry"
+    assert hub_kwargs["identifiers"] == {("syncthing_extended", "test_entry")}
+    assert hub_kwargs["name"] == "Syncthing"
+    assert hub_kwargs["sw_version"] == mock_coordinator.data.version["version"]
 
     assert result is True
     # Coordinator stored on entry
@@ -409,6 +428,7 @@ def test_async_setup_entry_warns_when_builtin_syncthing_active(caplog):
 
         mock_coordinator = MagicMock(spec=SyncthingCoordinator)
         mock_coordinator.async_config_entry_first_refresh = AsyncMock()
+        mock_coordinator.data = build_mock_coordinator_data()
 
         with patch("custom_components.syncthing_extended.SyncthingApi"), patch(
             "custom_components.syncthing_extended.async_get_clientsession",
