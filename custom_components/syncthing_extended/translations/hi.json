@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "पथ (उप-निर्देशिका)",
           "api_key": "API Key",
           "use_ssl": "HTTPS (SSL) उपयोग करें",
           "verify_ssl": "SSL प्रमाणपत्र सत्यापित करें",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "Syncthing इंस्टेंस का IP पता या होस्टनाम",
           "port": "डिफ़ॉल्ट: 8384",
+          "path": "यदि Syncthing रिवर्स प्रॉक्सी के पीछे चल रहा है तो पथ उपसर्ग, जैसे /syncthing। सीधे कनेक्शन के लिए खाली छोड़ें। होस्ट फ़ील्ड में पूरा URL स्वतः पहचाना जाता है।",
+          "api_key": "Syncthing UI में Actions > Settings के अंतर्गत मिलेगी",
+          "scan_interval": "अपडेट के लिए कितनी बार जांच करें (10-300 सेकंड)"
+        }
+      },
+      "reconfigure": {
+        "title": "Syncthing पुनः कॉन्फ़िगर करें",
+        "description": "इस Syncthing इंस्टेंस के कनेक्शन विवरण अपडेट करें।",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "पथ (उप-निर्देशिका)",
+          "api_key": "API Key",
+          "use_ssl": "HTTPS (SSL) उपयोग करें",
+          "verify_ssl": "SSL प्रमाणपत्र सत्यापित करें",
+          "scan_interval": "अपडेट अंतराल (सेकंड)"
+        },
+        "data_description": {
+          "host": "Syncthing इंस्टेंस का IP पता या होस्टनाम",
+          "port": "डिफ़ॉल्ट: 8384",
+          "path": "यदि Syncthing रिवर्स प्रॉक्सी के पीछे चल रहा है तो पथ उपसर्ग, जैसे /syncthing। सीधे कनेक्शन के लिए खाली छोड़ें। होस्ट फ़ील्ड में पूरा URL स्वतः पहचाना जाता है।",
           "api_key": "Syncthing UI में Actions > Settings के अंतर्गत मिलेगी",
           "scan_interval": "अपडेट के लिए कितनी बार जांच करें (10-300 सेकंड)"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "Syncthing पुनः प्रमाणित करें",
         "description": "आपकी Syncthing API कुंजी अब मान्य नहीं है। कृपया नई कुंजी दर्ज करें।",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "Syncthing से कनेक्ट नहीं हो सका। होस्ट और पोर्ट जांचें।",
+      "invalid_host": "अमान्य होस्ट प्रविष्टि। होस्टनाम, IP पता या पूरा URL उपयोग करें।",
       "invalid_auth": "अमान्य API कुंजी।",
       "ssl_error": "SSL प्रमाणपत्र सत्यापन विफल। यदि आप स्व-हस्ताक्षरित प्रमाणपत्र उपयोग कर रहे हैं तो 'SSL प्रमाणपत्र सत्यापित करें' को अक्षम करें।",
       "unknown": "अप्रत्याशित त्रुटि हुई।"
     },
     "abort": {
-      "already_configured": "यह Syncthing इंस्टेंस पहले से कॉन्फ़िगर किया गया है।"
+      "already_configured": "यह Syncthing इंस्टेंस पहले से कॉन्फ़िगर किया गया है।",
+      "reconfigure_successful": "Syncthing कॉन्फ़िगरेशन अपडेट हो गया।",
+      "wrong_instance": "यह कॉन्फ़िगर किए गए इंस्टेंस से भिन्न Syncthing इंस्टेंस है।"
     }
   },
   "entity": {

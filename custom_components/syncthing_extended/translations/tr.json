@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "Yol (alt dizin)",
           "api_key": "API Key",
           "use_ssl": "HTTPS (SSL) kullan",
           "verify_ssl": "SSL sertifikasını doğrula",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "Syncthing örneğinin IP adresi veya ana bilgisayar adı",
           "port": "Varsayılan: 8384",
+          "path": "Syncthing bir ters vekil sunucu arkasında çalışıyorsa yol ön eki, örn. /syncthing. Doğrudan bağlantı için boş bırakın. Ana bilgisayar alanına girilen tam URL otomatik olarak algılanır.",
+          "api_key": "Syncthing UI'da Eylemler > Ayarlar bölümünde bulunur",
+          "scan_interval": "Güncellemeleri ne sıklıkta kontrol edeceğiniz (10–300 saniye)"
+        }
+      },
+      "reconfigure": {
+        "title": "Syncthing'i yeniden yapılandır",
+        "description": "Bu Syncthing örneğinin bağlantı bilgilerini güncelleyin.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "Yol (alt dizin)",
+          "api_key": "API Key",
+          "use_ssl": "HTTPS (SSL) kullan",
+          "verify_ssl": "SSL sertifikasını doğrula",
+          "scan_interval": "Güncelleme aralığı (saniye)"
+        },
+        "data_description": {
+          "host": "Syncthing örneğinin IP adresi veya ana bilgisayar adı",
+          "port": "Varsayılan: 8384",
+          "path": "Syncthing bir ters vekil sunucu arkasında çalışıyorsa yol ön eki, örn. /syncthing. Doğrudan bağlantı için boş bırakın. Ana bilgisayar alanına girilen tam URL otomatik olarak algılanır.",
           "api_key": "Syncthing UI'da Eylemler > Ayarlar bölümünde bulunur",
           "scan_interval": "Güncellemeleri ne sıklıkta kontrol edeceğiniz (10–300 saniye)"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "Syncthing'i Yeniden Doğrula",
         "description": "Syncthing API anahtarınız artık geçerli değil. Lütfen yeni bir anahtar girin.",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "Syncthing'e bağlanılamıyor. Ana bilgisayar ve portu kontrol edin.",
+      "invalid_host": "Geçersiz ana bilgisayar girdisi. Bir ana bilgisayar adı, IP adresi veya tam URL kullanın.",
       "invalid_auth": "Geçersiz API anahtarı.",
       "ssl_error": "SSL sertifikası doğrulaması başarısız oldu. Kendinden imzalı sertifika kullanıyorsanız 'SSL sertifikasını doğrula' seçeneğini devre dışı bırakın.",
       "unknown": "Beklenmeyen bir hata oluştu."
     },
     "abort": {
-      "already_configured": "Bu Syncthing örneği zaten yapılandırılmış."
+      "already_configured": "Bu Syncthing örneği zaten yapılandırılmış.",
+      "reconfigure_successful": "Syncthing yapılandırması güncellendi.",
+      "wrong_instance": "Bu, yapılandırılandan farklı bir Syncthing örneği."
     }
   },
   "entity": {

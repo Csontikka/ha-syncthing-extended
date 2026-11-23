@@ -17,10 +17,12 @@ from .api import SyncthingApi
 from .const import (
     CONF_API_KEY,
     CONF_HOST,
+    CONF_PATH,
     CONF_PORT,
     CONF_SCAN_INTERVAL,
     CONF_USE_SSL,
     CONF_VERIFY_SSL,
+    DEFAULT_PATH,
     DEFAULT_SCAN_INTERVAL,
     DEFAULT_USE_SSL,
     DEFAULT_VERIFY_SSL,
@@ -62,6 +64,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: SyncthingConfigEntry) ->
         use_ssl=use_ssl,
         verify_ssl=verify_ssl,
         session=session,
+        path=entry.data.get(CONF_PATH, DEFAULT_PATH),
     )
 
     scan_interval = entry.options.get(

@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "パス (サブディレクトリ)",
           "api_key": "API Key",
           "use_ssl": "HTTPS (SSL) を使用する",
           "verify_ssl": "SSL 証明書を検証する",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "Syncthing インスタンスの IP アドレスまたはホスト名",
           "port": "デフォルト: 8384",
+          "path": "Syncthing がリバースプロキシの背後で動作している場合のパス接頭辞 (例: /syncthing)。直接接続の場合は空欄のままにしてください。ホスト欄に完全な URL を入力すると自動的に認識されます。",
+          "api_key": "Syncthing UI の「アクション > 設定」で確認できます",
+          "scan_interval": "更新を確認する頻度（10〜300 秒）"
+        }
+      },
+      "reconfigure": {
+        "title": "Syncthing を再設定",
+        "description": "この Syncthing インスタンスの接続情報を更新します。",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "パス (サブディレクトリ)",
+          "api_key": "API Key",
+          "use_ssl": "HTTPS (SSL) を使用する",
+          "verify_ssl": "SSL 証明書を検証する",
+          "scan_interval": "更新間隔（秒）"
+        },
+        "data_description": {
+          "host": "Syncthing インスタンスの IP アドレスまたはホスト名",
+          "port": "デフォルト: 8384",
+          "path": "Syncthing がリバースプロキシの背後で動作している場合のパス接頭辞 (例: /syncthing)。直接接続の場合は空欄のままにしてください。ホスト欄に完全な URL を入力すると自動的に認識されます。",
           "api_key": "Syncthing UI の「アクション > 設定」で確認できます",
           "scan_interval": "更新を確認する頻度（10〜300 秒）"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "Syncthing の再認証",
         "description": "Syncthing の API キーが無効になりました。新しいキーを入力してください。",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "Syncthing に接続できません。ホストとポートを確認してください。",
+      "invalid_host": "ホストの入力が不正です。ホスト名、IP アドレス、または完全な URL を入力してください。",
       "invalid_auth": "API キーが無効です。",
       "ssl_error": "SSL 証明書の検証に失敗しました。自己署名証明書を使用している場合は「SSL 証明書を検証する」を無効にしてください。",
       "unknown": "予期しないエラーが発生しました。"
     },
     "abort": {
-      "already_configured": "この Syncthing インスタンスはすでに設定されています。"
+      "already_configured": "この Syncthing インスタンスはすでに設定されています。",
+      "reconfigure_successful": "Syncthing の設定を更新しました。",
+      "wrong_instance": "設定済みのものとは異なる Syncthing インスタンスです。"
     }
   },
   "entity": {

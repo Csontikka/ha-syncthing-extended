@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "Polku (alihakemisto)",
           "api_key": "API Key",
           "use_ssl": "Käytä HTTPS:ää (SSL)",
           "verify_ssl": "Tarkista SSL-varmenne",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "Syncthing-instanssin IP-osoite tai isäntänimi",
           "port": "Oletus: 8384",
+          "path": "Polun etuliite, jos Syncthing on käänteisen välityspalvelimen takana, esim. /syncthing. Jätä tyhjäksi suoraa yhteyttä varten. Isäntäkentässä oleva täysi URL-osoite tunnistetaan automaattisesti.",
+          "api_key": "Löytyy Syncthing-käyttöliittymästä kohdasta Toiminnot > Asetukset",
+          "scan_interval": "Kuinka usein päivityksiä haetaan (10–300 sekuntia)"
+        }
+      },
+      "reconfigure": {
+        "title": "Määritä Syncthing uudelleen",
+        "description": "Päivitä tämän Syncthing-instanssin yhteystiedot.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "Polku (alihakemisto)",
+          "api_key": "API Key",
+          "use_ssl": "Käytä HTTPS:ää (SSL)",
+          "verify_ssl": "Tarkista SSL-varmenne",
+          "scan_interval": "Päivitysväli (sekuntia)"
+        },
+        "data_description": {
+          "host": "Syncthing-instanssin IP-osoite tai isäntänimi",
+          "port": "Oletus: 8384",
+          "path": "Polun etuliite, jos Syncthing on käänteisen välityspalvelimen takana, esim. /syncthing. Jätä tyhjäksi suoraa yhteyttä varten. Isäntäkentässä oleva täysi URL-osoite tunnistetaan automaattisesti.",
           "api_key": "Löytyy Syncthing-käyttöliittymästä kohdasta Toiminnot > Asetukset",
           "scan_interval": "Kuinka usein päivityksiä haetaan (10–300 sekuntia)"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "Todenna Syncthing uudelleen",
         "description": "Syncthing API-avaimesi ei ole enää voimassa. Syötä uusi avain.",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "Ei voi muodostaa yhteyttä Syncthing-palveluun. Tarkista isäntä ja portti.",
+      "invalid_host": "Virheellinen isäntätieto. Käytä isäntänimeä, IP-osoitetta tai täyttä URL-osoitetta.",
       "invalid_auth": "Virheellinen API-avain.",
       "ssl_error": "SSL-varmenteen tarkistus epäonnistui. Poista käytöstä 'Tarkista SSL-varmenne', jos käytät itse allekirjoitettua varmennetta.",
       "unknown": "Odottamaton virhe tapahtui."
     },
     "abort": {
-      "already_configured": "Tämä Syncthing-instanssi on jo määritetty."
+      "already_configured": "Tämä Syncthing-instanssi on jo määritetty.",
+      "reconfigure_successful": "Syncthing-määritykset päivitetty.",
+      "wrong_instance": "Tämä on eri Syncthing-instanssi kuin määritetty."
     }
   },
   "entity": {

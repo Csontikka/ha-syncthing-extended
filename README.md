@@ -82,8 +82,9 @@ After setup, the integration appears in Settings → Integrations:
 
 | Parameter | Required | Default | Description |
 |-----------|----------|---------|-------------|
-| Host | Yes | — | IP address or hostname of the Syncthing instance |
+| Host | Yes | — | IP address, hostname or full URL of the Syncthing instance |
 | Port | Yes | `8384` | Syncthing GUI/API port |
+| Location | No | — | Path prefix when Syncthing sits behind a reverse proxy, e.g. `/syncthing` |
 | API Key | Yes | — | Found in Syncthing UI: Actions → Settings → API Key |
 | Use HTTPS | No | `false` | Connect using HTTPS instead of HTTP |
 | Verify SSL | No | `false` | Validate the HTTPS certificate (requires Use HTTPS) |
@@ -97,6 +98,41 @@ After setup, the integration appears in Settings → Integrations:
 - **Linux**: `~/.local/state/syncthing/config.xml` → `<gui><apikey>…</apikey></gui>`
 - **Proxmox LXC**: `/root/.local/state/syncthing/config.xml`
 
+### Reverse proxy / subdirectory
+
+If Syncthing is served under a subdirectory instead of its own port — for example
+`https://example.com/syncthing/` behind nginx — put the path prefix into the
+**Location** field:
+
+| Field | Value |
+|-------|-------|
+| Host | `example.com` |
+| Port | `443` |
+| Location | `/syncthing/` |
+| Use HTTPS | ✅ |
+
+Alternatively just paste the full URL into the **Host** field — scheme, port and
+location are detected automatically:
+
+```
+https://example.com/syncthing/
+```
+
+That fills in host `example.com`, port `443`, location `/syncthing` and enables
+HTTPS. An explicit entry in the **Location** field always wins over a path
+detected in the **Host** field. Leaving both empty keeps the classic
+`host:port` behaviour, so existing setups are unaffected.
+
+On the nginx side the location must strip the prefix before proxying — note the
+trailing slash on `proxy_pass`:
+
+```nginx
+location /syncthing/ {
+    proxy_pass http://127.0.0.1:8384/;
+    proxy_set_header Host $host;
+}
+```
+
 ### Remote access requirement
 
 Syncthing must listen on a non-localhost address. If bound to `127.0.0.1:8384`, change it to `0.0.0.0:8384` in Syncthing GUI (Settings → GUI Listen Addresses) and restart Syncthing.
@@ -104,6 +140,12 @@ Syncthing must listen on a non-localhost address. If bound to `127.0.0.1:8384`, 
 ### Options
 
 After setup you can change the **Update interval** via **Settings → Integrations → Syncthing → Configure**.
+
+### Reconfigure
+
+Host, port, location and SSL settings of an existing entry can be changed via
+**Settings → Integrations → Syncthing → ⋮ → Reconfigure** — no need to delete
+and re-add the integration.
 
 ### Re-authentication
 

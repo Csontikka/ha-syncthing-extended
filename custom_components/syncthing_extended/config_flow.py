@@ -17,14 +17,18 @@ from .api import (
     SyncthingAuthError,
     SyncthingConnectionError,
     SyncthingSslError,
+    normalize_base_path,
+    parse_host_input,
 )
 from .const import (
     CONF_API_KEY,
     CONF_HOST,
+    CONF_PATH,
     CONF_PORT,
     CONF_SCAN_INTERVAL,
     CONF_USE_SSL,
     CONF_VERIFY_SSL,
+    DEFAULT_PATH,
     DEFAULT_PORT,
     DEFAULT_SCAN_INTERVAL,
     DEFAULT_USE_SSL,
@@ -38,6 +42,7 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_HOST): str,
         vol.Required(CONF_PORT, default=DEFAULT_PORT): int,
+        vol.Optional(CONF_PATH, default=DEFAULT_PATH): str,
         vol.Required(CONF_API_KEY): str,
         vol.Optional(CONF_USE_SSL, default=DEFAULT_USE_SSL): bool,
         vol.Optional(CONF_VERIFY_SSL, default=DEFAULT_VERIFY_SSL): bool,
@@ -46,6 +51,30 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
         ),
     }
 )
+
+
+def _resolve_connection(user_input: dict[str, Any]) -> dict[str, Any]:
+    """Return user input with host, port, path and SSL resolved.
+
+    The host field may carry a full URL (``https://xyz/syncthing``). Anything
+    it specifies wins over the matching form field, except for an explicit
+    entry in the location field, which always takes precedence over a path
+    detected in the host field.
+
+    Raises ValueError if the host entry cannot be interpreted.
+    """
+    host, port, path_from_host, use_ssl = parse_host_input(user_input[CONF_HOST])
+
+    resolved = dict(user_input)
+    resolved[CONF_HOST] = host
+    if port is not None:
+        resolved[CONF_PORT] = port
+    if use_ssl is not None:
+        resolved[CONF_USE_SSL] = use_ssl
+    resolved[CONF_PATH] = (
+        normalize_base_path(user_input.get(CONF_PATH)) or path_from_host
+    )
+    return resolved
 
 
 class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
@@ -60,16 +89,29 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
 
         if user_input is not None:
-            use_ssl = user_input.get(CONF_USE_SSL, DEFAULT_USE_SSL)
-            verify_ssl = user_input.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL)
+            try:
+                resolved = _resolve_connection(user_input)
+            except ValueError as err:
+                _LOGGER.debug("Invalid host entry %r: %s", user_input[CONF_HOST], err)
+                return self.async_show_form(
+                    step_id="user",
+                    data_schema=self.add_suggested_values_to_schema(
+                        STEP_USER_DATA_SCHEMA, user_input
+                    ),
+                    errors={CONF_HOST: "invalid_host"},
+                )
+
+            use_ssl = resolved.get(CONF_USE_SSL, DEFAULT_USE_SSL)
+            verify_ssl = resolved.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL)
             session = async_get_clientsession(self.hass, verify_ssl=verify_ssl)
             api = SyncthingApi(
-                host=user_input[CONF_HOST],
-                port=user_input[CONF_PORT],
-                api_key=user_input[CONF_API_KEY],
+                host=resolved[CONF_HOST],
+                port=resolved[CONF_PORT],
+                api_key=resolved[CONF_API_KEY],
                 use_ssl=use_ssl,
                 verify_ssl=verify_ssl,
                 session=session,
+                path=resolved[CONF_PATH],
             )
 
             try:
@@ -88,7 +130,10 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
                         self._abort_if_unique_id_configured()
 
                         # Try to get a friendly device name
-                        title = f"Syncthing ({user_input[CONF_HOST]}:{user_input[CONF_PORT]})"
+                        title = (
+                            f"Syncthing ({resolved[CONF_HOST]}:"
+                            f"{resolved[CONF_PORT]}{resolved[CONF_PATH]})"
+                        )
                         try:
                             devices = await api.get_config_devices()
                             own = next(
@@ -102,7 +147,7 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
 
                         return self.async_create_entry(
                             title=title,
-                            data=user_input,
+                            data=resolved,
                         )
             except SyncthingAuthError:
                 errors["base"] = "invalid_auth"
@@ -118,6 +163,65 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=self.add_suggested_values_to_schema(
                 STEP_USER_DATA_SCHEMA, user_input or {}
+            ),
+            errors=errors,
+        )
+
+    async def async_step_reconfigure(
+        self, user_input: dict[str, Any] | None = None
+    ) -> FlowResult:
+        """Handle reconfiguration of an existing entry.
+
+        Lets an existing installation add or change host, port, location and
+        SSL settings without having to be removed and set up again.
+        """
+        reconfigure_entry = self._get_reconfigure_entry()
+        errors: dict[str, str] = {}
+
+        if user_input is not None:
+            try:
+                resolved = _resolve_connection(user_input)
+            except ValueError as err:
+                _LOGGER.debug("Invalid host entry %r: %s", user_input[CONF_HOST], err)
+                errors[CONF_HOST] = "invalid_host"
+            else:
+                verify_ssl = resolved.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL)
+                api = SyncthingApi(
+                    host=resolved[CONF_HOST],
+                    port=resolved[CONF_PORT],
+                    api_key=resolved[CONF_API_KEY],
+                    use_ssl=resolved.get(CONF_USE_SSL, DEFAULT_USE_SSL),
+                    verify_ssl=verify_ssl,
+                    session=async_get_clientsession(self.hass, verify_ssl=verify_ssl),
+                    path=resolved[CONF_PATH],
+                )
+                try:
+                    status = await api.get_system_status()
+                    unique_id = status.get("myID", "")
+                    if not unique_id:
+                        errors["base"] = "cannot_connect"
+                    else:
+                        await self.async_set_unique_id(unique_id)
+                        self._abort_if_unique_id_mismatch(reason="wrong_instance")
+                        return self.async_update_reload_and_abort(
+                            reconfigure_entry,
+                            data_updates=resolved,
+                        )
+                except SyncthingAuthError:
+                    errors["base"] = "invalid_auth"
+                except SyncthingSslError:
+                    errors["base"] = "ssl_error"
+                except SyncthingConnectionError:
+                    errors["base"] = "cannot_connect"
+                except Exception:
+                    _LOGGER.exception("Unexpected error during reconfiguration")
+                    errors["base"] = "unknown"
+
+        return self.async_show_form(
+            step_id="reconfigure",
+            data_schema=self.add_suggested_values_to_schema(
+                STEP_USER_DATA_SCHEMA,
+                user_input or dict(reconfigure_entry.data),
             ),
             errors=errors,
         )
@@ -144,6 +248,7 @@ class SyncthingConfigFlow(ConfigFlow, domain=DOMAIN):
                 api_key=user_input[CONF_API_KEY],
                 verify_ssl=reauth_entry.data.get(CONF_VERIFY_SSL, DEFAULT_VERIFY_SSL),
                 session=session,
+                path=reauth_entry.data.get(CONF_PATH, DEFAULT_PATH),
             )
             try:
                 await api.get_system_status()

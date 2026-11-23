@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "Sti (undermappe)",
           "api_key": "API Key",
           "use_ssl": "Brug HTTPS (SSL)",
           "verify_ssl": "Bekræft SSL-certifikat",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "IP-adresse eller værtsnavn på Syncthing-instansen",
           "port": "Standard: 8384",
+          "path": "Sti-præfiks, hvis Syncthing kører bag en reverse proxy, f.eks. /syncthing. Lad stå tomt ved direkte forbindelse. En fuld URL i værtsfeltet registreres automatisk.",
+          "api_key": "Findes i Syncthing-grænsefladen under Handlinger > Indstillinger",
+          "scan_interval": "Hvor ofte der hentes opdateringer (10–300 sekunder)"
+        }
+      },
+      "reconfigure": {
+        "title": "Omkonfigurer Syncthing",
+        "description": "Opdater forbindelsesoplysningerne for denne Syncthing-instans.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "Sti (undermappe)",
+          "api_key": "API Key",
+          "use_ssl": "Brug HTTPS (SSL)",
+          "verify_ssl": "Bekræft SSL-certifikat",
+          "scan_interval": "Opdateringsinterval (sekunder)"
+        },
+        "data_description": {
+          "host": "IP-adresse eller værtsnavn på Syncthing-instansen",
+          "port": "Standard: 8384",
+          "path": "Sti-præfiks, hvis Syncthing kører bag en reverse proxy, f.eks. /syncthing. Lad stå tomt ved direkte forbindelse. En fuld URL i værtsfeltet registreres automatisk.",
           "api_key": "Findes i Syncthing-grænsefladen under Handlinger > Indstillinger",
           "scan_interval": "Hvor ofte der hentes opdateringer (10–300 sekunder)"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "Godkend Syncthing igen",
         "description": "Din Syncthing API-nøgle er ikke længere gyldig. Indtast venligst en ny.",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "Kan ikke oprette forbindelse til Syncthing. Kontrollér vært og port.",
+      "invalid_host": "Ugyldig værtsangivelse. Brug et værtsnavn, en IP-adresse eller en fuld URL.",
       "invalid_auth": "Ugyldig API-nøgle.",
       "ssl_error": "SSL-certifikatbekræftelse mislykkedes. Deaktivér 'Bekræft SSL-certifikat', hvis du bruger et selvsigneret certifikat.",
       "unknown": "Der opstod en uventet fejl."
     },
     "abort": {
-      "already_configured": "Denne Syncthing-instans er allerede konfigureret."
+      "already_configured": "Denne Syncthing-instans er allerede konfigureret.",
+      "reconfigure_successful": "Syncthing-konfigurationen er opdateret.",
+      "wrong_instance": "Dette er en anden Syncthing-instans end den konfigurerede."
     }
   },
   "entity": {

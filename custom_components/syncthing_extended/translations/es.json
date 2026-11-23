@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "Ruta (subdirectorio)",
           "api_key": "API Key",
           "use_ssl": "Usar HTTPS (SSL)",
           "verify_ssl": "Verificar certificado SSL",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "Dirección IP o nombre de host de la instancia de Syncthing",
           "port": "Predeterminado: 8384",
+          "path": "Prefijo de ruta si Syncthing se ejecuta detrás de un proxy inverso, p. ej. /syncthing. Déjelo vacío para una conexión directa. Una URL completa en el campo de host se detecta automáticamente.",
+          "api_key": "Se encuentra en la interfaz de Syncthing en Acciones > Configuración",
+          "scan_interval": "Con qué frecuencia consultar actualizaciones (10–300 segundos)"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigurar Syncthing",
+        "description": "Actualice los datos de conexión de esta instancia de Syncthing.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "Ruta (subdirectorio)",
+          "api_key": "API Key",
+          "use_ssl": "Usar HTTPS (SSL)",
+          "verify_ssl": "Verificar certificado SSL",
+          "scan_interval": "Intervalo de actualización (segundos)"
+        },
+        "data_description": {
+          "host": "Dirección IP o nombre de host de la instancia de Syncthing",
+          "port": "Predeterminado: 8384",
+          "path": "Prefijo de ruta si Syncthing se ejecuta detrás de un proxy inverso, p. ej. /syncthing. Déjelo vacío para una conexión directa. Una URL completa en el campo de host se detecta automáticamente.",
           "api_key": "Se encuentra en la interfaz de Syncthing en Acciones > Configuración",
           "scan_interval": "Con qué frecuencia consultar actualizaciones (10–300 segundos)"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "Reautenticar Syncthing",
         "description": "Su clave de API de Syncthing ya no es válida. Por favor, introduzca una nueva.",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "No se puede conectar a Syncthing. Compruebe el host y el puerto.",
+      "invalid_host": "Entrada de host no válida. Use un nombre de host, una dirección IP o una URL completa.",
       "invalid_auth": "Clave de API no válida.",
       "ssl_error": "Error al verificar el certificado SSL. Desactive 'Verificar certificado SSL' si utiliza un certificado autofirmado.",
       "unknown": "Se produjo un error inesperado."
     },
     "abort": {
-      "already_configured": "Esta instancia de Syncthing ya está configurada."
+      "already_configured": "Esta instancia de Syncthing ya está configurada.",
+      "reconfigure_successful": "Configuración de Syncthing actualizada.",
+      "wrong_instance": "Esta es una instancia de Syncthing distinta a la configurada."
     }
   },
   "entity": {

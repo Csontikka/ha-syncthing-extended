@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "路径（子目录）",
           "api_key": "API Key",
           "use_ssl": "使用 HTTPS（SSL）",
           "verify_ssl": "验证 SSL 证书",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "Syncthing 实例的 IP 地址或主机名",
           "port": "默认：8384",
+          "path": "如果 Syncthing 运行在反向代理之后，请填写路径前缀，例如 /syncthing。直连时留空。在主机字段中填写完整 URL 时会自动识别。",
+          "api_key": "在 Syncthing 界面的「操作 > 设置」中找到",
+          "scan_interval": "检查更新的频率（10–300 秒）"
+        }
+      },
+      "reconfigure": {
+        "title": "重新配置 Syncthing",
+        "description": "更新此 Syncthing 实例的连接信息。",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "路径（子目录）",
+          "api_key": "API Key",
+          "use_ssl": "使用 HTTPS（SSL）",
+          "verify_ssl": "验证 SSL 证书",
+          "scan_interval": "更新间隔（秒）"
+        },
+        "data_description": {
+          "host": "Syncthing 实例的 IP 地址或主机名",
+          "port": "默认：8384",
+          "path": "如果 Syncthing 运行在反向代理之后，请填写路径前缀，例如 /syncthing。直连时留空。在主机字段中填写完整 URL 时会自动识别。",
           "api_key": "在 Syncthing 界面的「操作 > 设置」中找到",
           "scan_interval": "检查更新的频率（10–300 秒）"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "重新验证 Syncthing",
         "description": "您的 Syncthing API 密钥已失效，请输入新密钥。",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "无法连接到 Syncthing，请检查主机和端口。",
+      "invalid_host": "主机输入无效。请使用主机名、IP 地址或完整 URL。",
       "invalid_auth": "无效的 API 密钥。",
       "ssl_error": "SSL 证书验证失败。如果使用自签名证书，请禁用「验证 SSL 证书」。",
       "unknown": "发生了意外错误。"
     },
     "abort": {
-      "already_configured": "此 Syncthing 实例已配置。"
+      "already_configured": "此 Syncthing 实例已配置。",
+      "reconfigure_successful": "Syncthing 配置已更新。",
+      "wrong_instance": "这与已配置的 Syncthing 实例不同。"
     }
   },
   "entity": {

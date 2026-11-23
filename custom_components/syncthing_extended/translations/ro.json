@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "Cale (subdirector)",
           "api_key": "API Key",
           "use_ssl": "Utilizați HTTPS (SSL)",
           "verify_ssl": "Verificați certificatul SSL",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "Adresa IP sau numele de gazdă al instanței Syncthing",
           "port": "Implicit: 8384",
+          "path": "Prefixul căii dacă Syncthing rulează în spatele unui proxy invers, de ex. /syncthing. Lăsați gol pentru conexiune directă. O adresă URL completă în câmpul gazdă este detectată automat.",
+          "api_key": "Se găsește în interfața Syncthing la Acțiuni > Setări",
+          "scan_interval": "Cât de des se verifică actualizările (10–300 secunde)"
+        }
+      },
+      "reconfigure": {
+        "title": "Reconfigurare Syncthing",
+        "description": "Actualizați datele de conexiune ale acestei instanțe Syncthing.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "Cale (subdirector)",
+          "api_key": "API Key",
+          "use_ssl": "Utilizați HTTPS (SSL)",
+          "verify_ssl": "Verificați certificatul SSL",
+          "scan_interval": "Interval de actualizare (secunde)"
+        },
+        "data_description": {
+          "host": "Adresa IP sau numele de gazdă al instanței Syncthing",
+          "port": "Implicit: 8384",
+          "path": "Prefixul căii dacă Syncthing rulează în spatele unui proxy invers, de ex. /syncthing. Lăsați gol pentru conexiune directă. O adresă URL completă în câmpul gazdă este detectată automat.",
           "api_key": "Se găsește în interfața Syncthing la Acțiuni > Setări",
           "scan_interval": "Cât de des se verifică actualizările (10–300 secunde)"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "Reautentificare Syncthing",
         "description": "Cheia dvs. API Syncthing nu mai este validă. Introduceți una nouă.",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "Nu se poate conecta la Syncthing. Verificați gazda și portul.",
+      "invalid_host": "Intrare gazdă nevalidă. Folosiți un nume de gazdă, o adresă IP sau o adresă URL completă.",
       "invalid_auth": "Cheie API invalidă.",
       "ssl_error": "Verificarea certificatului SSL a eșuat. Dezactivați 'Verificați certificatul SSL' dacă utilizați un certificat autosemnat.",
       "unknown": "A apărut o eroare neașteptată."
     },
     "abort": {
-      "already_configured": "Această instanță Syncthing este deja configurată."
+      "already_configured": "Această instanță Syncthing este deja configurată.",
+      "reconfigure_successful": "Configurația Syncthing a fost actualizată.",
+      "wrong_instance": "Aceasta este o instanță Syncthing diferită de cea configurată."
     }
   },
   "entity": {

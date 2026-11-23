@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "Sökväg (underkatalog)",
           "api_key": "API Key",
           "use_ssl": "Använd HTTPS (SSL)",
           "verify_ssl": "Verifiera SSL-certifikat",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "IP-adress eller värdnamn för Syncthing-instansen",
           "port": "Standard: 8384",
+          "path": "Sökvägsprefix om Syncthing körs bakom en omvänd proxy, t.ex. /syncthing. Lämna tomt för direktanslutning. En fullständig URL i värdfältet identifieras automatiskt.",
+          "api_key": "Finns i Syncthing-gränssnittet under Åtgärder > Inställningar",
+          "scan_interval": "Hur ofta uppdateringar hämtas (10–300 sekunder)"
+        }
+      },
+      "reconfigure": {
+        "title": "Konfigurera om Syncthing",
+        "description": "Uppdatera anslutningsuppgifterna för denna Syncthing-instans.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "Sökväg (underkatalog)",
+          "api_key": "API Key",
+          "use_ssl": "Använd HTTPS (SSL)",
+          "verify_ssl": "Verifiera SSL-certifikat",
+          "scan_interval": "Uppdateringsintervall (sekunder)"
+        },
+        "data_description": {
+          "host": "IP-adress eller värdnamn för Syncthing-instansen",
+          "port": "Standard: 8384",
+          "path": "Sökvägsprefix om Syncthing körs bakom en omvänd proxy, t.ex. /syncthing. Lämna tomt för direktanslutning. En fullständig URL i värdfältet identifieras automatiskt.",
           "api_key": "Finns i Syncthing-gränssnittet under Åtgärder > Inställningar",
           "scan_interval": "Hur ofta uppdateringar hämtas (10–300 sekunder)"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "Autentisera Syncthing på nytt",
         "description": "Din Syncthing API-nyckel är inte längre giltig. Ange en ny.",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "Kan inte ansluta till Syncthing. Kontrollera värd och port.",
+      "invalid_host": "Ogiltig värdangivelse. Använd ett värdnamn, en IP-adress eller en fullständig URL.",
       "invalid_auth": "Ogiltig API-nyckel.",
       "ssl_error": "SSL-certifikatverifiering misslyckades. Inaktivera 'Verifiera SSL-certifikat' om du använder ett självsignerat certifikat.",
       "unknown": "Ett oväntat fel uppstod."
     },
     "abort": {
-      "already_configured": "Den här Syncthing-instansen är redan konfigurerad."
+      "already_configured": "Den här Syncthing-instansen är redan konfigurerad.",
+      "reconfigure_successful": "Syncthing-konfigurationen har uppdaterats.",
+      "wrong_instance": "Detta är en annan Syncthing-instans än den konfigurerade."
     }
   },
   "entity": {

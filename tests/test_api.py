@@ -14,6 +14,8 @@ from custom_components.syncthing_extended.api import (
     SyncthingAuthError,
     SyncthingConnectionError,
     SyncthingSslError,
+    normalize_base_path,
+    parse_host_input,
 )
 
 BASE_URL = "https://192.168.1.1:8384"
@@ -463,3 +465,92 @@ def test_base_url_http_when_ssl_disabled():
 def test_base_url_https_when_ssl_enabled():
     api = SyncthingApi("myhost", 8384, "key", use_ssl=True)
     assert api.base_url == "https://myhost:8384"
+
+
+def test_base_url_includes_normalized_path():
+    api = SyncthingApi("myhost", 443, "key", use_ssl=True, path="/syncthing/")
+    assert api.base_url == "https://myhost:443/syncthing"
+
+
+def test_base_url_adds_missing_leading_slash_to_path():
+    api = SyncthingApi("myhost", 443, "key", use_ssl=True, path="syncthing")
+    assert api.base_url == "https://myhost:443/syncthing"
+
+
+def test_base_url_unchanged_when_path_is_empty():
+    api = SyncthingApi("myhost", 8384, "key", use_ssl=True, path="")
+    assert api.base_url == "https://myhost:8384"
+
+
+# --- normalize_base_path ---
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        (None, ""),
+        ("", ""),
+        ("   ", ""),
+        ("/", ""),
+        ("///", ""),
+        ("syncthing", "/syncthing"),
+        ("/syncthing", "/syncthing"),
+        ("/syncthing/", "/syncthing"),
+        ("  /syncthing/  ", "/syncthing"),
+        ("/a/b/c/", "/a/b/c"),
+    ],
+)
+def test_normalize_base_path(raw, expected):
+    assert normalize_base_path(raw) == expected
+
+
+# --- parse_host_input ---
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        # plain host — nothing is inferred, the form fields stay authoritative
+        ("myhost", ("myhost", None, "", None)),
+        ("  myhost  ", ("myhost", None, "", None)),
+        ("192.168.1.100", ("192.168.1.100", None, "", None)),
+        # explicit port
+        ("myhost:8443", ("myhost", 8443, "", None)),
+        # path detection without scheme
+        ("myhost/syncthing", ("myhost", None, "/syncthing", None)),
+        ("myhost/syncthing/", ("myhost", None, "/syncthing", None)),
+        ("myhost:8443/syncthing", ("myhost", 8443, "/syncthing", None)),
+        # a bare trailing slash is not a path
+        ("myhost/", ("myhost", None, "", None)),
+        # scheme implies SSL and the standard port
+        ("https://myhost", ("myhost", 443, "", True)),
+        ("http://myhost", ("myhost", 80, "", False)),
+        ("HTTPS://myhost/syncthing/", ("myhost", 443, "/syncthing", True)),
+        # an explicit port always wins over the scheme default
+        ("https://myhost:8443/syncthing", ("myhost", 8443, "/syncthing", True)),
+        # IPv6 literals
+        ("[::1]", ("[::1]", None, "", None)),
+        ("[::1]:8384/syncthing", ("[::1]", 8384, "/syncthing", None)),
+        ("https://[2001:db8::1]/syncthing", ("[2001:db8::1]", 443, "/syncthing", True)),
+    ],
+)
+def test_parse_host_input(raw, expected):
+    assert parse_host_input(raw) == expected
+
+
+@pytest.mark.parametrize(
+    "raw",
+    [
+        "",
+        "   ",
+        None,
+        "/syncthing",  # no host at all
+        "ftp://myhost",
+        "myhost:notaport",
+        "myhost:0",
+        "myhost:70000",
+        "[::1:8384",  # unterminated IPv6 literal
+        "[::1]x",
+    ],
+)
+def test_parse_host_input_rejects_invalid_values(raw):
+    with pytest.raises(ValueError):
+        parse_host_input(raw)

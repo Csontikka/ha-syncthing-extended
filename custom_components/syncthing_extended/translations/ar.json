@@ -7,6 +7,7 @@
         "data": {
           "host": "Host",
           "port": "Port",
+          "path": "المسار (مجلد فرعي)",
           "api_key": "API Key",
           "use_ssl": "استخدام HTTPS (SSL)",
           "verify_ssl": "التحقق من شهادة SSL",
@@ -15,6 +16,27 @@
         "data_description": {
           "host": "عنوان IP أو اسم المضيف لنسخة Syncthing",
           "port": "الافتراضي: 8384",
+          "path": "بادئة المسار إذا كان Syncthing يعمل خلف وكيل عكسي، مثل ‎/syncthing. اتركه فارغًا للاتصال المباشر. يتم اكتشاف عنوان URL الكامل في حقل المضيف تلقائيًا.",
+          "api_key": "يوجد في واجهة Syncthing ضمن الإجراءات > الإعدادات",
+          "scan_interval": "عدد مرات الاستعلام عن التحديثات (10-300 ثانية)"
+        }
+      },
+      "reconfigure": {
+        "title": "إعادة تكوين Syncthing",
+        "description": "تحديث بيانات الاتصال لنسخة Syncthing هذه.",
+        "data": {
+          "host": "Host",
+          "port": "Port",
+          "path": "المسار (مجلد فرعي)",
+          "api_key": "API Key",
+          "use_ssl": "استخدام HTTPS (SSL)",
+          "verify_ssl": "التحقق من شهادة SSL",
+          "scan_interval": "فترة التحديث (بالثواني)"
+        },
+        "data_description": {
+          "host": "عنوان IP أو اسم المضيف لنسخة Syncthing",
+          "port": "الافتراضي: 8384",
+          "path": "بادئة المسار إذا كان Syncthing يعمل خلف وكيل عكسي، مثل ‎/syncthing. اتركه فارغًا للاتصال المباشر. يتم اكتشاف عنوان URL الكامل في حقل المضيف تلقائيًا.",
           "api_key": "يوجد في واجهة Syncthing ضمن الإجراءات > الإعدادات",
           "scan_interval": "عدد مرات الاستعلام عن التحديثات (10-300 ثانية)"
         }
@@ -22,17 +44,22 @@
       "reauth_confirm": {
         "title": "إعادة مصادقة Syncthing",
         "description": "مفتاح API الخاص بـ Syncthing لم يعد صالحاً. يرجى إدخال مفتاح جديد.",
-        "data": { "api_key": "API Key" }
+        "data": {
+          "api_key": "API Key"
+        }
       }
     },
     "error": {
       "cannot_connect": "تعذّر الاتصال بـ Syncthing. تحقق من المضيف والمنفذ.",
+      "invalid_host": "إدخال مضيف غير صالح. استخدم اسم مضيف أو عنوان IP أو عنوان URL كاملًا.",
       "invalid_auth": "مفتاح API غير صالح.",
       "ssl_error": "فشل التحقق من شهادة SSL. قم بتعطيل 'التحقق من شهادة SSL' إذا كنت تستخدم شهادة موقّعة ذاتياً.",
       "unknown": "حدث خطأ غير متوقع."
     },
     "abort": {
-      "already_configured": "نسخة Syncthing هذه مُهيّأة بالفعل."
+      "already_configured": "نسخة Syncthing هذه مُهيّأة بالفعل.",
+      "reconfigure_successful": "تم تحديث إعدادات Syncthing.",
+      "wrong_instance": "هذه نسخة Syncthing مختلفة عن النسخة المُهيّأة."
     }
   },
   "entity": {
